@@ -4,7 +4,7 @@
 
 #include "string.h"
 
-String create_string(char* cstr) {
+String string_create(char* cstr) {
 
   String string;
   if (cstr == NULL) {
@@ -23,7 +23,7 @@ String create_string(char* cstr) {
 }
 
 
-void free_string(String* str) {
+void string_free(String* str) {
   free(str->data);
   str->data = NULL;
   str->length = 0;

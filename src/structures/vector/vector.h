@@ -9,5 +9,7 @@
 #include "vector_t.h"
 
 vector(Token, Token);
+vector(char, Char);
+vector(int, Int);
 
 #endif // IFJ2023_SWIFT_VECTOR_H
