@@ -15,7 +15,7 @@ typedef struct string {
 } String;
 
 
-String create_string(char* cstr);
-void free_string(String* str);
+String string_create(char* cstr);
+void string_free(String* str);
 
 #endif // IFJ2023_SWIFT_STRING_H
