@@ -18,8 +18,7 @@ Token token_create(TokenType type, char *str) {
 
   switch (type) {
   case STRING: {
-    int a = 0;
-    token.data.string = create_string(str);
+    token.data.string = string_create(str);
     break;
   }
   case INTEGER: {
@@ -41,7 +40,7 @@ void token_free(Token *token) {
   assert(token);
   switch (token->type) {
   case STRING: {
-    free_string(&token->data.string);
+    string_free(&token->data.string);
     break;
   }
   default:

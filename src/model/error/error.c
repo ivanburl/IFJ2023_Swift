@@ -3,3 +3,5 @@
 //
 
 #include "error.h"
+
+//TODO error reporting thing

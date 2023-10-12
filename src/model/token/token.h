@@ -6,6 +6,9 @@
 #define IFJ2023_SWIFT_TOKEN_H
 
 #include "../../structures/string/string.h"
+
+#define MAX_TOKEN_LENGTH 128
+
 typedef enum token_enum {
   UNDEFINED,
 
