@@ -4,8 +4,4 @@
 
 #include "parser.h"
 
-#define MAX_PARSER_STATES
-
-typedef struct parser  {
-  int
-} Parser;
+//TODO
