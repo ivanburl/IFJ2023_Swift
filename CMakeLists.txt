@@ -37,4 +37,5 @@ add_executable(IFJ2023_Swift src/main.c
         src/utils/logger.h
         src/scanner/configs/ifj23_swift_configurator.h
         src/scanner/configs/value_configs.c
+        src/scanner/configs/id_configs.c
 )
