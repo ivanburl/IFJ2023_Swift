@@ -6,6 +6,7 @@ void scanner_configure_swift_2023(Automata *automata) {
 }
 
 
+
 /*
  * each terminal should have its oven configuration function, and all of them should be collected into configure automata
  */
