@@ -35,4 +35,6 @@ add_executable(IFJ2023_Swift src/main.c
         src/structures/automata/automata.c
         src/structures/automata/automata.h
         src/utils/logger.h
+        src/scanner/configs/ifj23_swift_configurator.h
+        src/scanner/configs/value_configs.c
 )
