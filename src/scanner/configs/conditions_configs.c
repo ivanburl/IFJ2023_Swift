@@ -11,5 +11,5 @@ void configure_else(Scanner* scanner){
   automata_set_edge(&(scanner->automata),39,'l',40);
   automata_set_edge(&(scanner->automata),40,'s',41);
   automata_set_edge(&(scanner->automata),41,'e',42);
-  automata_set_stateReturnValue(&(scanner->automata),38,ELSE);
+  automata_set_stateReturnValue(&(scanner->automata),42,ELSE);
 }
