@@ -41,4 +41,5 @@ add_executable(IFJ2023_Swift src/main.c
         src/scanner/configs/type_configs.c
         src/scanner/configs/conditions_configs.c
         src/scanner/configs/conditions_configs.c
+        src/scanner/configs/general_type_configs.c
 )
