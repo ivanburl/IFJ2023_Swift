@@ -8,8 +8,8 @@ void configure_let(Scanner* scanner){
   automata_set_stateReturnValue(&(scanner->automata),45,LET);
 }
 void configure_var(Scanner* scanner){
-  automata_set_edge(&(scanner->automata),0,'l',46);
-  automata_set_edge(&(scanner->automata),46,'e',47);
-  automata_set_edge(&(scanner->automata),47,'t',48);
+  automata_set_edge(&(scanner->automata),0,'v',46);
+  automata_set_edge(&(scanner->automata),46,'a',47);
+  automata_set_edge(&(scanner->automata),47,'r',48);
   automata_set_stateReturnValue(&(scanner->automata),48,VAR);
 }

@@ -38,7 +38,7 @@ typedef enum token_enum {
 
   SOFT_UNWRAP, HARD_UNWRAP,
 
-  FUNC, ARROW, COMMA, RETURN
+  FUNC, ARROW, COMMA, RETURN, UNDERSCORE
 
 } TokenType;
 
