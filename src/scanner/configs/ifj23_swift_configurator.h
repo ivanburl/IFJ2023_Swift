@@ -33,7 +33,7 @@ void configure_while(Scanner* scanner);
 void configure_plus(Scanner* scanner);
 void configure_minus(Scanner* scanner);
 void configure_multiply(Scanner* scanner);
-void configure_devide(Scanner* scanner);
+void configure_divide(Scanner* scanner);
 
 void configure_quote(Scanner* scanner);
 void configure_left_curl_bracket(Scanner* scanner);
