@@ -32,9 +32,11 @@ add_executable(IFJ2023_Swift src/main.c
         src/model/error/error.c
         src/model/error/error.h
 
+        src/utils/logger.h
+
         src/structures/automata/automata.c
         src/structures/automata/automata.h
-        src/utils/logger.h
+
         src/scanner/configs/ifj23_swift_configurator.h
         src/scanner/configs/value_configs.c
         src/scanner/configs/id_configs.c
@@ -45,4 +47,16 @@ add_executable(IFJ2023_Swift src/main.c
         src/scanner/configs/cycle_configs.c
         src/scanner/configs/special_symbols_configs.c
         src/scanner/configs/math_operations_configs.c
+
+        src/model/grammar/rule/grammar_rule.c
+        src/model/grammar/rule/grammar_rule.h
+
+        src/model/grammar/grammar.c
+        src/model/grammar/grammar.h
+
+        src/model/grammar/token/grammar_token.c
+        src/model/grammar/token/grammar_token.h
+
+        src/parser/config/config_parser.c
+        src/parser/config/config_parser.h
 )

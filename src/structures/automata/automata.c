@@ -3,6 +3,8 @@
 //
 
 #include "automata.h"
+#include<regex.h>
+#include"../../utils/logger.h"
 
 #define AUTOMATA_STATE_ASSERT(T) assert(T>=0 && T<MAX_AUTOMATA_STATES_NUMBER)
 
@@ -49,4 +51,23 @@ void automata_next_state(Automata *automata, int edgeType) {
   assert(automata);
   AUTOMATA_EDGE_ASSERT(edgeType);
   automata->currentState = automata->automata[automata->currentState][edgeType];
+}
+
+void automata_set_edge_by_regex(Automata* automata, int starEdge, char* edgeTypeRegex, int toState) {
+  LOG_INFO(edgeTypeRegex);
+  regex_t regex;
+  int compExitValue = regcomp(&regex, edgeTypeRegex, 0);
+
+  if (compExitValue) {
+    LOG_ERROR("Could not compile regex");
+    return;
+  }
+  char s[2];
+  for (int i=0;i<MAX_AUTOMATA_EDGE_TYPES;i++) {
+    s[0] = (char) i; s[1] = 0;
+    int res = regexec(&regex, s, 0, NULL, 0);
+    if (res == 0) {
+      automata_set_edge(automata, starEdge, i, toState);
+    }
+  }
 }
