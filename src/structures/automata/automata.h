@@ -29,6 +29,6 @@ void automata_set_stateReturnValue(Automata *automata, int state, int returnValu
 void automata_configure(Automata* automata);
 
 void automata_next_state(Automata *automata, int edgeType);
-
+void automata_set_edge_by_regex(Automata* automata, int starEdge, char* edgeTypeRegex, int toState);
 
 #endif // IFJ2023_SWIFT_AUTOMATA_H

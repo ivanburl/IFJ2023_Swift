@@ -6,16 +6,13 @@
 #define IFJ2023_SWIFT_VECTOR_H
 
 #include "../../model/token/token.h"
+#include "../../model/grammar/token/grammar_token.h"
+#include "../../model/grammar/rule/grammar_rule.h"
 #include "vector_t.h"
 
 vector(Token, Token);
 vector(char, Char);
 vector(int, Int);
 vector(long long, Long);
-
-void test() {
-  LongVector longVector;
-  LongVector_push(&longVector, 10l);
-}
 
 #endif // IFJ2023_SWIFT_VECTOR_H
