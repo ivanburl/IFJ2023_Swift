@@ -10,8 +10,8 @@ add_executable(IFJ2023_Swift src/main.c
         src/utils/util.c
         src/utils/util.h
 
-        src/structures/hashmap/hashtable.c
-        src/structures/hashmap/hashtable.h
+        src/structures/hashmap/hashmap.c
+        src/structures/hashmap/hashmap.h
 
         src/model/token/token.c
         src/model/token/token.h
