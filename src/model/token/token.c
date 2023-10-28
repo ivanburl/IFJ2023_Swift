@@ -36,6 +36,14 @@ Token token_create(TokenType type, char *str) {
   return token;
 }
 
+Token token_grammar_token_create(TokenType type, GrammarToken grammarToken) {
+  Token token;
+  token_init(&token);
+  token.type = type;
+  token.data.grammarToken = grammarToken;
+  return token;
+}
+
 void token_free(Token *token) {
   assert(token);
   switch (token->type) {

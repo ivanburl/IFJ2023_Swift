@@ -6,13 +6,17 @@
 #define IFJ2023_SWIFT_TOKEN_H
 
 #include "../../structures/string/string.h"
+#include "../../model/grammar/token/grammar_token.h"
 
 #define MAX_TOKEN_LENGTH 128
+#define MAX_TOKEN_TYPES 128
 
+/*
+ * only terminal token could be
+ */
 typedef enum token_enum {
+  ///TERMINALS (should be constructed by scanner)
   UNDEFINED,
-
-
 
   STRING,
   INTEGER,
@@ -38,21 +42,41 @@ typedef enum token_enum {
 
   SOFT_UNWRAP, HARD_UNWRAP,
 
-  FUNC, ARROW, COMMA, RETURN
+  FUNC, ARROW, COMMA, RETURN,
 
+  UNDER_SCORE,
+
+  ///NON_TERMINALS (should be constructed by parser)
+  S,
+  E, T, F
 } TokenType;
 
 typedef struct token {
   TokenType type;
-  union {
+  union token_data_t {
     long long integer_value;
     double double_value;
     String string;
+    GrammarToken grammarToken;
   } data;
 } Token;
 
+
 void token_init(Token* token);
+
+/// Creates terminal token type by catching the string
+/// \param type - type of the token
+/// \param str - caught string
+/// \return pre-processed token
+/// \note
+/// \attention return token is not parsed one
 Token token_create(TokenType type, char *str);
+
+/// Creates non terminal token from other tokensHolder
+/// \param type - type of token
+/// \param grammarToken - caught tokensHolder
+/// \return pre-processed token (not parsed one)
+Token token_grammar_token_create(TokenType type, GrammarToken grammarToken);
 
 void token_free(Token *token);
 
