@@ -116,12 +116,10 @@ void *hashmap_remove(HashMap *map, const void *key) {
   if (*e == NULL)
     return NULL;
 
-  /* remove existing entry */
   old = *e;
   *e = old->next;
   old->next = NULL;
 
-  /* fix size and rehash if appropriate */
   map->size--;
   return old;
 }

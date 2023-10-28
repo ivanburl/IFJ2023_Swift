@@ -39,8 +39,9 @@ typedef struct grammar_token_t {
   Token tokensHolder[MAX_GRAMMAR_TOKEN_TOKENS_HOLDER_SIZE];
 } GrammarToken;
 
-void grammar_token_init(GrammarToken* grammarToken);
+void grammar_token_init(GrammarToken *grammarToken);
 
-GrammarToken grammar_token_create(GrammarTokenType type, Token* tokens, int tokensNumber);
+GrammarToken grammar_token_create(GrammarTokenType type, Token *tokens,
+                                  int tokensNumber);
 
 #endif // IFJ2023_SWIFT_GRAMMAR_TOKEN_H

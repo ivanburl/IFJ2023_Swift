@@ -9,7 +9,7 @@
 #include "../../model/grammar/token/grammar_token.h"
 
 #define MAX_TOKEN_LENGTH 128
-#define MAX_TOKEN_TYPES 128
+#define MAX_TOKEN_TYPES_NUMBER 128
 
 /*
  * only terminal token could be
