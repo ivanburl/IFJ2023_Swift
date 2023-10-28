@@ -20,8 +20,8 @@ GrammarRule grammar_rule_create(TokenType resultTokenType,
                                 const TokenType *tokenProductions,
                                 int productionsNumber) {
   assert(tokenProductions);
-  assert(productionsNumber > 0 &&
-         productionsNumber < MAX_GRAMMAR_RULE_PRODUCTIONS_SIZE);
+  assert(productionsNumber >= 0 &&
+         productionsNumber <= MAX_GRAMMAR_RULE_PRODUCTIONS_SIZE);
 
   GrammarRule grammarRule;
   grammar_rule_init(&grammarRule);

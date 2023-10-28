@@ -10,18 +10,21 @@
 #define MAX_GRAMMAR_RULE_PRODUCTIONS_SIZE 128
 
 typedef struct grammar_rule_t {
-  ///non-terminal result token type like S,E,T,F
+  /// non-terminal result token type like S,E,T,F
   TokenType resultTokenType;
-  ///specification of non-terminal token like S_SEQUENTIAL, S_EXPRESSION
+  /// specification of non-terminal token like S_SEQUENTIAL, S_EXPRESSION
   GrammarTokenType resultGrammarTokenType;
-  ///number of productions in grammar rule
+  /// number of productions in grammar rule
   int productionsNumber;
-  ///token types needed to build the specified \p resultTokenType
+  /// token types needed to build the specified \p resultTokenType
   TokenType productions[MAX_GRAMMAR_RULE_PRODUCTIONS_SIZE];
 } GrammarRule;
 
-void grammar_rule_init(GrammarRule* grammarRule);
+void grammar_rule_init(GrammarRule *grammarRule);
 
-GrammarRule grammar_rule_create(TokenType resultTokenType, GrammarTokenType resultGrammarTokenType, const TokenType*tokenProductions, int productionsNumber);
+GrammarRule grammar_rule_create(TokenType resultTokenType,
+                                GrammarTokenType resultGrammarTokenType,
+                                const TokenType *tokenProductions,
+                                int productionsNumber);
 
 #endif // IFJ2023_SWIFT_GRAMMAR_RULE_H
