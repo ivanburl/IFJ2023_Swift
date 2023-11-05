@@ -45,4 +45,7 @@ add_executable(IFJ2023_Swift src/main.c
         src/scanner/configs/cycle_configs.c
         src/scanner/configs/special_symbols_configs.c
         src/scanner/configs/math_operations_configs.c
+        src/scanner/configs/unwraps_configs.c
+        src/scanner/configs/utils_configs.c
+        src/scanner/configs/utils_configs.c
 )

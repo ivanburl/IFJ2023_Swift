@@ -58,7 +58,7 @@ automata_set_edge_by_regex(&(scanner->automata),32,"[a-zA-Z0-9_]+",12);
 automata_set_stateReturnValue(&(scanner->automata),32,BOOLEAN_TYPE);
 }
 
-void configure_nullabe(Scanner* scanner){
+void configure_nullable(Scanner* scanner){
 automata_set_edge(&(scanner->automata), 19, '?', 33);
 automata_set_edge(&(scanner->automata), 22, '?', 34);
 automata_set_edge(&(scanner->automata), 28, '?', 35);

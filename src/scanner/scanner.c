@@ -52,7 +52,14 @@ Error scanner_code_to_tokens(Scanner *scanner, char *code,
     }
   }
 
-  return error_create(NONE, NULL);
+  if (lastTokenTypeRecorded == UNDEFINED) {
+    return error_create(NONE, "undefined token...");
+  }
+
+  vector_push_back(tokenVector,
+                   token_create(lastTokenTypeRecorded, tokenStr));
+
+  return error_create(NONE, "some text");
 }
 
 void scanner_move_forward(Scanner *scanner, char symbol) {

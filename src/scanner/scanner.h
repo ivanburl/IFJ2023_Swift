@@ -29,7 +29,7 @@ void scanner_init(Scanner *scanner, ScannerAutomataConfigurator configurator);
 Error scanner_code_to_tokens(Scanner *scanner, char *code,
                              TokenVector *tokenVector);
 
-void scanner_configure_swift_2023(Automata *automata);
+void scanner_configure_swift_2023(Scanner* scanner);
 void scanner_move_forward(Scanner* scanner, char symbol);
 
 TokenType scanner_get_currentTokenType(Scanner *scanner);

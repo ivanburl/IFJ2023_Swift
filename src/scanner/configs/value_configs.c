@@ -5,7 +5,7 @@
 #include"ifj23_swift_configurator.h"
 
 void configure_string(Scanner* scanner) {
-  automata_set_edge(&(scanner->automata), 0, '"', 1);
+  automata_set_edge(&(scanner->automata), 0, '\"', 1);
   for (int i=0; i < MAX_AUTOMATA_EDGE_TYPES; i++) {
     automata_set_edge(&(scanner->automata), 1, i, 1);
   }
@@ -59,4 +59,14 @@ void configure_nil(Scanner* scanner){
   automata_set_edge(&(scanner->automata),10,'l',11);
   automata_set_edge_by_regex(&(scanner->automata),11,"[a-zA-Z0-9_]+",12);
   automata_set_stateReturnValue(&(scanner->automata),11,NIL);
+}
+void configure_multistring(Scanner* scanner){
+  automata_set_edge(&(scanner->automata),4,'\"',75);
+  automata_set_edge_by_regex(&(scanner->automata),75,"[.\n]",75);
+  automata_set_edge(&(scanner->automata), 75, '\\', 76);
+  automata_set_edge_by_regex(&(scanner->automata),76,"[.\n]",75);
+  automata_set_edge(&(scanner->automata), 75, '\"', 77);
+  automata_set_edge(&(scanner->automata), 77, '\"', 78);
+  automata_set_edge(&(scanner->automata), 78, '\"', 79);
+  automata_set_stateReturnValue(&(scanner->automata), 79, MULTI_STRING);
 }
