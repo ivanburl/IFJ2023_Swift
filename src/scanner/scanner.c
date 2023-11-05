@@ -8,7 +8,6 @@
 void scanner_init(Scanner *scanner, ScannerAutomataConfigurator configurator) {
   assert(scanner);
   automata_init(&(scanner->automata), SCANNER_DEFAULT_STATE, UNDEFINED);
-  configurator(&(scanner->automata));
 }
 
 Error scanner_code_to_tokens(Scanner *scanner, char *code,
@@ -29,7 +28,10 @@ Error scanner_code_to_tokens(Scanner *scanner, char *code,
     scanner_move_forward(scanner, feed);
 
     if (scanner->automata.currentState == scanner->automata.startState) {
-      assert(lastTokenTypeRecorded == UNDEFINED); // TODO normal error report
+      //assert(lastTokenTypeRecorded == UNDEFINED); // TODO normal error report
+      if (lastTokenTypeRecorded == UNDEFINED) {
+        return error_create(NONE, "undefined token...");
+      }
 
       tokenStr[endTokenStrPointer] = 0;
       vector_push_back(tokenVector,

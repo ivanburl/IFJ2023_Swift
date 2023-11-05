@@ -23,9 +23,8 @@ typedef struct scanner {
   Automata automata;
 } Scanner;
 
-typedef void (*ScannerAutomataConfigurator)(Automata *automata);
 
-void scanner_init(Scanner *scanner, ScannerAutomataConfigurator configurator);
+void scanner_init(Scanner *scanner);
 Error scanner_code_to_tokens(Scanner *scanner, char *code,
                              TokenVector *tokenVector);
 
