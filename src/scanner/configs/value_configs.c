@@ -53,7 +53,10 @@ void configure_double(Scanner* scanner){
 
 void configure_nil(Scanner* scanner){
   automata_set_edge(&(scanner->automata),0,'n',9);
+  automata_set_edge_by_regex(&(scanner->automata),9,"[a-zA-Z0-9_]+",12);
   automata_set_edge(&(scanner->automata),9,'i',10);
+  automata_set_edge_by_regex(&(scanner->automata),10,"[a-zA-Z0-9_]+",12);
   automata_set_edge(&(scanner->automata),10,'l',11);
+  automata_set_edge_by_regex(&(scanner->automata),11,"[a-zA-Z0-9_]+",12);
   automata_set_stateReturnValue(&(scanner->automata),11,NIL);
 }
