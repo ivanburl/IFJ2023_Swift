@@ -1,7 +1,4 @@
-#include "structures/vector/vector_t.h"
 #include <stdio.h>
-
-vector(int, Integer);
 
 void test(int a[], int size);
 

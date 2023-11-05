@@ -6,7 +6,6 @@
 #define IFJ2023_SWIFT_AUTOMATA_H
 
 #include "../../model/error/error.h"
-#include "../vector/vector.h"
 
 #define MAX_AUTOMATA_STATES_NUMBER 1024
 #define MAX_AUTOMATA_EDGE_TYPES 256
@@ -29,6 +28,7 @@ void automata_set_stateReturnValue(Automata *automata, int state, int returnValu
 void automata_configure(Automata* automata);
 
 void automata_next_state(Automata *automata, int edgeType);
+void automata_set_edge_by_regex(Automata* automata, int starEdge, char* edgeTypeRegex, int toState);
 
 
 #endif // IFJ2023_SWIFT_AUTOMATA_H

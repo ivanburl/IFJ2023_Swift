@@ -9,6 +9,8 @@
 #include "../model/token/token.h"
 #include "../structures/automata/automata.h"
 #include "../structures/vector/vector_t.h"
+#include "../structures/vector/vector.h"
+
 #include <limits.h>
 
 #define SCANNER_DEFAULT_STATE 0
