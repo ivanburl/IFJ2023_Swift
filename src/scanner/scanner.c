@@ -5,7 +5,7 @@
 #include "scanner.h"
 
 
-void scanner_init(Scanner *scanner, ScannerAutomataConfigurator configurator) {
+void scanner_init(Scanner *scanner) {
   assert(scanner);
   automata_init(&(scanner->automata), SCANNER_DEFAULT_STATE, UNDEFINED);
 }
