@@ -23,11 +23,8 @@ int test_regex_all() {
 
   int res = 0;
   for (int i=0;i<MAX_AUTOMATA_EDGE_TYPES; i++) {
-    if (automata.automata[0][i] == 1)
-      LOG_INFO_WHITE("Found symbol %c", (char)i);
     res += (automata.automata[0][i] == 1);
   }
-  LOG_INFO_WHITE("Count %d", res);
   return res == MAX_AUTOMATA_EDGE_TYPES ? 0 : 1;
 }
 
