@@ -3,12 +3,12 @@
 //
 
 #include "token.h"
-#include "stdlib.h"
 #include "../grammar/token/grammar_token.h"
+#include "stdlib.h"
 
-void token_init(Token* token) {
-    assert(token);
-    token->type = UNDEFINED;
+void token_init(Token *token) {
+  assert(token);
+  token->type = UNDEFINED;
 }
 
 Token token_create(TokenType type, char *str) {
@@ -37,7 +37,8 @@ Token token_create(TokenType type, char *str) {
   return token;
 }
 
-Token token_grammar_token_create(TokenType type, struct grammar_token_t* grammarToken) {
+Token token_grammar_token_create(TokenType type,
+                                 struct grammar_token_t *grammarToken) {
   Token token;
   token_init(&token);
   token.type = type;

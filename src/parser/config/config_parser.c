@@ -4,6 +4,6 @@
 
 #include "config_parser.h"
 
-void configure_parser(Parser* parser) {
-  //TODO
+void configure_parser(Parser *parser) {
+  // TODO
 }

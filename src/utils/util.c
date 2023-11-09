@@ -3,14 +3,14 @@
 //
 
 #include "util.h"
-#include <string.h>
 #include <assert.h>
+#include <string.h>
 
 void swap(void *a, void *b, size_t size) {
-  assert(a && b && size>0);
-  void* tmp = malloc(size);
+  assert(a && b && size > 0);
+  void *tmp = malloc(size);
   memcpy(tmp, a, size);
-  memcpy(a, b , size);
+  memcpy(a, b, size);
   memcpy(b, tmp, size);
   free(tmp);
 }

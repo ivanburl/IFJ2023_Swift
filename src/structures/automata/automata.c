@@ -3,14 +3,14 @@
 //
 
 #include "automata.h"
-#include <regex.h>
 #include "../../utils/logger.h"
 #include <assert.h>
+#include <regex.h>
 
+#define AUTOMATA_STATE_ASSERT(T)                                               \
+  assert(T >= 0 && T < MAX_AUTOMATA_STATES_NUMBER)
 
-#define AUTOMATA_STATE_ASSERT(T) assert(T>=0 && T<MAX_AUTOMATA_STATES_NUMBER)
-
-#define AUTOMATA_EDGE_ASSERT(T) assert(T>=0 && T<MAX_AUTOMATA_EDGE_TYPES)
+#define AUTOMATA_EDGE_ASSERT(T) assert(T >= 0 && T < MAX_AUTOMATA_EDGE_TYPES)
 
 void automata_init(Automata *automata, int startState,
                    int defaultStateReturnValue) {
@@ -28,7 +28,8 @@ void automata_init(Automata *automata, int startState,
   }
 }
 
-void automata_set_edge(Automata *automata, int fromState, int edgeType, int toState) {
+void automata_set_edge(Automata *automata, int fromState, int edgeType,
+                       int toState) {
   assert(automata);
   AUTOMATA_STATE_ASSERT(fromState);
   AUTOMATA_STATE_ASSERT(toState);
@@ -43,7 +44,8 @@ int automata_get_stateReturnValue(Automata *automata, int state) {
   return automata->stateReturnValues[state];
 }
 
-void automata_set_stateReturnValue(Automata *automata, int state, int returnValue) {
+void automata_set_stateReturnValue(Automata *automata, int state,
+                                   int returnValue) {
   assert(automata);
   AUTOMATA_STATE_ASSERT(state);
   automata->stateReturnValues[state] = returnValue;
@@ -55,8 +57,8 @@ void automata_next_state(Automata *automata, int edgeType) {
   automata->currentState = automata->automata[automata->currentState][edgeType];
 }
 
-void automata_set_edge_by_regex(Automata* automata, int starEdge, char* edgeTypeRegex, int toState) {
-  LOG_INFO(edgeTypeRegex);
+void automata_set_edge_by_regex(Automata *automata, int starEdge,
+                                char *edgeTypeRegex, int toState) {
   regex_t regex;
   int compExitValue = regcomp(&regex, edgeTypeRegex, 0);
 
@@ -65,8 +67,9 @@ void automata_set_edge_by_regex(Automata* automata, int starEdge, char* edgeType
     return;
   }
   char s[2];
-  for (int i=0;i<MAX_AUTOMATA_EDGE_TYPES;i++) {
-    s[0] = (char) i; s[1] = 0;
+  for (int i = 0; i < MAX_AUTOMATA_EDGE_TYPES; i++) {
+    s[0] = (char)i;
+    s[1] = 0;
     int res = regexec(&regex, s, 0, NULL, 0);
     if (res == 0) {
       automata_set_edge(automata, starEdge, i, toState);

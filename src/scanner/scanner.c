@@ -4,7 +4,6 @@
 
 #include "scanner.h"
 
-
 void scanner_init(Scanner *scanner) {
   assert(scanner);
   automata_init(&(scanner->automata), SCANNER_DEFAULT_STATE, UNDEFINED);
@@ -28,7 +27,7 @@ Error scanner_code_to_tokens(Scanner *scanner, char *code,
     scanner_move_forward(scanner, feed);
 
     if (scanner->automata.currentState == scanner->automata.startState) {
-      //assert(lastTokenTypeRecorded == UNDEFINED); // TODO normal error report
+      // assert(lastTokenTypeRecorded == UNDEFINED); // TODO normal error report
       if (lastTokenTypeRecorded == UNDEFINED) {
         return error_create(NONE, "undefined token...");
       }
@@ -58,8 +57,7 @@ Error scanner_code_to_tokens(Scanner *scanner, char *code,
     return error_create(NONE, "undefined token...");
   }
 
-  vector_push_back(tokenVector,
-                   token_create(lastTokenTypeRecorded, tokenStr));
+  vector_push_back(tokenVector, token_create(lastTokenTypeRecorded, tokenStr));
 
   return error_create(NONE, "some text");
 }

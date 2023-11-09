@@ -8,8 +8,8 @@
 #include "../model/error/error.h"
 #include "../model/token/token.h"
 #include "../structures/automata/automata.h"
-#include "../structures/vector/vector_t.h"
 #include "../structures/vector/vector.h"
+#include "../structures/vector/vector_t.h"
 
 #include <limits.h>
 
@@ -23,13 +23,12 @@ typedef struct scanner {
   Automata automata;
 } Scanner;
 
-
 void scanner_init(Scanner *scanner);
 Error scanner_code_to_tokens(Scanner *scanner, char *code,
                              TokenVector *tokenVector);
 
-void scanner_configure_swift_2023(Scanner* scanner);
-void scanner_move_forward(Scanner* scanner, char symbol);
+void scanner_configure_swift_2023(Scanner *scanner);
+void scanner_move_forward(Scanner *scanner, char symbol);
 
 TokenType scanner_get_currentTokenType(Scanner *scanner);
 

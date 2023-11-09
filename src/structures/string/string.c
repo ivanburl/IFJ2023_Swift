@@ -4,7 +4,7 @@
 
 #include "string.h"
 
-String string_create(char* cstr) {
+String string_create(char *cstr) {
 
   String string;
   if (cstr == NULL) {
@@ -12,7 +12,6 @@ String string_create(char* cstr) {
     string.data = NULL;
     return string;
   }
-
 
   string.length = strlen(cstr);
   string.data = malloc(sizeof(char) * (string.length + 1));
@@ -22,8 +21,7 @@ String string_create(char* cstr) {
   return string;
 }
 
-
-void string_free(String* str) {
+void string_free(String *str) {
   free(str->data);
   str->data = NULL;
   str->length = 0;

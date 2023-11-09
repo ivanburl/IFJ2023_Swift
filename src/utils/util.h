@@ -9,5 +9,4 @@
 
 void swap(void *a, void *b, size_t ptr_size);
 
-
 #endif // IFJ2023_SWIFT_UTIL_H

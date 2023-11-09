@@ -81,8 +81,7 @@ typedef struct hashmap_iter {
 extern void hashmap_iter_init(HashMap *map, HashMapIter *iter);
 extern void *hashmap_iter_next(HashMapIter *iter);
 
-static inline void *hashmap_iter_first(HashMap *map,
-                                       HashMapIter *iter) {
+static inline void *hashmap_iter_first(HashMap *map, HashMapIter *iter) {
   hashmap_iter_init(map, iter);
   return hashmap_iter_next(iter);
 }

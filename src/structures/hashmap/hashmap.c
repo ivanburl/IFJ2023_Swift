@@ -138,7 +138,7 @@ void hashmap_iter_init(struct hashmap *map, struct hashmap_iter *iter) {
 
 void *hashmap_iter_next(struct hashmap_iter *iter) {
   struct hashmap_entry *curPtr = iter->next;
-  while(1) {
+  while (1) {
     if (curPtr != NULL) {
       iter->next = curPtr->next;
       return curPtr;

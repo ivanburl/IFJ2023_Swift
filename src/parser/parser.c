@@ -4,14 +4,14 @@
 
 #include "parser.h"
 
-void parser_init(Parser* parser) {
-  //TODO
+void parser_init(Parser *parser) {
+  // TODO
 }
 
-Parser parser_create(Grammar* grammar) {
-  //TODO
+Parser parser_create(Grammar *grammar) {
+  // TODO
 }
 
-Token parser_parse(Parser* parser, TokenVector* tokenVector) {
-  //TODO
+Token parser_parse(Parser *parser, TokenVector *tokenVector) {
+  // TODO
 }

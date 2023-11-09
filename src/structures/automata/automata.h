@@ -17,17 +17,20 @@ typedef struct automata_t {
   int startState, defaultStateReturnValue;
 } Automata;
 
-void automata_init(Automata* automata, int startState, int defaultStateReturnValue);
+void automata_init(Automata *automata, int startState,
+                   int defaultStateReturnValue);
 
-void automata_set_edge(Automata *automata, int fromState, int edgeType, int toState);
-
+void automata_set_edge(Automata *automata, int fromState, int edgeType,
+                       int toState);
 
 int automata_get_stateReturnValue(Automata *automata, int state);
-void automata_set_stateReturnValue(Automata *automata, int state, int returnValue);
+void automata_set_stateReturnValue(Automata *automata, int state,
+                                   int returnValue);
 
-void automata_configure(Automata* automata);
+void automata_configure(Automata *automata);
 
 void automata_next_state(Automata *automata, int edgeType);
-void automata_set_edge_by_regex(Automata* automata, int starEdge, char* edgeTypeRegex, int toState);
+void automata_set_edge_by_regex(Automata *automata, int starEdge,
+                                char *edgeTypeRegex, int toState);
 
 #endif // IFJ2023_SWIFT_AUTOMATA_H

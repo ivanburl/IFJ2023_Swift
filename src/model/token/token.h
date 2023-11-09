@@ -14,7 +14,7 @@
  * only terminal token could be
  */
 typedef enum token_enum {
-  ///TERMINALS (should be constructed by scanner)
+  /// TERMINALS (should be constructed by scanner)
   UNDEFINED,
 
   STRING,
@@ -27,34 +27,64 @@ typedef enum token_enum {
 
   ID,
 
-  BLANK, DELIMITER,
+  BLANK,
+  DELIMITER,
 
-  STRING_TYPE, INT_TYPE, DOUBLE_TYPE,BOOLEAN_TYPE,
-  STRING_NULLABLE_TYPE, INT_NULLABLE_TYPE,DOUBLE_NULLABLE_TYPE,BOOLEAN_NULLABLE_TYPE,
+  STRING_TYPE,
+  INT_TYPE,
+  DOUBLE_TYPE,
+  BOOLEAN_TYPE,
+  STRING_NULLABLE_TYPE,
+  INT_NULLABLE_TYPE,
+  DOUBLE_NULLABLE_TYPE,
+  BOOLEAN_NULLABLE_TYPE,
 
-  IF, ELSE,
+  IF,
+  ELSE,
 
-  LET, VAR,
+  LET,
+  VAR,
 
   WHILE,
 
-  QUOTE, LEFT_CURL_BRACKET, RIGHT_CURL_BRACKET, LEFT_BRACKET, RIGHT_BRACKET,COLON,SEMICOLON,
+  QUOTE,
+  LEFT_CURL_BRACKET,
+  RIGHT_CURL_BRACKET,
+  LEFT_BRACKET,
+  RIGHT_BRACKET,
+  COLON,
+  SEMICOLON,
 
-  PLUS, MINUS, MULTIPLY, DIVIDE,EQUAL,ASSIGN,LESS_EQUAL,GREATER_EQUAL,GREATER,LESS,
+  PLUS,
+  MINUS,
+  MULTIPLY,
+  DIVIDE,
+  EQUAL,
+  ASSIGN,
+  LESS_EQUAL,
+  GREATER_EQUAL,
+  GREATER,
+  LESS,
   NOT_EQUAL,
 
-  SOFT_UNWRAP, HARD_UNWRAP,
+  SOFT_UNWRAP,
+  HARD_UNWRAP,
 
-  FUNC, ARROW, COMMA, RETURN, UNDERSCORE
+  FUNC,
+  ARROW,
+  COMMA,
+  RETURN,
+  UNDERSCORE,
 
-  UNDER_SCORE,
-
-  ///NON_TERMINALS (should be constructed by parser)
+  /// NON_TERMINALS (should be constructed by parser)
   S,
-  E, T, F
+  E,
+  T,
+  F
 } TokenType;
 
-// resolves infinitive include problem... (implementation of cstruct in implementation file)
+// resolves infinitive include problem... (implementation of cstruct in
+// implementation file)
 struct grammar_token_t;
 
 typedef struct token {
@@ -63,12 +93,11 @@ typedef struct token {
     long long integer_value;
     double double_value;
     String string;
-    struct grammar_token_t* grammarToken;
+    struct grammar_token_t *grammarToken;
   } data;
 } Token;
 
-
-void token_init(Token* token);
+void token_init(Token *token);
 
 /// Creates terminal token type by catching the string
 /// \param type - type of the token
@@ -82,7 +111,8 @@ Token token_create(TokenType type, char *str);
 /// \param type - type of token
 /// \param grammarToken - caught tokensHolder
 /// \return pre-processed token (not parsed one)
-Token token_grammar_token_create(TokenType type, struct grammar_token_t* grammarToken);
+Token token_grammar_token_create(TokenType type,
+                                 struct grammar_token_t *grammarToken);
 
 void token_free(Token *token);
 
