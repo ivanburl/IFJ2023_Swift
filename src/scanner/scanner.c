@@ -4,10 +4,10 @@
 
 #include "scanner.h"
 
-void scanner_init(Scanner *scanner, ScannerAutomataConfigurator configurator) {
+
+void scanner_init(Scanner *scanner) {
   assert(scanner);
   automata_init(&(scanner->automata), SCANNER_DEFAULT_STATE, UNDEFINED);
-  configurator(&(scanner->automata));
 }
 
 Error scanner_code_to_tokens(Scanner *scanner, char *code,
@@ -28,10 +28,13 @@ Error scanner_code_to_tokens(Scanner *scanner, char *code,
     scanner_move_forward(scanner, feed);
 
     if (scanner->automata.currentState == scanner->automata.startState) {
-      assert(lastTokenTypeRecorded == UNDEFINED); // TODO normal error report
+      //assert(lastTokenTypeRecorded == UNDEFINED); // TODO normal error report
+      if (lastTokenTypeRecorded == UNDEFINED) {
+        return error_create(NONE, "undefined token...");
+      }
 
       tokenStr[endTokenStrPointer] = 0;
-      TokenVector_push(tokenVector,
+      vector_push_back(tokenVector,
                        token_create(lastTokenTypeRecorded, tokenStr));
 
       tokenStr[0] = 0;
@@ -51,7 +54,14 @@ Error scanner_code_to_tokens(Scanner *scanner, char *code,
     }
   }
 
-  return error_create(NONE, NULL);
+  if (lastTokenTypeRecorded == UNDEFINED) {
+    return error_create(NONE, "undefined token...");
+  }
+
+  vector_push_back(tokenVector,
+                   token_create(lastTokenTypeRecorded, tokenStr));
+
+  return error_create(NONE, "some text");
 }
 
 void scanner_move_forward(Scanner *scanner, char symbol) {

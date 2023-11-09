@@ -59,4 +59,7 @@ add_executable(IFJ2023_Swift src/main.c
 
         src/parser/config/config_parser.c
         src/parser/config/config_parser.h
+        src/scanner/configs/unwraps_configs.c
+        src/scanner/configs/utils_configs.c
+        src/scanner/configs/utils_configs.c
 )

@@ -3,8 +3,10 @@
 //
 
 #include "automata.h"
-#include<regex.h>
-#include"../../utils/logger.h"
+#include <regex.h>
+#include "../../utils/logger.h"
+#include <assert.h>
+
 
 #define AUTOMATA_STATE_ASSERT(T) assert(T>=0 && T<MAX_AUTOMATA_STATES_NUMBER)
 

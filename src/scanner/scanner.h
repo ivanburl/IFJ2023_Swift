@@ -9,6 +9,8 @@
 #include "../model/token/token.h"
 #include "../structures/automata/automata.h"
 #include "../structures/vector/vector_t.h"
+#include "../structures/vector/vector.h"
+
 #include <limits.h>
 
 #define SCANNER_DEFAULT_STATE 0
@@ -21,13 +23,12 @@ typedef struct scanner {
   Automata automata;
 } Scanner;
 
-typedef void (*ScannerAutomataConfigurator)(Automata *automata);
 
-void scanner_init(Scanner *scanner, ScannerAutomataConfigurator configurator);
+void scanner_init(Scanner *scanner);
 Error scanner_code_to_tokens(Scanner *scanner, char *code,
                              TokenVector *tokenVector);
 
-void scanner_configure_swift_2023(Automata *automata);
+void scanner_configure_swift_2023(Scanner* scanner);
 void scanner_move_forward(Scanner* scanner, char symbol);
 
 TokenType scanner_get_currentTokenType(Scanner *scanner);

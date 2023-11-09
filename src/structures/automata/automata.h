@@ -6,7 +6,6 @@
 #define IFJ2023_SWIFT_AUTOMATA_H
 
 #include "../../model/error/error.h"
-#include "../vector/vector.h"
 
 #define MAX_AUTOMATA_STATES_NUMBER 1024
 #define MAX_AUTOMATA_EDGE_TYPES 256

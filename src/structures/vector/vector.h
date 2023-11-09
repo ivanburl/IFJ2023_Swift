@@ -10,9 +10,6 @@
 #include "../../model/grammar/rule/grammar_rule.h"
 #include "vector_t.h"
 
-vector(Token, Token);
-vector(char, Char);
-vector(int, Int);
-vector(long long, Long);
+typedef vector(Token) TokenVector;
 
 #endif // IFJ2023_SWIFT_VECTOR_H
