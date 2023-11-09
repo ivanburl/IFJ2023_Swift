@@ -60,7 +60,7 @@ void automata_next_state(Automata *automata, int edgeType) {
 void automata_set_edge_by_regex(Automata *automata, int starEdge,
                                 char *edgeTypeRegex, int toState) {
   regex_t regex;
-  int compExitValue = regcomp(&regex, edgeTypeRegex, 0);
+  int compExitValue = regcomp(&regex, edgeTypeRegex, REG_EXTENDED);
 
   if (compExitValue) {
     LOG_ERROR("Could not compile regex");

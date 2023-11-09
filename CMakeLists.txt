@@ -62,4 +62,9 @@ add_executable(IFJ2023_Swift src/main.c
         src/scanner/configs/unwraps_configs.c
         src/scanner/configs/utils_configs.c
         src/scanner/configs/utils_configs.c
+
+        src/test/scanner_test/scanner_test.h
+        src/test/automata_test/automata_test.h
+        src/test/automata_test/automata_test.c
+        src/utils/logger.c
 )

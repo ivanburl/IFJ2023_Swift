@@ -1,4 +1,5 @@
 #include "scanner/scanner.h"
+#include "test/automata_test/automata_test.h"
 #include <stdio.h>
 
 void test() {
@@ -15,10 +16,9 @@ void test() {
   for (int i = 0; i < tokenVector.length; i++) {
     types[i] = tokenVector.data[i].type;
   }
-  int a = 10;
 }
 
 int main() {
-  test();
+  test_automata();
   return 0;
 }
