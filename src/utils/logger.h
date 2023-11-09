@@ -16,44 +16,19 @@
 #define LOG_ERROR(...) log_error(__func__, __FILE__, __LINE__, __VA_ARGS__)
 #define LOG_WARN(...) log_warn(__func__, __FILE__, __LINE__, __VA_ARGS__)
 #define LOG_INFO(...) log_info(__func__, __FILE__, __LINE__, __VA_ARGS__)
+#define LOG_INFO_WHITE(...)                                                    \
+  log_info_white(__func__, __FILE__, __LINE__, __VA_ARGS__)
 
 void log_error(const char *func, const char *file, int line, const char *format,
-               ...) {
-  va_list args;
-  va_start(args, format);
-
-  fprintf(stderr, "%s[ERROR] (from func %s in file %s at line %d) - ", KRED,
-          func, file, line);
-  vfprintf(stderr, format, args);
-  fprintf(stderr, "%s\n", KNRM);
-
-  va_end(args);
-}
+               ...);
 
 void log_warn(const char *func, const char *file, int line, const char *format,
-              ...) {
-  va_list args;
-  va_start(args, format);
-
-  fprintf(stderr, "%s[WARN] (from func %s in file %s at line %d) - ", KYEL,
-          func, file, line);
-  vfprintf(stderr, format, args);
-  fprintf(stderr, "%s\n", KNRM);
-
-  va_end(args);
-}
+              ...);
 
 void log_info(const char *func, const char *file, int line, const char *format,
-              ...) {
-  va_list args;
-  va_start(args, format);
+              ...);
 
-  fprintf(stderr, "%s[INFO] (from func %s in file %s at line %d) - ", KGRN,
-          func, file, line);
-  vfprintf(stderr, format, args);
-  fprintf(stderr, "%s\n", KNRM);
-
-  va_end(args);
-}
+void log_info_white(const char *func, const char *file, int line,
+                    const char *format, ...);
 
 #endif // IFJ2023_SWIFT_LOGGER_H
