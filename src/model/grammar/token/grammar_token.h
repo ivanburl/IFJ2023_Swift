@@ -5,7 +5,6 @@
 #ifndef IFJ2023_SWIFT_GRAMMAR_TOKEN_H
 #define IFJ2023_SWIFT_GRAMMAR_TOKEN_H
 
-#include "../../../structures/vector/vector.h"
 #include "../../token/token.h"
 
 #define MAX_GRAMMAR_TOKEN_TOKENS_HOLDER_SIZE 128

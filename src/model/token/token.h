@@ -6,7 +6,6 @@
 #define IFJ2023_SWIFT_TOKEN_H
 
 #include "../../structures/string/string.h"
-#include "../../model/grammar/token/grammar_token.h"
 
 #define MAX_TOKEN_LENGTH 128
 #define MAX_TOKEN_TYPES_NUMBER 128
@@ -51,13 +50,16 @@ typedef enum token_enum {
   E, T, F
 } TokenType;
 
+// resolves infinitive include problem... (implementation of cstruct in implementation file)
+struct grammar_token_t;
+
 typedef struct token {
   TokenType type;
   union token_data_t {
     long long integer_value;
     double double_value;
     String string;
-    GrammarToken grammarToken;
+    struct grammar_token_t* grammarToken;
   } data;
 } Token;
 
@@ -76,7 +78,7 @@ Token token_create(TokenType type, char *str);
 /// \param type - type of token
 /// \param grammarToken - caught tokensHolder
 /// \return pre-processed token (not parsed one)
-Token token_grammar_token_create(TokenType type, GrammarToken grammarToken);
+Token token_grammar_token_create(TokenType type, struct grammar_token_t* grammarToken);
 
 void token_free(Token *token);
 
