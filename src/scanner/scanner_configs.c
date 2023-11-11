@@ -29,8 +29,16 @@ void scanner_configure_swift_2023(Scanner *scanner) {
   configure_minus(scanner);
   configure_multiply(scanner);
   configure_divide(scanner);
+  configure_assign(scanner);
 
-  configure_quote(scanner);
+  configure_equal(scanner);
+  configure_less(scanner);
+  configure_lessequal(scanner);
+  configure_greater(scanner);
+  configure_greaterequal(scanner);
+  configure_notequal(scanner);
+
+  //configure_quote(scanner);
   configure_left_curl_bracket(scanner);
   configure_right_bracket(scanner);
   configure_right_curl_bracket(scanner);
@@ -43,6 +51,12 @@ void scanner_configure_swift_2023(Scanner *scanner) {
   configure_underscore(scanner);
   configure_comment(scanner);
   configure_multi_comment(scanner);
+
+  configure_softunwrap(scanner);
+  configure_hardunwrap(scanner);
+
+  configure_colon(scanner);
+  configure_semicolon(scanner);
 }
 
 /*

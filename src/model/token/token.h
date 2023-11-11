@@ -47,7 +47,7 @@ typedef enum token_enum {
 
   WHILE,
 
-  QUOTE,
+  //QUOTE,
   LEFT_CURL_BRACKET,
   RIGHT_CURL_BRACKET,
   LEFT_BRACKET,

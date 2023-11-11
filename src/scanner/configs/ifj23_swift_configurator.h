@@ -35,6 +35,15 @@ void configure_minus(Scanner *scanner);
 void configure_multiply(Scanner *scanner);
 void configure_divide(Scanner *scanner);
 
+void configure_assign(Scanner *scanner);
+void configure_equal(Scanner *scanner);
+void configure_less(Scanner *scanner);
+void configure_lessequal(Scanner *scanner);
+void configure_greater(Scanner *scanner);
+void configure_greaterequal(Scanner *scanner);
+void configure_notequal(Scanner *scanner);
+
+
 void configure_quote(Scanner *scanner);
 void configure_left_curl_bracket(Scanner *scanner);
 void configure_right_curl_bracket(Scanner *scanner);

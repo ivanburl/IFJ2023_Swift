@@ -1,10 +1,10 @@
 #include "../scanner.h"
 #include "ifj23_swift_configurator.h"
 
-void configure_quote(Scanner *scanner) {
-  automata_set_edge(&(scanner->automata), 0, '\"', 54);
-  automata_set_stateReturnValue(&(scanner->automata), 54, QUOTE);
-}
+//void configure_quote(Scanner *scanner) {
+//  automata_set_edge(&(scanner->automata), 0, '\"', 54);
+//  automata_set_stateReturnValue(&(scanner->automata), 54, QUOTE);
+//}
 void configure_left_curl_bracket(Scanner *scanner) {
   automata_set_edge(&(scanner->automata), 0, '{', 55);
   automata_set_stateReturnValue(&(scanner->automata), 55, LEFT_CURL_BRACKET);
