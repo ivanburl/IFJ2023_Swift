@@ -18,7 +18,7 @@ void test() {
   }
 }
 
-int main() {
-  test_automata();
-  return 0;
-}
+//int main() {
+  //test_automata();
+  //return 0;
+//}

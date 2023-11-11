@@ -10,7 +10,7 @@ void configure_id(Scanner *scanner) {
   for (int i = 'A'; i <= 'Z'; i++) {
     automata_set_edge(&(scanner->automata), 0, i, 12);
   }
-  automata_set_edge(&(scanner->automata), 0, '_', 12);
+  automata_set_edge(&(scanner->automata), 12, '_', 12);
   for (int i = 'a'; i <= 'z'; i++) {
     automata_set_edge(&(scanner->automata), 12, i, 12);
   }

@@ -37,6 +37,7 @@ void configure_return(Scanner *scanner) {
 }
 void configure_underscore(Scanner *scanner) {
   automata_set_edge_by_regex(&(scanner->automata), 0, "_", 92);
+  automata_set_edge_by_regex(&(scanner->automata), 92, "[a-zA-Z0-9_]+", 12);
   automata_set_stateReturnValue(&(scanner->automata), 92, UNDERSCORE);
 }
 void configure_comment(Scanner *scanner) {

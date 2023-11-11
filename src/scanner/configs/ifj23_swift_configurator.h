@@ -49,4 +49,11 @@ void configure_underscore(Scanner *scanner);
 void configure_comment(Scanner *scanner);
 void configure_multi_comment(Scanner *scanner);
 
+void configure_softunwrap(Scanner *scanner);
+void configure_hardunwrap(Scanner *scanner);
+
+
+void configure_colon(Scanner *scanner);
+void configure_semicolon(Scanner *scanner);
+
 #endif // IFJ2023_SWIFT_IFJ23_SWIFT_CONFIGURATOR_H
