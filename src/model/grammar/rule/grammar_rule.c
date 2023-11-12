@@ -36,3 +36,15 @@ GrammarRule grammar_rule_create(TokenType resultTokenType,
 
   return grammarRule;
 }
+
+bool grammar_rule_equals(GrammarRule* g1, GrammarRule* g2) {
+  if (g1 == g2) return true;
+  if (g1 == NULL || g2 == NULL) return false;
+  if (g1->productionsNumber != g2->productionsNumber) return false;
+  if (g1->resultTokenType != g2->resultTokenType) return false;
+  if (g1->resultGrammarTokenType != g2->resultGrammarTokenType) return false;
+  for (int i=0;i<g1->productionsNumber; i++) {
+    if (g1->productions[i] != g2->productions[i]) return false;
+  }
+  return true;
+}

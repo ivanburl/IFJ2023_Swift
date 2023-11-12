@@ -6,6 +6,7 @@
 #define IFJ2023_SWIFT_GRAMMAR_RULE_H
 
 #include "../token/grammar_token.h"
+#include <stdbool.h>
 
 #define MAX_GRAMMAR_RULE_PRODUCTIONS_SIZE 128
 
@@ -26,5 +27,8 @@ GrammarRule grammar_rule_create(TokenType resultTokenType,
                                 GrammarTokenType resultGrammarTokenType,
                                 const TokenType *tokenProductions,
                                 int productionsNumber);
+
+bool grammar_rule_equals(GrammarRule* g1, GrammarRule* g2);
+
 
 #endif // IFJ2023_SWIFT_GRAMMAR_RULE_H

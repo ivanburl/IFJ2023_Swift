@@ -13,8 +13,10 @@ typedef struct parser_t {
   Automata automata;
 } Parser;
 
+
 void parser_init(Parser *parser);
-Parser parser_create(Grammar *grammar);
+void parser_create(Parser *parser, Grammar *grammar);
+void parser_configure(Parser* parser);
 
 Token parser_parse(Parser *parser, TokenVector *tokenVector);
 

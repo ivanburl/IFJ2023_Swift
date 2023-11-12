@@ -3,15 +3,25 @@
 //
 
 #include "parser.h"
+#include "config/config_parser.h"
 
 void parser_init(Parser *parser) {
-  // TODO
+  assert(parser);
+  parser->grammar = NULL;
+  automata_init(&(parser->automata), 0, -1);
 }
 
-Parser parser_create(Grammar *grammar) {
-  // TODO
+void parser_create(Parser *parser, Grammar *grammar) {
+  assert(parser && grammar);
+  parser->grammar = grammar;
 }
 
 Token parser_parse(Parser *parser, TokenVector *tokenVector) {
+  assert(parser && tokenVector);
   // TODO
+}
+
+void parser_configure(Parser* parser) {
+  assert(parser);
+  ifj_2023_parser_config(parser);
 }
