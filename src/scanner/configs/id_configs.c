@@ -33,8 +33,6 @@ void configure_blank(Scanner *scanner) {
 
 void configure_delimiter(Scanner *scanner) {
   automata_set_edge(&(scanner->automata), 0, '\n', 64);
-  // automata_set_edge(&(scanner->automata),0, '\r', 64);
   automata_set_edge(&(scanner->automata), 64, '\n', 64);
-  // automata_set_edge(&(scanner->automata),64, '\r', 64);
   automata_set_stateReturnValue(&(scanner->automata), 64, DELIMITER);
 }

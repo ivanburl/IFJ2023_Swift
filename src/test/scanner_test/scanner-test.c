@@ -49,7 +49,7 @@ int test_id_token(){
 
   TokenVector tokenVector;
   vector_init(&tokenVector);
-  char* code = "_03_aad09_hj";
+  char* code = "naa_irll_03_aad09_hj";
   scanner_code_to_tokens(&scanner, code, &tokenVector);
   TokenType types[1000];
 

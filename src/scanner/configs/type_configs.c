@@ -2,7 +2,6 @@
 #include "ifj23_swift_configurator.h"
 
 void configure_string_type(Scanner *scanner) {
-  // 14 //15 //16 //17 //18 //19
   automata_set_edge(&(scanner->automata), 0, 'S', 14);
   automata_set_edge_by_regex(&(scanner->automata), 14, "[a-zA-Z0-9_]+", 12);
   automata_set_edge(&(scanner->automata), 14, 't', 15);
