@@ -5,13 +5,14 @@
 #include "config_parser.h"
 #include "../../structures/hashmap/hashmap.h"
 #include "key/config_parser_key.h"
-
+#include "../../utils/logger.h"
 
 void ifj_2023_parser_init_state(Parser *parser, ParserKey *root) {
   assert(root && parser && parser->grammar);
-  bool used[MAX_GRAMMAR_RULE_PRODUCTIONS_SIZE + 1]
-           [MAX_GRAMMAR_RULE_PRODUCTIONS_SIZE] = {false};
-  parser_key_add_rules_from_grammar(root, (bool **)used, S, parser->grammar);
+  bool used[MAX_GRAMMAR_RULES_SIZE][MAX_GRAMMAR_RULE_PRODUCTIONS_SIZE + 1] = {
+      false};
+  parser_key_add_rules_from_grammar(root, used, S, parser->grammar);
+  parser_key_sort(root);
 }
 
 struct hashmap_parser_entry_t {
@@ -38,21 +39,23 @@ int cmpFn(struct hashmap_parser_entry_t *e1,
   return 0;
 }
 
-int add_key_to_map(HashMap *map, int *parserKeyIdGen, ParserKey parserKey) {
-  assert(map && parserKeyIdGen);
+int add_key_to_map(HashMap *map, int *parserKeyIdGen, ParserKey* parserKey) {
+  assert(map && parserKeyIdGen && parserKey);
+  struct hashmap_parser_entry_t* entry = malloc(sizeof (struct hashmap_parser_entry_t));
+  hashmap_entry_init(entry, parser_key_hash(parserKey));
+  entry->key = *parserKey;
+  entry->parserKeyId = *parserKeyIdGen;
 
-  struct hashmap_parser_entry_t *found = hashmap_get(map, &parserKey);
-  if (found != NULL)
+  struct hashmap_parser_entry_t *found = hashmap_get(map, entry);
+  if (found != NULL) {
+    free(entry);
     return found->parserKeyId;
+  }
 
-  struct hashmap_parser_entry_t entry;
-  hashmap_entry_init(&entry, memhash(&parserKey, sizeof(ParserKey)));
-  entry.key = parserKey;
-  entry.parserKeyId = *parserKeyIdGen;
-  hashmap_put(map, &entry);
+  hashmap_put(map, entry);
   *parserKeyIdGen = *parserKeyIdGen + 1;
 
-  return 0;
+  return *parserKeyIdGen - 1;
 }
 
 void rec_configuration(Parser *parser, ParserKey *parent, int parentKeyId,
@@ -69,7 +72,8 @@ void ifj_2023_parser_config(Parser *parser) {
   parser_key_init(&root);
   ifj_2023_parser_init_state(parser, &root);
 
-  add_key_to_map(&hashMap, &parserKeyIdGen, root);
+  add_key_to_map(&hashMap, &parserKeyIdGen, &root);
+  automata_set_stateReturnValue(&(parser->automata), 0, 0);
 
   rec_configuration(parser, &root, 0, &hashMap, &parserKeyIdGen);
 }
@@ -86,7 +90,8 @@ void rec_configuration(Parser *parser, ParserKey *parent, int parentKeyId,
 
     if (parser->grammar->grammarRules[grammarRuleId].productionsNumber <=
         grammarRulePoint) {
-      if (parent->n == 1) { // if only one rule left it is definitely return state
+      if (parent->n ==
+          1) { // if only one rule left it is definitely return state
         automata_set_stateReturnValue(&(parser->automata), parentKeyId, 1);
       }
       continue;
@@ -95,15 +100,21 @@ void rec_configuration(Parser *parser, ParserKey *parent, int parentKeyId,
     TokenType pointToken = parser->grammar->grammarRules[grammarRuleId]
                                .productions[grammarRulePoint];
 
-    if (!usedTokens[pointToken]) {
-      parser_key_gen_by_move(&next, parent, pointToken, parser->grammar);
-      usedTokens[pointToken] = true;
-    }
+    if (usedTokens[pointToken])
+      continue;
+    usedTokens[pointToken] = true;
 
-    int nextKeyId = add_key_to_map(map, parserKeyIdGen, next);
+    parser_key_init(&next);
+    parser_key_gen_by_move(&next, parent, pointToken, parser->grammar);
+    parser_key_sort(&next);
+
+    int nextKeyId = add_key_to_map(map, parserKeyIdGen, &next);
     automata_set_edge(&(parser->automata), parentKeyId, pointToken, nextKeyId);
 
-    if (nextKeyId + 1 == *parserKeyIdGen) { // new state was generated, continue linking states
+    if (automata_get_stateReturnValue(&(parser->automata), nextKeyId) == -1) { // new state was generated, continue linking states
+      automata_set_stateReturnValue(&(parser->automata), nextKeyId,
+                                    0); // mark return state as continue
+
       rec_configuration(parser, &next, nextKeyId, map, parserKeyIdGen);
     }
   }

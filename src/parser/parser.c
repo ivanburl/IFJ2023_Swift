@@ -8,7 +8,7 @@
 void parser_init(Parser *parser) {
   assert(parser);
   parser->grammar = NULL;
-  automata_init(&(parser->automata), 0, -1);
+  automata_init(&(parser->automata), -1, -1);
 }
 
 void parser_create(Parser *parser, Grammar *grammar) {
