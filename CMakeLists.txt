@@ -68,6 +68,19 @@ add_executable(IFJ2023_Swift src/main.c
         src/test/automata_test/automata_test.c
         src/utils/logger.c
         src/test/scanner_test/scanner-test.c
+
         src/parser/config/key/config_parser_key.h
         src/parser/config/key/config_parser_key.c
+
+        src/test/parser_test/key/key_test.h
+        src/test/parser_test/key/key_test.c
+
+        src/test/parser_test/parser-test.h
+        src/test/parser_test/parser-test.c
+
+        src/test/parser_test/config/config_test.h
+        src/test/parser_test/config/config_test.c
+
+        src/test/grammar_test/grammar_test.h
+        src/test/grammar_test/grammar_test.c
 )

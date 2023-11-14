@@ -1,5 +1,8 @@
 #include "scanner/scanner.h"
 #include "test/automata_test/automata_test.h"
+#include "test/parser_test/parser-test.h"
+#include "test/grammar_test/grammar_test.h"
+
 #include <stdio.h>
 
 void test() {
@@ -18,7 +21,9 @@ void test() {
   }
 }
 
-//int main() {
-  //test_automata();
-  //return 0;
-//}
+int main() {
+//  test_automata();
+//  parser_test();
+  grammar_test();
+  return 0;
+}
