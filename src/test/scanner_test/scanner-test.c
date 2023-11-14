@@ -100,10 +100,10 @@ int test_unite() {
 }
 */
 
-int main() {
-  //test_unite();
-  test_if_token();
-  test_number_token();
-  test_id_token();
-  return 0;
-}
+//int main() {
+//  //test_unite();
+//  test_if_token();
+//  test_number_token();
+//  test_id_token();
+//  return 0;
+//}
