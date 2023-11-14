@@ -76,11 +76,13 @@ typedef enum token_enum {
   RETURN,
   UNDERSCORE,
 
+  NON_TERMINAL_UNDEFINED, //the start of non-terminal symbols
   /// NON_TERMINALS (should be constructed by parser)
   S,
   E,
   T,
-  F
+  F,
+  V
 } TokenType;
 
 // resolves infinitive include problem... (implementation of cstruct in

@@ -33,6 +33,7 @@ Grammar grammar_create(GrammarRule *grammarRules, int numberOfRules) {
   }
   calculate_nullable(&grammar);
   calculate_first(&grammar);
+  return grammar;
 }
 
 void calculate_nullable(Grammar *grammar) {
@@ -42,13 +43,14 @@ void calculate_nullable(Grammar *grammar) {
     changed = false;
     for (int i = 0; i < grammar->rulesNumber; i++) {
       int tokenType = grammar->grammarRules[i].resultTokenType;
-      if (grammar->nullable[tokenType] != 1)
+      if (grammar->nullable[tokenType] == 1)
         continue;
 
+      int tmp = 1;
       for (int j = 0; j < grammar->grammarRules[i].productionsNumber; j++) {
-        grammar->nullable[tokenType] &=
-            grammar->nullable[grammar->grammarRules[i].productions[j]];
+        tmp &= grammar->nullable[grammar->grammarRules[i].productions[j]];
       }
+      grammar->nullable[tokenType] = tmp;
 
       if (grammar->nullable[tokenType] == 1)
         changed = true;
@@ -59,6 +61,9 @@ void calculate_nullable(Grammar *grammar) {
 void calculate_first(Grammar *grammar) {
   assert(grammar);
   bool changed = true;
+  for (int i=UNDEFINED;i<NON_TERMINAL_UNDEFINED; i++) {
+    grammar->first[i][i] = true;
+  }
   while (changed) {
     changed = false;
     for (int i = 0; i < grammar->rulesNumber; i++) {
@@ -71,7 +76,7 @@ void calculate_first(Grammar *grammar) {
         for (int k = 0; k < MAX_TOKEN_TYPES_NUMBER; k++) {
           changed |= grammar->first[sourceTokenType][k] == false &&
                      grammar->first[destTokenType][k] == true;
-          grammar->first[sourceTokenType][k] &=
+          grammar->first[sourceTokenType][k] |=
               grammar->first[destTokenType][k];
         }
       }
