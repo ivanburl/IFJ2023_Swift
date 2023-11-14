@@ -6,6 +6,7 @@
 #include "assert.h"
 #include <stdlib.h>
 #include <string.h>
+#include "../../utils/logger.h"
 
 /// inspiration
 /// https://opensource.apple.com/source/Git/Git-98/src/git/hashmap.c.auto.html
@@ -36,7 +37,7 @@ void alloc_table(HashMap *map, unsigned int size) {
   map->growAt = (unsigned int)(size * HASHMAP_LOAD_FACTOR / 100);
 }
 
-int entry_equals(HashMap *map, HashMapEntry *e1, HashMapEntry *e2) {
+int entry_equals(const HashMap *map,const HashMapEntry *e1, const HashMapEntry *e2) {
   assert(map);
   return (e1 == e2) || (e1->hash == e2->hash && !map->cmpFn(e1, e2));
 }
@@ -67,7 +68,7 @@ void rehash(HashMap *map, unsigned int newSize) {
 }
 
 /// find entry_prt in table context
-HashMapEntry **find_entry_ptr(HashMap *map, HashMapEntry *key) {
+HashMapEntry **find_entry_ptr(const HashMap *map, const HashMapEntry *key) {
   struct hashmap_entry **e = &map->table[get_bucket_id(map, key)];
   while (*e && !entry_equals(map, *e, key))
     e = &(*e)->next;
@@ -92,6 +93,12 @@ void hashmap_free(HashMap *map) {
     return;
   free(map->table);
   memset(map, 0, sizeof(*map));
+}
+
+void hashmap_entry_init(void *entry, unsigned int hash) {
+  struct hashmap_entry *e = entry;
+  e->hash = hash;
+  e->next = NULL;
 }
 
 void *hashmap_get(const HashMap *map, const void *key) {

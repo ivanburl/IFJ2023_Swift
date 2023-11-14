@@ -8,9 +8,9 @@
 #include <regex.h>
 
 #define AUTOMATA_STATE_ASSERT(T)                                               \
-  assert(T >= 0 && T < MAX_AUTOMATA_STATES_NUMBER)
+  assert((T) >= 0 && (T) < MAX_AUTOMATA_STATES_NUMBER)
 
-#define AUTOMATA_EDGE_ASSERT(T) assert(T >= 0 && T < MAX_AUTOMATA_EDGE_TYPES)
+#define AUTOMATA_EDGE_ASSERT(T) assert((T) >= 0 && (T) < MAX_AUTOMATA_EDGE_TYPES)
 
 void automata_init(Automata *automata, int startState,
                    int defaultStateReturnValue) {

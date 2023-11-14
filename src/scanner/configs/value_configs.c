@@ -15,7 +15,6 @@ void configure_string(Scanner *scanner) {
     automata_set_edge(&(scanner->automata), 3, i, 1);
   }
   automata_set_stateReturnValue(&(scanner->automata), 4, STRING);
-  double d = 1e1;
 }
 
 void configure_integer(Scanner *scanner) {

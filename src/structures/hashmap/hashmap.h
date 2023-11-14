@@ -52,11 +52,7 @@ void hashmap_init(HashMap *map, hashmap_cmp_fn equals_function);
 /// \warning the elements of hashmap are not freed
 void hashmap_free(HashMap *map);
 
-void hashmap_entry_init(void *entry, unsigned int hash) {
-  struct hashmap_entry *e = entry;
-  e->hash = hash;
-  e->next = NULL;
-}
+void hashmap_entry_init(void *entry, unsigned int hash);
 
 /// Find entry by NON-NULL key
 /// \return found ? found : NULL
@@ -78,12 +74,12 @@ typedef struct hashmap_iter {
   unsigned int tablePos;
 } HashMapIter;
 
-extern void hashmap_iter_init(HashMap *map, HashMapIter *iter);
-extern void *hashmap_iter_next(HashMapIter *iter);
-
-static inline void *hashmap_iter_first(HashMap *map, HashMapIter *iter) {
-  hashmap_iter_init(map, iter);
-  return hashmap_iter_next(iter);
-}
+//extern void hashmap_iter_init(HashMap *map, HashMapIter *iter);
+//extern void *hashmap_iter_next(HashMapIter *iter);
+//
+//static inline void *hashmap_iter_first(HashMap *map, HashMapIter *iter) {
+//  hashmap_iter_init(map, iter);
+//  return hashmap_iter_next(iter);
+//}
 
 #endif // IFJ2023_SWIFT_HASHMAP_H
