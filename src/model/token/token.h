@@ -6,6 +6,7 @@
 #define IFJ2023_SWIFT_TOKEN_H
 
 #include "../../structures/string/string.h"
+#include "../error/error.h"
 
 #define MAX_TOKEN_LENGTH 128
 #define MAX_TOKEN_TYPES_NUMBER 128
@@ -105,7 +106,7 @@ void token_init(Token *token);
 /// \return pre-processed token
 /// \note
 /// \attention return token is not parsed one
-Token token_create(TokenType type, char *str);
+Error token_create(TokenType type, char *str, Token *outToken);
 
 /// Creates non terminal token from other tokensHolder
 /// \param type - type of token
@@ -115,5 +116,9 @@ Token token_grammar_token_create(TokenType type,
                                  struct grammar_token_t *grammarToken);
 
 void token_free(Token *token);
+
+void delete_quotes(char **str);
+Error preprocess_literal_string(char *literal);
+Error process_unicode(char **sequence, char *output);
 
 #endif // IFJ2023_SWIFT_TOKEN_H

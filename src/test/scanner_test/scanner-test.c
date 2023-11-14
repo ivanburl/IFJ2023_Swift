@@ -60,6 +60,27 @@ int test_id_token(){
   assert(types[0] == ID);
   printf("Test id_token passed.\n");
 }
+
+int test_escape_sequences(){
+  Scanner scanner;
+  scanner_init(&scanner);
+  scanner_configure_swift_2023(&scanner);
+
+  TokenVector tokenVector;
+  vector_init(&tokenVector);
+  char *code = "\"hello \\u{53} ta\\tb \\n New Line\"";
+  scanner_code_to_tokens(&scanner, code, &tokenVector);
+
+  char *exampleString = "hello S ta\tb \n New Line";
+  char *curChar = tokenVector.data[0].data.string.data;
+  while (*curChar && *exampleString) {
+    assert(*curChar == *exampleString);
+    exampleString++;
+    curChar++;
+  }
+
+  printf("Test escape_sequences passed.\n");
+}
 /*
 int test_unite() {
   Scanner scanner;
@@ -105,5 +126,6 @@ int main() {
   test_if_token();
   test_number_token();
   test_id_token();
+  test_escape_sequences();
   return 0;
 }

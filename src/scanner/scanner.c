@@ -33,8 +33,9 @@ Error scanner_code_to_tokens(Scanner *scanner, char *code,
       }
 
       tokenStr[endTokenStrPointer] = 0;
-      vector_push_back(tokenVector,
-                       token_create(lastTokenTypeRecorded, tokenStr));
+      Token token;
+      token_create(lastTokenTypeRecorded, tokenStr, &token);
+      vector_push_back(tokenVector,token);
 
       tokenStr[0] = 0;
       tokenStrPointer = 0;
@@ -57,7 +58,9 @@ Error scanner_code_to_tokens(Scanner *scanner, char *code,
     return error_create(NONE, "undefined token...");
   }
 
-  vector_push_back(tokenVector, token_create(lastTokenTypeRecorded, tokenStr));
+  Token token;
+  token_create(lastTokenTypeRecorded, tokenStr, &token);
+  vector_push_back(tokenVector,token);
 
   return error_create(NONE, "some text");
 }
