@@ -49,7 +49,7 @@ int test_id_token(){
 
   TokenVector tokenVector;
   vector_init(&tokenVector);
-  char* code = "_03_aad09_hj";
+  char* code = "naa_irll_03_aad09_hj";
   scanner_code_to_tokens(&scanner, code, &tokenVector);
   TokenType types[1000];
 
@@ -120,12 +120,151 @@ int test_unite() {
   printf("Test unite passed.\n");
 }
 */
+int test_let_token() {
+  Scanner scanner;
+  scanner_init(&scanner);
+  scanner_configure_swift_2023(&scanner);
+
+  TokenVector tokenVector;
+  vector_init(&tokenVector);
+  char* code = "let12";
+  scanner_code_to_tokens(&scanner, code, &tokenVector);
+  TokenType types[1000];
+
+  for (int i = 0; i < tokenVector.length; i++) {
+    types[i] = tokenVector.data[i].type;
+  }
+  assert(tokenVector.length == 1);
+  assert(types[0] == LET);
+  printf("Test let_token passed.\n");
+}
+
+int test_var_token() {
+  Scanner scanner;
+  scanner_init(&scanner);
+  scanner_configure_swift_2023(&scanner);
+
+  TokenVector tokenVector;
+  vector_init(&tokenVector);
+  char* code = "var";
+  scanner_code_to_tokens(&scanner, code, &tokenVector);
+  TokenType types[1000];
+
+  for (int i = 0; i < tokenVector.length; i++) {
+    types[i] = tokenVector.data[i].type;
+  }
+  assert(tokenVector.length == 1);
+  assert(types[0] == VAR);
+  printf("Test var_token passed.\n");
+}
+
+int test_string() {
+  Scanner scanner;
+  scanner_init(&scanner);
+  scanner_configure_swift_2023(&scanner);
+
+  TokenVector tokenVector;
+  vector_init(&tokenVector);
+
+
+  char *code = "\"\"\"Hello,World\"\"\"";
+  Error res = scanner_code_to_tokens(&scanner, code, &tokenVector);
+  printf("Finished with type: %d msg: %s", res.errorType, res.msg);
+  TokenType types[1000] = {UNDEFINED};
+  for (int i = 0; i < tokenVector.length; i++) {
+    types[i] = tokenVector.data[i].type;
+  }
+  assert(tokenVector.length == 1);
+  assert(types[0] == MULTI_STRING);
+  printf("Test string_token passed.\n");
+}
+
+int test_double(){
+  Scanner scanner;
+  scanner_init(&scanner);
+  scanner_configure_swift_2023(&scanner);
+
+  TokenVector tokenVector;
+  vector_init(&tokenVector);
+  char *code= "1.e45";
+  scanner_code_to_tokens(&scanner, code, &tokenVector);
+  TokenType types[1000];
+  for (int i = 0; i < tokenVector.length; i++) {
+    types[i] = tokenVector.data[i].type;
+  }
+  assert(tokenVector.length == 1);
+  assert(types[0] == DOUBLE);
+  printf("Test double_token passed.\n");
+}
+
+int test_double_nul(){
+  Scanner scanner;
+  scanner_init(&scanner);
+  scanner_configure_swift_2023(&scanner);
+
+  TokenVector tokenVector;
+  vector_init(&tokenVector);
+  char *code= "1.e45?";
+  scanner_code_to_tokens(&scanner, code, &tokenVector);
+  TokenType types[1000];
+  for (int i = 0; i < tokenVector.length; i++) {
+    types[i] = tokenVector.data[i].type;
+  }
+  assert(tokenVector.length == 1);
+  assert(types[0] == DOUBLE);assert(tokenVector.length == 1);
+  assert(types[0] == DOUBLE);
+  printf("Test double_nl_token passed.\n");
+}
+
+int test_while(){
+  Scanner scanner;
+  scanner_init(&scanner);
+  scanner_configure_swift_2023(&scanner);
+
+  TokenVector tokenVector;
+  vector_init(&tokenVector);
+  char *code= "while";
+  scanner_code_to_tokens(&scanner, code, &tokenVector);
+  TokenType types[1000];
+  for (int i = 0; i < tokenVector.length; i++) {
+    types[i] = tokenVector.data[i].type;
+  }
+  assert(tokenVector.length == 1);
+  assert(types[0] == WHILE);
+  printf("Test while_token passed.\n");
+}
+
+int test_delimiter(){
+  Scanner scanner;
+  scanner_init(&scanner);
+  scanner_configure_swift_2023(&scanner);
+
+  TokenVector tokenVector;
+  vector_init(&tokenVector);
+  char *code= "\n";
+  scanner_code_to_tokens(&scanner, code, &tokenVector);
+  TokenType types[1000];
+  for (int i = 0; i < tokenVector.length; i++) {
+    types[i] = tokenVector.data[i].type;
+  }
+  assert(tokenVector.length == 1);
+  assert(types[0] == DELIMITER);
+  printf("Test delimiter_token passed.\n");
+}
 
 int main() {
+
   //test_unite();
-  test_if_token();
-  test_number_token();
+  test_double_nul();
+  test_delimiter();
   test_id_token();
   test_escape_sequences();
+  test_number_token();
+  test_if_token();
+  test_let_token();
+  test_while();
+  test_double();
+  test_var_token();
+  test_string();
   return 0;
 }

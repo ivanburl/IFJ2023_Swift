@@ -11,6 +11,7 @@ void configure_string(Scanner *scanner);
 void configure_integer(Scanner *scanner);
 void configure_double(Scanner *scanner);
 void configure_nil(Scanner *scanner);
+void configure_multi_string(Scanner *scanner);
 
 void configure_id(Scanner *scanner);
 void configure_blank(Scanner *scanner);
@@ -43,8 +44,6 @@ void configure_greater(Scanner *scanner);
 void configure_greaterequal(Scanner *scanner);
 void configure_notequal(Scanner *scanner);
 
-
-void configure_quote(Scanner *scanner);
 void configure_left_curl_bracket(Scanner *scanner);
 void configure_right_curl_bracket(Scanner *scanner);
 void configure_left_bracket(Scanner *scanner);
@@ -58,9 +57,8 @@ void configure_underscore(Scanner *scanner);
 void configure_comment(Scanner *scanner);
 void configure_multi_comment(Scanner *scanner);
 
-void configure_softunwrap(Scanner *scanner);
-void configure_hardunwrap(Scanner *scanner);
-
+void configure_soft_unwrap(Scanner *scanner);
+void configure_hard_unwrap(Scanner *scanner);
 
 void configure_colon(Scanner *scanner);
 void configure_semicolon(Scanner *scanner);
