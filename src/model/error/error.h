@@ -14,7 +14,8 @@ typedef enum error_exit_code {
   NONE,
   FATAL,
   SCANNER_ERROR,
-  PARSER_ERROR
+  PARSER_ERROR,
+  STRING_PREPROCESS_ERROR
 } ErrorType;
 
 typedef struct error_t {
