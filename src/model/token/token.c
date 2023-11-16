@@ -18,6 +18,7 @@ Token token_create(TokenType type, char *str) {
   token.type = type;
 
   switch (type) {
+  case MULTI_STRING:
   case STRING: {
     token.data.string = string_create(str);
     break;

@@ -57,9 +57,10 @@ Error scanner_code_to_tokens(Scanner *scanner, char *code,
     return error_create(UNDEFINED_TOKEN, "undefined token...");
   }
 
-  vector_push_back(tokenVector, token_create(lastTokenTypeRecorded, tokenStr));
+  Token res = token_create(lastTokenTypeRecorded, tokenStr);
+  vector_push_back(tokenVector, res);
 
-  return error_create(NONE, "some text");
+  return error_create(NONE, "finished successfully");
 }
 
 void scanner_move_forward(Scanner *scanner, char symbol) {
