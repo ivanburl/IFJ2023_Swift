@@ -164,7 +164,7 @@ int test_multi_string() {
   }
   assert(tokenVector.length == 1);
   assert(types[0] == MULTI_STRING);
-  printf("Test string_token passed.\n");
+  printf("Test multi_string_token passed.\n");
 }
 
 int test_string() {
