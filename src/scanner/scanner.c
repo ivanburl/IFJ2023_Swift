@@ -14,7 +14,8 @@ Error scanner_code_to_tokens(Scanner *scanner, char *code,
   assert(scanner && code && tokenVector);
   size_t code_len = strlen(code);
 
-  char tokenStr[MAX_TOKEN_LENGTH];
+  char tokenStr[1024];//TODO the size of array is small for majority of operations
+  int left = 0 , right = 0;
   int tokenStrPointer = 0;
   tokenStr[0] = 0;
 
