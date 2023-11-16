@@ -54,7 +54,7 @@ Error scanner_code_to_tokens(Scanner *scanner, char *code,
   }
 
   if (lastTokenTypeRecorded == UNDEFINED) {
-    return error_create(NONE, "undefined token...");
+    return error_create(UNDEFINED_TOKEN, "undefined token...");
   }
 
   vector_push_back(tokenVector, token_create(lastTokenTypeRecorded, tokenStr));

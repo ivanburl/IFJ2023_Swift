@@ -12,6 +12,7 @@
 
 typedef enum error_exit_code {
   NONE,
+  UNDEFINED_TOKEN,
   FATAL,
   SCANNER_ERROR,
   PARSER_ERROR

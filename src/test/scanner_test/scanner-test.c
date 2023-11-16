@@ -30,7 +30,7 @@ int test_number_token() {
 
   TokenVector tokenVector;
   vector_init(&tokenVector);
-  char *code = "9890";
+  char *code = "9890?";
   scanner_code_to_tokens(&scanner, code, &tokenVector);
   TokenType types[1000];
 
@@ -137,7 +137,7 @@ int test_var_token() {
   printf("Test var_token passed.\n");
 }
 
-int test_string() {
+int test_multi_string() {
   Scanner scanner;
   scanner_init(&scanner);
   scanner_configure_swift_2023(&scanner);
@@ -145,8 +145,17 @@ int test_string() {
   TokenVector tokenVector;
   vector_init(&tokenVector);
 
-
-  char *code = "\"\"\"Hello,World\"\"\"";
+  char *code = "\"\"\"\n"
+               "The White Rabbit put on his spectacles.  \"Where shall I begin, \\\n"
+               "please your Majesty?\" he asked.\n"
+               "\n"
+               "\"Begin at the beginning,\" the King said gravely, \"and go on \\\n"
+               "till you come to the end; then stop.\"\n"
+               "\"\"\"\0";
+//  char *code = "\"\"\"\n"
+//               "The \\\n"
+//               "please\"\n"
+//               "\"\"\"";
   Error res = scanner_code_to_tokens(&scanner, code, &tokenVector);
   printf("Finished with type: %d msg: %s", res.errorType, res.msg);
   TokenType types[1000] = {UNDEFINED};
@@ -158,6 +167,27 @@ int test_string() {
   printf("Test string_token passed.\n");
 }
 
+int test_string() {
+  Scanner scanner;
+  scanner_init(&scanner);
+  scanner_configure_swift_2023(&scanner);
+
+  TokenVector tokenVector;
+  vector_init(&tokenVector);
+
+
+  char *code = "\"Hallo ,world!\"";
+  Error res = scanner_code_to_tokens(&scanner, code, &tokenVector);
+  printf("Finished with type: %d msg: %s \n", res.errorType, res.msg);
+  TokenType types[1000] = {UNDEFINED};
+  for (int i = 0; i < tokenVector.length; i++) {
+    types[i] = tokenVector.data[i].type;
+  }
+  assert(tokenVector.length == 1);
+  assert(types[0] == STRING);
+  printf("Test string_token passed.\n");
+}
+
 int test_double(){
   Scanner scanner;
   scanner_init(&scanner);
@@ -165,7 +195,9 @@ int test_double(){
 
   TokenVector tokenVector;
   vector_init(&tokenVector);
-  char *code= "1.e45";
+  char *code= "1.e45?";
+  Error res = scanner_code_to_tokens(&scanner, code, &tokenVector);
+  printf("Finished with type: %d msg: %s", res.errorType, res.msg);
   scanner_code_to_tokens(&scanner, code, &tokenVector);
   TokenType types[1000];
   for (int i = 0; i < tokenVector.length; i++) {
@@ -175,8 +207,25 @@ int test_double(){
   assert(types[0] == DOUBLE);
   printf("Test double_token passed.\n");
 }
+ int test_double_nul(){
+  Scanner scanner;
+  scanner_init(&scanner);
+  scanner_configure_swift_2023(&scanner);
 
-int test_double_nul(){
+  TokenVector tokenVector;
+  vector_init(&tokenVector);
+  char *code= "Double";
+  scanner_code_to_tokens(&scanner, code, &tokenVector);
+  TokenType types[1000];
+  for (int i = 0; i < tokenVector.length; i++) {
+    types[i] = tokenVector.data[i].type;
+  }
+  assert(tokenVector.length == 1);
+  assert(types[0] == DOUBLE_TYPE);
+  printf("Test double_token passed.\n");
+}
+
+int test_double_type(){
   Scanner scanner;
   scanner_init(&scanner);
   scanner_configure_swift_2023(&scanner);
@@ -190,9 +239,8 @@ int test_double_nul(){
     types[i] = tokenVector.data[i].type;
   }
   assert(tokenVector.length == 1);
-  assert(types[0] == DOUBLE);assert(tokenVector.length == 1);
   assert(types[0] == DOUBLE);
-  printf("Test double_nl_token passed.\n");
+  printf("Test double_token passed.\n");
 }
 
 int test_while(){
@@ -234,7 +282,7 @@ int test_delimiter(){
 int main() {
 
   //test_unite();
-  test_double_nul();
+  /*test_double_nul();
   test_delimiter();
   test_id_token();
   test_number_token();
@@ -242,7 +290,11 @@ int main() {
   test_let_token();
   test_while();
   test_double();
-  test_var_token();
-  test_string();
+  test_var_token();*/
+  test_multi_string();
+  //test_string();
+  //test_double_type();
+  //test_double();
+  //test_double_nul();
   return 0;
 }
