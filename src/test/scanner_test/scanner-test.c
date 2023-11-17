@@ -188,6 +188,29 @@ int test_string() {
   printf("Test string_token passed.\n");
 }
 
+int test_math_operations() {
+  Scanner scanner;
+  scanner_init(&scanner);
+  scanner_configure_swift_2023(&scanner);
+
+  TokenVector tokenVector;
+  vector_init(&tokenVector);
+
+
+  char *code = "_a";
+  Error res = scanner_code_to_tokens(&scanner, code, &tokenVector);
+  printf("Finished with type: %d msg: %s \n", res.errorType, res.msg);
+  TokenType types[1000] = {UNDEFINED};
+  for (int i = 0; i < tokenVector.length; i++) {
+    types[i] = tokenVector.data[i].type;
+  }
+  assert(tokenVector.length == 1);
+  assert(types[0] == INTEGER);
+  assert(types[1] == MINUS);
+  assert(types[2] == INTEGER);
+  printf("Test string_token passed.\n");
+}
+
 int test_double(){
   Scanner scanner;
   scanner_init(&scanner);
@@ -292,6 +315,7 @@ int main() {
   test_double();
   test_var_token();*/
   test_multi_string();
+  test_math_operations();
   //test_string();
   //test_double_type();
   //test_double();

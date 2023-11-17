@@ -3,7 +3,13 @@
 #include "ifj23_swift_configurator.h"
 
 void configure_id(Scanner *scanner) {
-  automata_set_edge(&(scanner->automata), 0, '_', 12);
+  automata_set_edge(&(scanner->automata), 0, '_', 79);
+  for (int i = 'a'; i <= 'z'; i++) {
+    automata_set_edge(&(scanner->automata), 79, i, 12);
+  }
+  for (int i = 'A'; i <= 'Z'; i++) {
+    automata_set_edge(&(scanner->automata), 79, i, 12);
+  }
   for (int i = 'a'; i <= 'z'; i++) {
     automata_set_edge(&(scanner->automata), 0, i, 12);
   }
