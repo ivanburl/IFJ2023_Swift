@@ -118,6 +118,8 @@ Token token_grammar_token_create(TokenType type,
 void token_free(Token *token);
 
 void delete_quotes(char **str);
+Error preprocess_literal_multiString(char *literal);
+int get_multiLine_indent(char *literal);
 Error preprocess_literal_string(char *literal);
 Error process_unicode(char **sequence, char *output);
 

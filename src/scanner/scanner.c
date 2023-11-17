@@ -14,7 +14,8 @@ Error scanner_code_to_tokens(Scanner *scanner, char *code,
   assert(scanner && code && tokenVector);
   size_t code_len = strlen(code);
 
-  char tokenStr[MAX_TOKEN_LENGTH];
+  char tokenStr[1024];//TODO the size of array is small for majority of operations
+  int left = 0 , right = 0;
   int tokenStrPointer = 0;
   tokenStr[0] = 0;
 
@@ -34,8 +35,11 @@ Error scanner_code_to_tokens(Scanner *scanner, char *code,
 
       tokenStr[endTokenStrPointer] = 0;
       Token token;
-      token_create(lastTokenTypeRecorded, tokenStr, &token);
-      vector_push_back(tokenVector,token);
+      Error error = token_create(lastTokenTypeRecorded, tokenStr, &token);
+      if (error.errorType != NONE) {
+        return error;
+      }
+      vector_push_back(tokenVector, token);
 
       tokenStr[0] = 0;
       tokenStrPointer = 0;
@@ -55,14 +59,18 @@ Error scanner_code_to_tokens(Scanner *scanner, char *code,
   }
 
   if (lastTokenTypeRecorded == UNDEFINED) {
-    return error_create(NONE, "undefined token...");
+    return error_create(UNDEFINED_TOKEN, "undefined token...");
   }
 
+  tokenStr[endTokenStrPointer] = 0;
   Token token;
-  token_create(lastTokenTypeRecorded, tokenStr, &token);
-  vector_push_back(tokenVector,token);
+  Error error = token_create(lastTokenTypeRecorded, tokenStr, &token);
+  if (error.errorType != NONE) {
+    return error;
+  }
+  vector_push_back(tokenVector, token);
 
-  return error_create(NONE, "some text");
+  return error_create(NONE, "finished successfully");
 }
 
 void scanner_move_forward(Scanner *scanner, char symbol) {
