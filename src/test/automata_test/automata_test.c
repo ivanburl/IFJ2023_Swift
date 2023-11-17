@@ -40,6 +40,19 @@ int test_regex_small() {
   return res == 3 ? 0 : 1;
 }
 
+int test_regex_var() {
+  Automata automata;
+  automata_init(&automata, 0, 0);
+  automata_set_edge_by_regex(&automata, 0, "[a-zA-Z0-9_]", 1);//all except of .
+
+  int res = 0;
+  for (int i=0;i<MAX_AUTOMATA_EDGE_TYPES; i++) {
+    res += (automata.automata[0][i] == 1);
+  }
+
+  return res == 'z'-'a'+1+'Z'-'A'+1+'9'-'0'+1+1 ? 0 : 1;
+}
+
 int test_automata() {
 
   if (!test_regex_all()) {
@@ -59,5 +72,12 @@ int test_automata() {
   } else {
     LOG_ERROR("AUTOMATA REGEX TEST FAILED");
   }
+
+  if (!test_regex_dot()) {
+    LOG_INFO("AUTOMATA REGEX TEST PASSED");
+  } else {
+    LOG_ERROR("AUTOMATA REGEX TEST FAILED");
+  }
+
   return 0;
 }

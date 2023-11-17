@@ -12,6 +12,7 @@
 typedef struct parser_sub_key_t {
   int point;
   int grammarRuleId;
+  bool first[MAX_TOKEN_TYPES_NUMBER];
 } ParserSubKey;
 
 typedef struct parser_key_t {
@@ -30,10 +31,11 @@ void parser_key_init(ParserKey *parserKey);
 /// \param used - the massive of used rules in parser_key
 /// \param lookForToken - token
 /// \param grammar - grammar from which to find tokens
-void parser_key_add_rules_from_grammar(
-    ParserKey *parserKey,
-    bool used[MAX_GRAMMAR_RULES_SIZE][MAX_GRAMMAR_RULE_PRODUCTIONS_SIZE + 1],
-    TokenType lookForToken, Grammar *grammar);
+//void parser_key_add_rules_from_grammar(
+//    ParserKey *parserKey,
+//    int used[MAX_GRAMMAR_RULES_SIZE][MAX_GRAMMAR_RULE_PRODUCTIONS_SIZE + 1],
+//    TokenType lookForToken, bool zFirst[MAX_TOKEN_TYPES_NUMBER],
+//    Grammar *grammar);
 
 /// The generation made by moving point by specific token type
 /// \param destKey  the key to which should be generated (must be initialized)
@@ -43,7 +45,14 @@ void parser_key_add_rules_from_grammar(
 void parser_key_gen_by_move(ParserKey *destKey, ParserKey *sourceKey,
                             TokenType move, Grammar *grammar);
 
-void parser_key_sort(ParserKey* parserKey);
-unsigned int parser_key_hash(ParserKey* parserKey);
+void parser_key_closure(
+    ParserKey *parserKey, Grammar *grammar,
+    int used[MAX_GRAMMAR_RULES_SIZE][MAX_GRAMMAR_RULE_PRODUCTIONS_SIZE + 1]);
+void parser_key_create_by_token_closure(ParserKey *parserKey,
+                                        TokenType closureToken,
+                                        Grammar *grammar);
+
+void parser_key_sort(ParserKey *parserKey);
+unsigned int parser_key_hash(ParserKey *parserKey);
 
 #endif // IFJ2023_SWIFT_CONFIG_PARSER_KEY_H
