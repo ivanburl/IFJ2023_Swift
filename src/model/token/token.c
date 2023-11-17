@@ -25,6 +25,12 @@ Error token_create(TokenType type, char *str, Token *outToken) {
     preprocessError = preprocess_literal_multiString(str);
     if (preprocessError.errorType != NONE)
       return preprocessError;
+    //Delete first \n
+    str++;
+    //skip spaces
+    while (*str == ' ')
+      str++;
+
     preprocessError = preprocess_literal_string(str);
     if (preprocessError.errorType != NONE)
       return preprocessError;
@@ -57,6 +63,7 @@ Error token_create(TokenType type, char *str, Token *outToken) {
   }
 
   *outToken = token;
+  return error_create(NONE, "completed");
 }
 
 Token token_grammar_token_create(TokenType type,
@@ -91,7 +98,72 @@ void delete_quotes(char **str) {
 
 Error preprocess_literal_multiString(char *literal){
   int indent = get_multiLine_indent(literal);
-  printf("Indent: %d", indent);
+  if (indent == -1)
+    return error_create(STRING_PREPROCESS_ERROR, "Error while creating multiline");
+
+  //delete first \n
+  literal++;
+  //start processing line by line
+  int skipLine = 0;
+  int indentCount = 0;
+  char *current = literal;
+  while (*literal) {
+    //check if line ends
+    if (*literal == '\n') {
+      indentCount = 0;
+      if (!skipLine) {
+        *current = *literal;
+        current++;
+      }
+      skipLine = 0;
+      literal++;
+      continue;
+    }
+
+    //check for indents
+    if (*literal == ' ' && indentCount != indent) {
+      indentCount++;
+      literal++;
+      continue;
+    }
+    if (indentCount != indent)
+      return error_create(STRING_PREPROCESS_ERROR, "Bad intends in multi string");
+
+    //check for \\ (usual '\')
+    //just send them into string to process later
+    if (*literal == '\\' && *(literal+1) == '\\') {
+      *current = *literal;
+      current++;
+      literal++;
+      *current = *literal;
+      current++;
+      literal++;
+      continue;
+    }
+
+    if (*literal == '\\') {
+      //example: word \ \ \n
+      if (skipLine)
+        return error_create(STRING_PREPROCESS_ERROR, "bad skip line in multi string");
+      skipLine = 1;
+      literal++;
+      continue;
+    }
+
+    //example: some word \ another word \n
+    if (skipLine && *literal != ' ')
+      return error_create(STRING_PREPROCESS_ERROR, "bad skip line in multi string");
+
+    *current = *literal;
+    current++;
+    literal++;
+  }
+  //check for last \n
+  current--;
+  if (*current != '\n')
+    return error_create(STRING_PREPROCESS_ERROR, "bad end line in multi string");
+  *current = '\0';
+  return error_create(NONE, "none");
 }
 
 int get_multiLine_indent(char *literal) {
@@ -100,6 +172,10 @@ int get_multiLine_indent(char *literal) {
   while(literal[--len] == ' ') {
     indent++;
   }
+
+  if (literal[len] != '\n')
+    return -1;
+
   return indent;
 }
 
