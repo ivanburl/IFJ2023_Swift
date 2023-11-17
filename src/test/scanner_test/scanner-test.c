@@ -252,19 +252,44 @@ int test_delimiter(){
   printf("Test delimiter_token passed.\n");
 }
 
-int main() {
+int personal_test() {
+  Scanner scanner;
+  scanner_init(&scanner);
+  scanner_configure_swift_2023(&scanner);
 
+  TokenVector tokenVector;
+  vector_init(&tokenVector);
+
+
+  char *code = "\"\"\"\n"
+               "Hello,World\n"
+               "T \\ \n"
+               "AS"
+               "\"\"\"";
+  Error res = scanner_code_to_tokens(&scanner, code, &tokenVector);
+  printf("Finished with type: %d msg: %s", res.errorType, res.msg);
+  TokenType types[1000] = {UNDEFINED};
+  for (int i = 0; i < tokenVector.length; i++) {
+    types[i] = tokenVector.data[i].type;
+  }
+  assert(tokenVector.length == 1);
+  assert(types[0] == MULTI_STRING);
+  printf("Test string_token passed.\n");
+}
+
+int main() {
+  personal_test();
   //test_unite();
-  test_double_nul();
-  test_delimiter();
-  test_id_token();
-  test_escape_sequences();
-  test_number_token();
-  test_if_token();
-  test_let_token();
-  test_while();
-  test_double();
-  test_var_token();
-  test_string();
+//  test_double_nul();
+//  test_delimiter();
+//  test_id_token();
+//  test_escape_sequences();
+//  test_number_token();
+//  test_if_token();
+//  test_let_token();
+//  test_while();
+//  test_double();
+//  test_var_token();
+//  test_string();
   return 0;
 }

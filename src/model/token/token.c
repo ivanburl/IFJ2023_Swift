@@ -21,6 +21,16 @@ Error token_create(TokenType type, char *str, Token *outToken) {
   Error preprocessError;
   switch (type) {
   case MULTI_STRING:
+    delete_quotes(&str);
+    preprocessError = preprocess_literal_multiString(str);
+    if (preprocessError.errorType != NONE)
+      return preprocessError;
+    preprocessError = preprocess_literal_string(str);
+    if (preprocessError.errorType != NONE)
+      return preprocessError;
+
+    token.data.string = string_create(str);
+    break;
   case STRING: {
     //delete leading and trailing quotes
     delete_quotes(&str);
@@ -73,10 +83,24 @@ void token_free(Token *token) {
 void delete_quotes(char **str) {
   while (**str == '"')
     (*str)++;
-  size_t len = strlen(*str);
 
+  size_t len = strlen(*str);
   while (len > 0 && (*str)[len-1] == '"')
     (*str)[--len] = '\0';
+}
+
+Error preprocess_literal_multiString(char *literal){
+  int indent = get_multiLine_indent(literal);
+  printf("Indent: %d", indent);
+}
+
+int get_multiLine_indent(char *literal) {
+  int indent = 0;
+  size_t len = strlen(literal);
+  while(literal[--len] == ' ') {
+    indent++;
+  }
+  return indent;
 }
 
 Error preprocess_literal_string(char *literal) {
