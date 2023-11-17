@@ -104,3 +104,17 @@ Error error_create(ErrorType errorType, char *msg) {
   strcpy(error.msg, msg);
   return error;
 }
+
+/*Error error_unite(Error errorA, Error errorB){
+      if(errorA.errorType == FATAL || errorB.errorType == FATAL) {
+    return error_create(FATAL, "FATAL ERROR");
+  }
+
+  ErrorType mergeType = (errorA.errorType > errorB.errorType) ? errorA.errorType : errorB.errorType;
+
+  char mergedMSG[MAX_ERROR_MESSAGE * 2];
+  snprintf(mergedMSG, sizeof(mergedMSG), "%s\n%s", errorA.msg, errorB.msg);
+
+  Error mergedError = error_create(mergeType, mergedMSG);
+  return mergedError;
+}*/
