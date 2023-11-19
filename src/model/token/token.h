@@ -24,6 +24,7 @@ typedef enum token_enum {
   MULTI_STRING,
   COMMENT,
   MULTI_COMMENT,
+  BOOLEAN,
 
   ID,
 
