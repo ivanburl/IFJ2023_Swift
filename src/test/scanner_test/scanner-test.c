@@ -157,7 +157,7 @@ int test_multi_string() {
 //               "please\"\n"
 //               "\"\"\"";
   Error res = scanner_code_to_tokens(&scanner, code, &tokenVector);
-  printf("Finished with type: %d msg: %s", res.errorType, res.msg);
+  printf("Finished with type: %d msg: %s\n", res.errorType, res.msg);
   TokenType types[1000] = {UNDEFINED};
   for (int i = 0; i < tokenVector.length; i++) {
     types[i] = tokenVector.data[i].type;
@@ -309,7 +309,7 @@ int logic_test(){
 
   TokenVector tokenVector;
   vector_init(&tokenVector);
-  char *code = "true";
+  char *code = "nil";
   scanner_code_to_tokens(&scanner, code, &tokenVector);
   TokenType types[1000];
   for (int i = 0; i < tokenVector.length; i++) {
@@ -320,6 +320,44 @@ int logic_test(){
   assert(types[1] == BLANK);
   assert(types[0] == LOGICAL_OR);
   printf("test_logical passed.\n");
+}
+
+int comment_test(){
+  Scanner scanner;
+  scanner_init(&scanner);
+  scanner_configure_swift_2023(&scanner);
+
+  TokenVector tokenVector;
+  vector_init(&tokenVector);
+  char *code = "//fhhfhfhfhfh";
+  scanner_code_to_tokens(&scanner, code, &tokenVector);
+  printf("BOO - %d \n", scanner.automata.automata[94]['\n']);
+  TokenType types[1000]={UNDEFINED};
+  for (int i = 0; i < tokenVector.length; i++) {
+    types[i] = tokenVector.data[i].type;
+  }
+  assert(tokenVector.length == 2);
+  assert(types[0] == COMMENT);
+  printf("test_comment passed.\n");
+}
+
+int multi_comment_test(){
+  Scanner scanner;
+  scanner_init(&scanner);
+  scanner_configure_swift_2023(&scanner);
+
+  TokenVector tokenVector;
+  vector_init(&tokenVector);
+  char *code = "/*jdkj.fdk*fdjk*fdjk*/";
+  Error r =
+  scanner_code_to_tokens(&scanner, code, &tokenVector);
+  TokenType types[1000]={UNDEFINED};
+  for (int i = 0; i < tokenVector.length; i++) {
+    types[i] = tokenVector.data[i].type;
+  }
+  assert(tokenVector.length == 1);
+  assert(types[0] == MULTI_COMMENT);
+  printf("test_multy_comment passed.\n");
 }
 
 int main() {
@@ -334,7 +372,10 @@ int main() {
   test_while();
   test_double();
   test_var_token();*/
-  logic_test();
+  //logic_test();
+  //bool_test();
+  //multi_comment_test();
+  comment_test();
   //test_multi_string();
   //test_math_operations();
   //test_string();

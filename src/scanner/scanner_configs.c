@@ -3,11 +3,9 @@
 
 void scanner_configure_swift_2023(Scanner *scanner) {
   configure_integer(scanner);
-  configure_nil(scanner);
   configure_multi_string(scanner);
   configure_double(scanner);
   configure_string(scanner);
-  configure_boolean(scanner);
 
   configure_id(scanner);
   configure_blank(scanner);
@@ -61,7 +59,8 @@ void scanner_configure_swift_2023(Scanner *scanner) {
   configure_semicolon(scanner);
   configure_logical_AND(scanner);
   configure_logical_OR(scanner);
-
+  configure_boolean(scanner);
+  configure_nil(scanner);
 }
 
 /*
