@@ -309,13 +309,13 @@ int logic_test(){
 
   TokenVector tokenVector;
   vector_init(&tokenVector);
-  char *code = "|| &&";
+  char *code = "true";
   scanner_code_to_tokens(&scanner, code, &tokenVector);
   TokenType types[1000];
   for (int i = 0; i < tokenVector.length; i++) {
     types[i] = tokenVector.data[i].type;
   }
-  assert(tokenVector.length == 3);
+  assert(tokenVector.length == 1);
   assert(types[2] == LOGICAL_AND);
   assert(types[1] == BLANK);
   assert(types[0] == LOGICAL_OR);

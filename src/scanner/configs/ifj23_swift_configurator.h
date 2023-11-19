@@ -12,6 +12,7 @@ void configure_integer(Scanner *scanner);
 void configure_double(Scanner *scanner);
 void configure_nil(Scanner *scanner);
 void configure_multi_string(Scanner *scanner);
+void configure_boolean(Scanner *scanner);
 
 void configure_id(Scanner *scanner);
 void configure_blank(Scanner *scanner);
@@ -21,7 +22,7 @@ void configure_string_type(Scanner *scanner);
 void configure_int_type(Scanner *scanner);
 void configure_double_type(Scanner *scanner);
 void configure_nullable(Scanner *scanner);
-void configure_boolean(Scanner *scanner);
+void configure_boolean_type(Scanner *scanner);
 
 void configure_if(Scanner *scanner);
 void configure_else(Scanner *scanner);

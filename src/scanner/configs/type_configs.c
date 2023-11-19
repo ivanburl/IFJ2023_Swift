@@ -44,7 +44,7 @@ void configure_double_type(Scanner *scanner) {
   automata_set_stateReturnValue(&(scanner->automata), 28, DOUBLE_TYPE);
 }
 
-void configure_boolean(Scanner *scanner) {
+void configure_boolean_type(Scanner *scanner) {
   automata_set_edge(&(scanner->automata), 0, 'B', 29);
   automata_set_edge_by_regex(&(scanner->automata), 29, "[a-zA-Z0-9_]+", 12);
   automata_set_edge(&(scanner->automata), 29, 'o', 30);

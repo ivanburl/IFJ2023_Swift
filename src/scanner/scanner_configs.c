@@ -7,6 +7,7 @@ void scanner_configure_swift_2023(Scanner *scanner) {
   configure_multi_string(scanner);
   configure_double(scanner);
   configure_string(scanner);
+  configure_boolean(scanner);
 
   configure_id(scanner);
   configure_blank(scanner);
@@ -16,7 +17,7 @@ void scanner_configure_swift_2023(Scanner *scanner) {
   configure_int_type(scanner);
   configure_double_type(scanner);
   configure_nullable(scanner);
-  configure_boolean(scanner);
+  configure_boolean_type(scanner);
 
   configure_if(scanner);
   configure_else(scanner);
