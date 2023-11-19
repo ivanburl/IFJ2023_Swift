@@ -58,6 +58,8 @@ void scanner_configure_swift_2023(Scanner *scanner) {
 
   configure_colon(scanner);
   configure_semicolon(scanner);
+  configure_logical_AND(scanner);
+  configure_logical_OR(scanner);
 
 }
 

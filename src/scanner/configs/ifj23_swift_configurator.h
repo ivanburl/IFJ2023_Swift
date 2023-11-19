@@ -63,4 +63,7 @@ void configure_hard_unwrap(Scanner *scanner);
 void configure_colon(Scanner *scanner);
 void configure_semicolon(Scanner *scanner);
 
+void configure_logical_OR(Scanner *scanner);
+void configure_logical_AND(Scanner *scanner);
+
 #endif // IFJ2023_SWIFT_IFJ23_SWIFT_CONFIGURATOR_H

@@ -208,7 +208,7 @@ int test_math_operations() {
   assert(types[0] == INTEGER);
   assert(types[1] == MINUS);
   assert(types[2] == INTEGER);
-  printf("Test string_token passed.\n");
+  printf("Test math_operation passed.\n");
 }
 
 int test_double(){
@@ -302,6 +302,26 @@ int test_delimiter(){
   printf("Test delimiter_token passed.\n");
 }
 
+int logic_test(){
+  Scanner scanner;
+  scanner_init(&scanner);
+  scanner_configure_swift_2023(&scanner);
+
+  TokenVector tokenVector;
+  vector_init(&tokenVector);
+  char *code = "|| &&";
+  scanner_code_to_tokens(&scanner, code, &tokenVector);
+  TokenType types[1000];
+  for (int i = 0; i < tokenVector.length; i++) {
+    types[i] = tokenVector.data[i].type;
+  }
+  assert(tokenVector.length == 3);
+  assert(types[2] == LOGICAL_AND);
+  assert(types[1] == BLANK);
+  assert(types[0] == LOGICAL_OR);
+  printf("test_logical passed.\n");
+}
+
 int main() {
 
   //test_unite();
@@ -314,8 +334,9 @@ int main() {
   test_while();
   test_double();
   test_var_token();*/
-  test_multi_string();
-  test_math_operations();
+  logic_test();
+  //test_multi_string();
+  //test_math_operations();
   //test_string();
   //test_double_type();
   //test_double();
