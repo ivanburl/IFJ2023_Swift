@@ -103,7 +103,7 @@ void delete_quotes(char **str) {
 Error preprocess_literal_multiString(char *literal){
   int indent = get_multiLine_indent(literal);
   if (indent == -1)
-    return error_create(STRING_PREPROCESS_ERROR, "Error while creating multiline");
+    return error_create(SCANNER_ERROR, "Error while creating multiline");
 
   //delete first \n
   literal++;
@@ -131,7 +131,7 @@ Error preprocess_literal_multiString(char *literal){
       continue;
     }
     if (indentCount != indent)
-      return error_create(STRING_PREPROCESS_ERROR, "Bad intends in multi string");
+      return error_create(SCANNER_ERROR, "Bad intends in multi string");
 
     //check for \\ (usual '\')
     //just send them into string to process later
@@ -148,7 +148,7 @@ Error preprocess_literal_multiString(char *literal){
     if (*literal == '\\') {
       //example: word \ \ \n
       if (skipLine)
-        return error_create(STRING_PREPROCESS_ERROR, "bad skip line in multi string");
+        return error_create(SCANNER_ERROR, "bad skip line in multi string");
       skipLine = 1;
       literal++;
       continue;
@@ -156,7 +156,7 @@ Error preprocess_literal_multiString(char *literal){
 
     //example: some word \ another word \n
     if (skipLine && *literal != ' ')
-      return error_create(STRING_PREPROCESS_ERROR, "bad skip line in multi string");
+      return error_create(SCANNER_ERROR, "bad skip line in multi string");
 
     *current = *literal;
     current++;
@@ -165,7 +165,7 @@ Error preprocess_literal_multiString(char *literal){
   //check for last \n
   current--;
   if (*current != '\n')
-    return error_create(STRING_PREPROCESS_ERROR, "bad end line in multi string");
+    return error_create(SCANNER_ERROR, "bad end line in multi string");
   *current = '\0';
   return error_create(NONE, "none");
 }
@@ -196,7 +196,7 @@ Error preprocess_literal_string(char *literal) {
 
     literal++;
     if (*literal == '\0')
-      return error_create(STRING_PREPROCESS_ERROR, "bad escape sequence");
+      return error_create(SCANNER_ERROR, "bad escape sequence");
 
     Error unicodeError;
     switch (*literal) {
@@ -224,7 +224,7 @@ Error preprocess_literal_string(char *literal) {
         return unicodeError;
       break;
     default:
-      return error_create(STRING_PREPROCESS_ERROR, "bad escape sequence");
+      return error_create(SCANNER_ERROR, "bad escape sequence");
     }
     current++;
     literal++;
@@ -238,12 +238,12 @@ Error process_unicode(char **sequence, char *output) {
   int size = 0;
   (*sequence)++;
   if (**sequence != '{')
-    return error_create(STRING_PREPROCESS_ERROR, "bad unicode sequence");
+    return error_create(SCANNER_ERROR, "bad unicode sequence");
   (*sequence)++;
 
   while (**sequence != '}') {
     if (**sequence == '\0')
-      return error_create(STRING_PREPROCESS_ERROR, "unicode sequence ends to early");
+      return error_create(SCANNER_ERROR, "unicode sequence ends to early");
 
     hexChars[size] = **sequence;
     size++;
@@ -253,7 +253,7 @@ Error process_unicode(char **sequence, char *output) {
 
   unsigned int c;
   if (sscanf(hexChars, "%x", &c) != 1)
-    return error_create(STRING_PREPROCESS_ERROR, "bad unicode number");
+    return error_create(SCANNER_ERROR, "bad unicode number");
   *output = (char)c;
 
   return error_create(NONE, "none");

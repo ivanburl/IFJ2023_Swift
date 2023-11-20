@@ -30,7 +30,7 @@ Error scanner_code_to_tokens(Scanner *scanner, char *code,
     if (scanner->automata.currentState == scanner->automata.startState) {
       // assert(lastTokenTypeRecorded == UNDEFINED); // TODO normal error report
       if (lastTokenTypeRecorded == UNDEFINED) {
-        return error_create(UNDEFINED_TOKEN, "undefined token...");
+        return error_create(SCANNER_ERROR, "undefined token bro...");
       }
 
       tokenStr[endTokenStrPointer] = 0;
