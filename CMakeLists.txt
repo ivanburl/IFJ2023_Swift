@@ -1,6 +1,7 @@
 cmake_minimum_required(VERSION 3.0)
 project(IFJ2023_Swift C)
 
+add_compile_options(-g)
 set(CMAKE_C_STANDARD 17)
 
 add_executable(IFJ2023_Swift src/main.c
@@ -89,4 +90,5 @@ add_executable(IFJ2023_Swift src/main.c
         src/parser/ll_parser/ll_parser.h
 
         src/parser/config/parse_fn/parse_fn_configs.h
+        src/scanner/configs/logic_configs.c
 )

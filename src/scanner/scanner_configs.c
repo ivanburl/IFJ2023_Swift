@@ -2,10 +2,10 @@
 #include "scanner.h"
 
 void scanner_configure_swift_2023(Scanner *scanner) {
+  configure_integer(scanner);
+  configure_multi_string(scanner);
   configure_double(scanner);
   configure_string(scanner);
-  configure_integer(scanner);
-  configure_nil(scanner);
 
   configure_id(scanner);
   configure_blank(scanner);
@@ -15,7 +15,7 @@ void scanner_configure_swift_2023(Scanner *scanner) {
   configure_int_type(scanner);
   configure_double_type(scanner);
   configure_nullable(scanner);
-  configure_boolean(scanner);
+  configure_boolean_type(scanner);
 
   configure_if(scanner);
   configure_else(scanner);
@@ -52,11 +52,15 @@ void scanner_configure_swift_2023(Scanner *scanner) {
   configure_comment(scanner);
   configure_multi_comment(scanner);
 
-  configure_softunwrap(scanner);
-  configure_hardunwrap(scanner);
+  configure_soft_unwrap(scanner);
+  configure_hard_unwrap(scanner);
 
   configure_colon(scanner);
   configure_semicolon(scanner);
+  configure_logical_AND(scanner);
+  configure_logical_OR(scanner);
+  configure_boolean(scanner);
+  configure_nil(scanner);
 }
 
 /*

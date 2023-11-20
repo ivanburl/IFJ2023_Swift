@@ -2,7 +2,6 @@
 #include "ifj23_swift_configurator.h"
 
 void configure_string_type(Scanner *scanner) {
-  // 14 //15 //16 //17 //18 //19
   automata_set_edge(&(scanner->automata), 0, 'S', 14);
   automata_set_edge_by_regex(&(scanner->automata), 14, "[a-zA-Z0-9_]+", 12);
   automata_set_edge(&(scanner->automata), 14, 't', 15);
@@ -45,7 +44,7 @@ void configure_double_type(Scanner *scanner) {
   automata_set_stateReturnValue(&(scanner->automata), 28, DOUBLE_TYPE);
 }
 
-void configure_boolean(Scanner *scanner) {
+void configure_boolean_type(Scanner *scanner) {
   automata_set_edge(&(scanner->automata), 0, 'B', 29);
   automata_set_edge_by_regex(&(scanner->automata), 29, "[a-zA-Z0-9_]+", 12);
   automata_set_edge(&(scanner->automata), 29, 'o', 30);
