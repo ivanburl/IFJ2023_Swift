@@ -24,7 +24,9 @@ int grammar_first_nullable_simple_test() {
       grammar_rule_create(E, NULL, (TokenType[]){INTEGER}, 1),
       grammar_rule_create(F, NULL, (TokenType[]){}, 0),
       grammar_rule_create(F, NULL, (TokenType[]){STRING}, 1)};
-  Grammar grammar = grammar_create(grammarRule, 6);
+  Grammar grammar;
+  grammar_init(&grammar);
+  grammar_configure(&grammar, grammarRule, 6);
 
   printf("Symbol S is equal to %d\n", S);
   printf("Symbol E is equal to %d\n", E);
@@ -73,7 +75,9 @@ int grammar_first_nullable_simple_test_2() {
       grammar_rule_create(E, NULL, (TokenType[]){STRING}, 1)
   };
 
-  Grammar grammar = grammar_create(grammarRule, 6);
+  Grammar grammar;
+  grammar_init(&grammar);
+  grammar_configure(&grammar, grammarRule, 6);
 
   printf("Symbol S is equal to %d\n", S);
   printf("Symbol E is equal to %d\n", E);

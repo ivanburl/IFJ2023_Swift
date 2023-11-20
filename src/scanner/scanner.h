@@ -9,7 +9,6 @@
 #include "../model/token/token.h"
 #include "../structures/automata/automata.h"
 #include "../structures/vector/vector.h"
-#include "../structures/vector/vector_t.h"
 
 #include <limits.h>
 

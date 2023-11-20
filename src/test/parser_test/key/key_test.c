@@ -17,7 +17,7 @@
 //      grammar_rule_create(E, E_TERMINAL, (TokenType[]){S}, 1),
 //      grammar_rule_create(E, E_TERMINAL, (TokenType[]){E, COMMA, S}, 3),
 //  };
-//  Grammar grammar = grammar_create(grammarRule, 4);
+//  Grammar grammar = grammar_configure(grammarRule, 4);
 //
 //  ParserKey parserKey;
 //  parser_key_init(&parserKey);
