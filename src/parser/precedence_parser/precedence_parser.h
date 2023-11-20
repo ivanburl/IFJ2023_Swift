@@ -1,0 +1,41 @@
+//
+// Created by burluiva on 11/18/2023.
+//
+
+#ifndef IFJ2023_SWIFT_PRECEDENCE_PARSER_H
+#define IFJ2023_SWIFT_PRECEDENCE_PARSER_H
+
+#include "../../model/grammar/grammar.h"
+#include "../ll_parser/ll_parser.h"
+
+typedef struct pparser_item_t {
+  int closingType;
+  Token *token;
+} PParserItem;
+
+void pparser_item_init(PParserItem *item) {
+  assert(item);
+  item->token = NULL;
+  item->closingType = 0;
+}
+
+typedef struct p_parser_t {
+  /// 0 - no rule, throw error; 1 - open; -1 - close;
+  int priorityTable[MAX_TOKEN_TYPES_NUMBER][MAX_TOKEN_TYPES_NUMBER];
+  /// define whether current symbol is operator
+  bool isOperator[MAX_TOKEN_TYPES_NUMBER];
+  TokenType idRepresentative;
+  TokenType resultTokenType;
+  /// should contain only binary operations
+  Grammar *pGrammar;
+} PParser;
+
+void precedence_parser_init(PParser *pParser);
+void precedence_parser_configure(
+    PParser *parser, Grammar *pGrammar,
+    const int operatorPriority[MAX_TOKEN_TYPES_NUMBER],
+    const int operatorAssociation[MAX_TOKEN_TYPES_NUMBER]);
+
+Error precedence_parser_reduce(PParser *pParser, PParserItemVector* tokenStack);
+
+#endif // IFJ2023_SWIFT_PRECEDENCE_PARSER_H
