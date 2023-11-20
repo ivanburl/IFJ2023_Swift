@@ -27,20 +27,17 @@ void grammar_init(Grammar *grammar) {
   }
 }
 
-Grammar grammar_create(GrammarRule *grammarRules, int numberOfRules) {
+void grammar_configure(Grammar *grammar, GrammarRule *grammarRules, int numberOfRules) {
   assert(grammarRules);
   assert(numberOfRules >= 0 && numberOfRules <= MAX_GRAMMAR_RULES_SIZE);
-  Grammar grammar;
-  grammar_init(&grammar);
-  grammar.rulesNumber = numberOfRules;
+  grammar->rulesNumber = numberOfRules;
   for (int i = 0; i < numberOfRules; i++) {
-    grammar.grammarRules[i] = grammarRules[i];
+    grammar->grammarRules[i] = grammarRules[i];
   }
-  init_nullable(&grammar);
-  init_empty(&grammar);
-  init_first(&grammar);
-  init_forward(&grammar);
-  return grammar;
+  init_nullable(grammar);
+  init_empty(grammar);
+  init_first(grammar);
+  init_forward(grammar);
 }
 
 bool calculate_first(Grammar *grammar, const TokenType *types, int n,

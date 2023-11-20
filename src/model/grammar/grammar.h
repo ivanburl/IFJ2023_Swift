@@ -22,7 +22,7 @@ typedef struct grammar_t {
 } Grammar;
 
 void grammar_init(Grammar *grammar);
-Grammar grammar_create(GrammarRule *grammarRules, int numberOfRules);
+void grammar_configure(Grammar *grammar, GrammarRule *grammarRules, int numberOfRules);
 
 ///
 /// \param grammar
