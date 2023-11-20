@@ -7,13 +7,13 @@
 int test_regex_dot() {
   Automata automata;
   automata_init(&automata, 0, 0);
-  automata_set_edge_by_regex(&automata, 0, ".", 1);//all except of .
+  automata_set_edge_by_regex(&automata, 0, "[^\n]", 1);//all except of .
 
   int res = 0;
   for (int i=0;i<MAX_AUTOMATA_EDGE_TYPES; i++) {
     res += (automata.automata[0][i] == 1);
   }
-  return res == MAX_AUTOMATA_EDGE_TYPES-1 ? 0 : 1;
+  return automata.automata[0]['\n'] == 0 && res == MAX_AUTOMATA_EDGE_TYPES-2 ? 0 : 1;
 }
 
 int test_regex_all() {
