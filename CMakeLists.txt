@@ -69,9 +69,6 @@ add_executable(IFJ2023_Swift src/main.c
         src/utils/logger.c
         src/test/scanner_test/scanner-test.c
 
-        src/parser/config/key/config_parser_key.h
-        src/parser/config/key/config_parser_key.c
-
         src/test/parser_test/key/key_test.h
         src/test/parser_test/key/key_test.c
 
@@ -83,4 +80,13 @@ add_executable(IFJ2023_Swift src/main.c
 
         src/test/grammar_test/grammar_test.h
         src/test/grammar_test/grammar_test.c
+
+
+        src/parser/precedence_parser/precedence_parser.h
+        src/parser/precedence_parser/precedence_parser.c
+
+        src/parser/ll_parser/ll_parser.c
+        src/parser/ll_parser/ll_parser.h
+
+        src/parser/config/parse_fn/parse_fn_configs.h
 )
