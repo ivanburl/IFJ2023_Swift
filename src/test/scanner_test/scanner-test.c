@@ -377,7 +377,28 @@ int bool_test() {
   printf("test_bool passed.\n");
 }
 
+
+int break_test() {
+  Scanner scanner;
+  scanner_init(&scanner);
+  scanner_configure_swift_2023(&scanner);
+
+  TokenVector tokenVector;
+  vector_init(&tokenVector);
+  char *code = "break";
+  Error r = scanner_code_to_tokens(&scanner, code, &tokenVector);
+  TokenType types[1000] = {UNDEFINED};
+  for (int i = 0; i < tokenVector.length; i++) {
+    types[i] = tokenVector.data[i].type;
+  }
+  assert(tokenVector.length == 1);
+  assert(types[0] == BREAK);
+
+  printf("break passed.\n");
+}
+
 int main() {
+  break_test();
   test_automata();
   test_unite();
   test_double_nul();

@@ -45,6 +45,8 @@ typedef enum token_enum {
 
   LET,
   VAR,
+  CONTINUE,
+  BREAK,
 
   WHILE,
 
