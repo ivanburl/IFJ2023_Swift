@@ -3,31 +3,29 @@
 //
 
 #include "grammar_token.h"
+#include "../../../model/token/token.h"
 
 void grammar_token_init(GrammarToken *grammarToken) {
   assert(grammarToken);
-  grammarToken->type = UNDEFINED_GRAMMAR_TOKEN_TYPE;
   grammarToken->tokensHolderSize = 0;
   for (int i = 0; i < MAX_GRAMMAR_TOKEN_TOKENS_HOLDER_SIZE; i++) {
-    token_init(&grammarToken->tokensHolder[i]);
+    grammarToken->tokensHolder[i] = NULL;
   }
 }
 
-GrammarToken grammar_token_create(GrammarTokenType type, Token *tokens,
-                                  int tokensNumber) {
-  assert(tokens);
-  assert(tokensNumber >= 0 &&
-         tokensNumber <= MAX_GRAMMAR_TOKEN_TOKENS_HOLDER_SIZE);
+void grammar_token_add(GrammarToken *grammarToken, Token *token) {
+  assert(grammarToken->tokensHolderSize < MAX_GRAMMAR_TOKEN_TOKENS_HOLDER_SIZE);
+  grammarToken->tokensHolder[grammarToken->tokensHolderSize++] = token;
+}
 
-  GrammarToken grammarToken;
-  grammar_token_init(&grammarToken);
-
-  grammarToken.type = type;
-  grammarToken.tokensHolderSize = tokensNumber;
-
-  for (int i = 0; i < tokensNumber; i++) {
-    grammarToken.tokensHolder[i] = tokens[i];
+void grammar_token_free(GrammarToken *grammarToken) {
+  assert(grammarToken);
+  for (int i = 0; i < grammarToken->tokensHolderSize; i++) {
+    if (grammarToken->tokensHolder[i]->type > NON_TERMINAL_UNDEFINED) {
+      grammar_token_free(grammarToken->tokensHolder[i]->data.grammarToken);
+    }
+    free(grammarToken->tokensHolder[i]);
+    grammarToken->tokensHolder[i] = NULL;
   }
-
-  return grammarToken;
+  grammarToken->tokensHolderSize = 0;
 }

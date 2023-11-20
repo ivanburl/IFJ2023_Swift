@@ -9,38 +9,16 @@
 
 #define MAX_GRAMMAR_TOKEN_TOKENS_HOLDER_SIZE 128
 
-/// only non-terminal tokensHolder could be here
-typedef enum {
-  UNDEFINED_GRAMMAR_TOKEN_TYPE,
-  /// S->S;S
-  S_SEQUENTIAL,
-  /// S->E
-  S_EXPRESSION,
-  /// E->E+T
-  E_SUM,
-  /// E -> T
-  E_TERMINAL,
-  /// T -> T*F
-  T_MULTIPLICATION,
-  /// T -> F
-  T_FACTOR,
-  /// F -> ID
-  F_ID,
-  /// F -> NUM,
-  F_NUM,
-  /// F -> (E)
-  F_BRACKETS
-} GrammarTokenType;
+struct grammar_token_t;
 
 typedef struct grammar_token_t {
-  GrammarTokenType type;
+  int grammarRuleId;
   int tokensHolderSize;
-  Token tokensHolder[MAX_GRAMMAR_TOKEN_TOKENS_HOLDER_SIZE];
+  Token* tokensHolder[MAX_GRAMMAR_TOKEN_TOKENS_HOLDER_SIZE];
 } GrammarToken;
 
 void grammar_token_init(GrammarToken *grammarToken);
-
-GrammarToken grammar_token_create(GrammarTokenType type, Token *tokens,
-                                  int tokensNumber);
+void grammar_token_add(GrammarToken *grammarToken, Token *token);
+void grammar_token_free(GrammarToken *grammarToken);
 
 #endif // IFJ2023_SWIFT_GRAMMAR_TOKEN_H
