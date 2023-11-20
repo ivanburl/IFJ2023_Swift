@@ -76,6 +76,9 @@ typedef enum token_enum {
   RETURN,
   UNDERSCORE,
 
+  ///used only for PSA algo
+  DOLLAR,
+
   NON_TERMINAL_UNDEFINED, //the start of non-terminal symbols
   /// NON_TERMINALS (should be constructed by parser)
   S,
@@ -85,8 +88,7 @@ typedef enum token_enum {
   V
 } TokenType;
 
-// resolves infinitive include problem... (implementation of cstruct in
-// implementation file)
+
 struct grammar_token_t;
 
 typedef struct token {
