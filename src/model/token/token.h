@@ -7,8 +7,8 @@
 
 #include "../../structures/string/string.h"
 #include "../error/error.h"
+#include "../../structures/vector/vector_t.h"
 
-#define MAX_TOKEN_LENGTH 128
 #define MAX_TOKEN_TYPES_NUMBER 128
 
 /*
@@ -83,15 +83,52 @@ typedef enum token_enum {
   ///used only for PSA algo
   DOLLAR,
 
-  NON_TERMINAL_UNDEFINED, //the start of non-terminal symbols
   /// NON_TERMINALS (should be constructed by parser)
-  S,
-  E,
-  T,
-  F,
-  V
-} TokenType;
+  /// tokeType < NON_TERMINAL -> terminal, tokeType > NON_TERMINAL - non-terminal
+  NON_TERMINAL_UNDEFINED, //the start of non-terminal symbols
 
+  ///one statements
+  S,
+  ///expression
+  E,
+  /// factor of expression
+  F,
+  /// collection of statements
+  STS,
+  /// collection of statements (USED FOR LL)
+  STS_TMP,
+  /// CONDITION
+  COND,
+  /// BLOCK
+  BLOCK,
+  /// ELSE part of if statement
+  IF_ELSE,
+  /// declaration
+  D,
+  /// parameter fo the function (declaration)
+  PARAM,
+  /// specific case for declaration functions (_ || id)
+  FUNC_ID,
+  /// collection of params
+  PARAMS,
+  ///collection of params (USED FOR LL)
+  PARAMS_TMP,
+  /// annotation of the type (Example = id : Integer), could not be null
+  TANN,
+  /// annotation of the type (could be nullable)
+  TANN_NULL,
+  TYPE,
+  /// initialisation of the variable, constant
+  INIT,
+  /// call of function inside expression
+  F_CALL,
+  /// collection of arguments (calling function)
+  ARGS,
+  /// collection of arguments (calling function) (USED FOR LL)
+  ARGS_TMP,
+  /// function argument (calling function)
+  ARG,
+} TokenType;
 
 struct grammar_token_t;
 
