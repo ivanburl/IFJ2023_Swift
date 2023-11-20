@@ -10,6 +10,7 @@
 Error error_create(ErrorType errorType, char *msg) {
   Error error;
   error.errorType = errorType;
+  if (msg == NULL) msg = "No error message!\0";
   strcpy(error.msg, msg);
   return error;
 }
