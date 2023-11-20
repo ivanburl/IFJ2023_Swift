@@ -25,6 +25,7 @@ typedef enum token_enum {
   MULTI_STRING,
   COMMENT,
   MULTI_COMMENT,
+  BOOLEAN,
 
   ID,
 
@@ -76,6 +77,8 @@ typedef enum token_enum {
   COMMA,
   RETURN,
   UNDERSCORE,
+  LOGICAL_AND,
+  LOGICAL_OR,
 
   /// NON_TERMINALS (should be constructed by parser)
   S,

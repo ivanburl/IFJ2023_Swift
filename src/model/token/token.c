@@ -54,6 +54,10 @@ Error token_create(TokenType type, char *str, Token *outToken) {
     token.data.integer_value = strtoll(str, NULL, 10);
     break;
   }
+  case  BOOLEAN: {
+    token.data.integer_value = strcmp(str, "false\0") == 0 ? 0 : 1;
+    break;
+  }
   case DOUBLE: {
     token.data.double_value = strtod(str, NULL);
     break;
