@@ -19,3 +19,35 @@ void configure_var(Scanner *scanner) {
   automata_set_edge_by_regex(&(scanner->automata), 48, "[a-zA-Z0-9_]+", 12);
   automata_set_stateReturnValue(&(scanner->automata), 48, VAR);
 }
+void configure_continue(Scanner *scanner){
+  automata_set_edge(&(scanner->automata), 0, 'c', 113);
+  automata_set_edge_by_regex(&(scanner->automata), 113, "[a-zA-Z0-9_]+", 12);
+  automata_set_edge(&(scanner->automata), 113, 'o', 114);
+  automata_set_edge_by_regex(&(scanner->automata), 114, "[a-zA-Z0-9_]+", 12);
+  automata_set_edge(&(scanner->automata), 114, 'n', 115);
+  automata_set_edge_by_regex(&(scanner->automata), 115, "[a-zA-Z0-9_]+", 12);
+  automata_set_edge(&(scanner->automata), 115, 't', 116);
+  automata_set_edge_by_regex(&(scanner->automata), 116, "[a-zA-Z0-9_]+", 12);
+  automata_set_edge(&(scanner->automata), 116, 'i', 117);
+  automata_set_edge_by_regex(&(scanner->automata), 117, "[a-zA-Z0-9_]+", 12);
+  automata_set_edge(&(scanner->automata), 117, 'n', 118);
+  automata_set_edge_by_regex(&(scanner->automata), 118, "[a-zA-Z0-9_]+", 12);
+  automata_set_edge(&(scanner->automata), 118, 'u', 119);
+  automata_set_edge_by_regex(&(scanner->automata), 119, "[a-zA-Z0-9_]+", 12);
+  automata_set_edge(&(scanner->automata), 119, 'e', 120);
+  automata_set_edge_by_regex(&(scanner->automata), 120, "[a-zA-Z0-9_]+", 12);
+  automata_set_stateReturnValue(&(scanner->automata), 120, CONTINUE);
+}
+void configure_break(Scanner *scanner) {
+  automata_set_edge(&(scanner->automata), 0, 'b', 121);
+  automata_set_edge_by_regex(&(scanner->automata), 121, "[a-zA-Z0-9_]+", 12);
+  automata_set_edge(&(scanner->automata), 121, 'r', 122);
+  automata_set_edge_by_regex(&(scanner->automata), 122, "[a-zA-Z0-9_]+", 12);
+  automata_set_edge(&(scanner->automata), 122, 'e', 123);
+  automata_set_edge_by_regex(&(scanner->automata), 123, "[a-zA-Z0-9_]+", 12);
+  automata_set_edge(&(scanner->automata), 123, 'a', 124);
+  automata_set_edge_by_regex(&(scanner->automata), 124, "[a-zA-Z0-9_]+", 12);
+  automata_set_edge(&(scanner->automata), 124, 'k', 125);
+  automata_set_edge_by_regex(&(scanner->automata), 125, "[a-zA-Z0-9_]+", 12);
+  automata_set_stateReturnValue(&(scanner->automata), 125, BREAK);
+}

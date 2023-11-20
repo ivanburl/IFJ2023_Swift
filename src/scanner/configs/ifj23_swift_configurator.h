@@ -29,6 +29,8 @@ void configure_else(Scanner *scanner);
 
 void configure_let(Scanner *scanner);
 void configure_var(Scanner *scanner);
+void configure_continue(Scanner *scanner);
+void configure_break(Scanner *scanner);
 
 void configure_while(Scanner *scanner);
 

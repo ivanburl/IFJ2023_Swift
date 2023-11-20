@@ -22,6 +22,8 @@ void scanner_configure_swift_2023(Scanner *scanner) {
 
   configure_let(scanner);
   configure_var(scanner);
+  configure_continue(scanner);
+  configure_break(scanner);
 
   configure_while(scanner);
 
@@ -61,6 +63,7 @@ void scanner_configure_swift_2023(Scanner *scanner) {
   configure_logical_OR(scanner);
   configure_boolean(scanner);
   configure_nil(scanner);
+
 }
 
 /*
