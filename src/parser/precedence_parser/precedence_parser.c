@@ -4,6 +4,12 @@
 
 #include "precedence_parser.h"
 
+void pparser_item_init(PParserItem *item) {
+  assert(item);
+  item->token = NULL;
+  item->closingType = 0;
+}
+
 void precedence_parser_build_priority_table(
     int priorityTable[MAX_TOKEN_TYPES_NUMBER][MAX_TOKEN_TYPES_NUMBER],
     int operatorPriority[MAX_TOKEN_TYPES_NUMBER],
@@ -96,53 +102,4 @@ void precedence_parser_configure(
             operatorPriority[i] > operatorPriority[j] ? 1 : -1;
       }
     }
-}
-
-Error precedence_parser_reduce(PParser *pParser, PParserItemVector* tokenStack) {
-
-  int rightPointer = tokenStack->length - 1;
-  int leftPointer = rightPointer;
-
-  while (leftPointer>=0 && tokenStack->data[leftPointer].closingType != -1) leftPointer--;
-
-  if (leftPointer<0)
-    return error_create(PARSER_ERROR, "Broken expression...");
-
-  GrammarRule testRule;
-  grammar_rule_init(&testRule);
-  testRule.resultTokenType = pParser->resultTokenType;
-  for (int i=leftPointer;i<=rightPointer;i++) {
-    testRule.productions[testRule.productionsNumber++] =
-        tokenStack->data[i].token->type;
-  }
-
-  int ruleId = findGrammarRule(pParser->pGrammar, &testRule);
-  if (ruleId < 0)
-    return error_create(PARSER_ERROR, "Could not find rule for parsing...");
-
-  Token* reducedToken = malloc(sizeof(Token));
-  if (reducedToken == NULL)
-    return error_create(FATAL, "Out of memory!");
-
-  reducedToken->type = pParser->pGrammar->grammarRules[ruleId].resultTokenType;
-  reducedToken->data.grammarToken->grammarRuleId = ruleId;
-
-  reducedToken->data.grammarToken = malloc(sizeof(GrammarToken));
-  if (reducedToken->data.grammarToken == NULL) {
-    free(reducedToken);
-    return error_create(FATAL, "Out of memory!");
-  }
-
-  grammar_token_init(reducedToken->data.grammarToken);
-
-  for (int i=leftPointer;i<=rightPointer;i++) {
-    grammar_token_add(reducedToken->data.grammarToken, tokenStack->data[i].token);
-  }
-  tokenStack->length = leftPointer;
-
-  PParserItem reducedItem;
-  pparser_item_init(&reducedItem);
-  reducedItem.token = reducedToken; reducedItem.closingType = 0;
-
-  vector_push_back(tokenStack, reducedItem);
 }

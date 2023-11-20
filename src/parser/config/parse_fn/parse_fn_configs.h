@@ -20,7 +20,7 @@ Error parse_sts_empty(LLParser *llParser, GrammarToken *grammarToken,
 /// S -> while COND BLOCK
 Error parse_s_while(LLParser *llParser, GrammarToken *grammarToken,
                     TokenVector *tokenVector, int *curOffset);
-/// S -> if COND BLOCK ELSE
+/// S -> if COND BLOCK IF_ELSE
 Error parse_s_if(LLParser *llParser, GrammarToken *grammarToken,
                  TokenVector *tokenVector, int *curOffset);
 /// S -> E (expression)
@@ -58,15 +58,15 @@ Error parse_if_else(LLParser *llParser, GrammarToken *grammarToken,
 Error parse_block(LLParser *llParser, GrammarToken *grammarToken,
                   TokenVector *tokenVector, int *curOffset);
 
-/// DEC -> var id TANN_NULL INIT
+/// D -> var id TANN_NULL INIT
 Error parse_dec_var(LLParser *llParser, GrammarToken *grammarToken,
                     TokenVector *tokenVector, int *curOffset);
 
-/// DEC -> let id TANN_NULL INIT
+/// D -> let id TANN_NULL INIT
 Error parse_dec_const(LLParser *llParser, GrammarToken *grammarToken,
                       TokenVector *tokenVector, int *curOffset);
 
-/// DEC -> func id(PARAMS)->TYPE CODE_BLOCK
+/// D -> func id(PARAMS)->TYPE CODE_BLOCK
 Error parse_dec_func(LLParser *llParser, GrammarToken *grammarToken,
                      TokenVector *tokenVector, int *curOffset);
 
@@ -133,7 +133,7 @@ Error parse_f_minus(LLParser *llParser, GrammarToken *grammarToken,
 Error parse_f_id(LLParser *llParser, GrammarToken *grammarToken,
                  TokenVector *tokenVector, int *curOffset);
 
-/// F -> int (value)
+/// F -> int
 Error parse_f_int(LLParser *llParser, GrammarToken *grammarToken,
                   TokenVector *tokenVector, int *curOffset);
 

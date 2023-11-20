@@ -31,6 +31,6 @@ void parser_configure(ParserConfiguratorFn parserConfiguratorFn);
 /// \param finalOffset the last index of vector which was successfully parsed
 /// \return with which error parsing finished
 Error parser_parse(Parser *parser, GrammarToken *grammarToken,
-                   TokenVector *tokens, int *offset, TokenType finalToken)
+                   TokenVector *tokens, int *offset, TokenType finalToken);
 
 #endif // IFJ2023_SWIFT_PARSER_H

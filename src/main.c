@@ -21,9 +21,9 @@ void test() {
   }
 }
 
-int main() {
-//  test_automata();
-//  parser_test();
-  grammar_test();
-  return 0;
-}
+//int main() {
+////  test_automata();
+////  parser_test();
+//  grammar_test();
+//  return 0;
+//}

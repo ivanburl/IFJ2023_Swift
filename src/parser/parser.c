@@ -106,6 +106,10 @@ Error parser_parse(Parser *parser, GrammarToken *grammarToken,
   return error_create(NONE, NULL);
 }
 
+typedef vector(PParserItem) PParserItemVector;
+
+Error precedence_parser_reduce(PParser *pParser, PParserItemVector *tokenStack);
+
 /// uses precedence
 Error precedence_parser_parse(Parser *parser, Token **tokenPointer,
                               TokenVector *tokens, int *offset) {
@@ -166,7 +170,7 @@ Error precedence_parser_parse(Parser *parser, Token **tokenPointer,
 
     if (closeType == 0) {
       while (stack.length > 2) {
-        err = precedence_parser_reduce(parser, stack);
+        err = precedence_parser_reduce(parser->expressionParser, &stack);
         if (err.errorType != NONE) {
           // TODO clean the memory used + unite errors
           free(stack.data);
@@ -202,11 +206,64 @@ Error precedence_parser_parse(Parser *parser, Token **tokenPointer,
         return error_create(PARSER_ERROR, "Could not parse expression!");
       }
 
-      precedence_parser_reduce(parser->expressionParser, stack);
+      precedence_parser_reduce(parser->expressionParser, &stack);
       *offset = *offset - 1;
     }
   }
 
   free(stack.data);
   return error_create(NONE, NULL);
+}
+
+Error precedence_parser_reduce(PParser *pParser,
+                               PParserItemVector *tokenStack) {
+
+  int rightPointer = tokenStack->length - 1;
+  int leftPointer = rightPointer;
+
+  while (leftPointer >= 0 && tokenStack->data[leftPointer].closingType != -1)
+    leftPointer--;
+
+  if (leftPointer < 0)
+    return error_create(PARSER_ERROR, "Broken expression...");
+
+  GrammarRule testRule;
+  grammar_rule_init(&testRule);
+  testRule.resultTokenType = pParser->resultTokenType;
+  for (int i = leftPointer; i <= rightPointer; i++) {
+    testRule.productions[testRule.productionsNumber++] =
+        tokenStack->data[i].token->type;
+  }
+
+  int ruleId = findGrammarRule(pParser->pGrammar, &testRule);
+  if (ruleId < 0)
+    return error_create(PARSER_ERROR, "Could not find rule for parsing...");
+
+  Token *reducedToken = malloc(sizeof(Token));
+  if (reducedToken == NULL)
+    return error_create(FATAL, "Out of memory!");
+
+  reducedToken->type = pParser->pGrammar->grammarRules[ruleId].resultTokenType;
+  reducedToken->data.grammarToken->grammarRuleId = ruleId;
+
+  reducedToken->data.grammarToken = malloc(sizeof(GrammarToken));
+  if (reducedToken->data.grammarToken == NULL) {
+    free(reducedToken);
+    return error_create(FATAL, "Out of memory!");
+  }
+
+  grammar_token_init(reducedToken->data.grammarToken);
+
+  for (int i = leftPointer; i <= rightPointer; i++) {
+    grammar_token_add(reducedToken->data.grammarToken,
+                      tokenStack->data[i].token);
+  }
+  tokenStack->length = leftPointer;
+
+  PParserItem reducedItem;
+  pparser_item_init(&reducedItem);
+  reducedItem.token = reducedToken;
+  reducedItem.closingType = 0;
+
+  vector_push_back(tokenStack, reducedItem);
 }

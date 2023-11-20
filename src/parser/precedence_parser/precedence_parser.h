@@ -13,11 +13,7 @@ typedef struct pparser_item_t {
   Token *token;
 } PParserItem;
 
-void pparser_item_init(PParserItem *item) {
-  assert(item);
-  item->token = NULL;
-  item->closingType = 0;
-}
+void pparser_item_init(PParserItem *item);
 
 typedef struct p_parser_t {
   /// 0 - no rule, throw error; 1 - open; -1 - close;
@@ -35,7 +31,5 @@ void precedence_parser_configure(
     PParser *parser, Grammar *pGrammar,
     const int operatorPriority[MAX_TOKEN_TYPES_NUMBER],
     const int operatorAssociation[MAX_TOKEN_TYPES_NUMBER]);
-
-Error precedence_parser_reduce(PParser *pParser, PParserItemVector* tokenStack);
 
 #endif // IFJ2023_SWIFT_PRECEDENCE_PARSER_H

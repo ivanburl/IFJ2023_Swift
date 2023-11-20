@@ -20,8 +20,9 @@ void ll_parser_init(LLParser *llParser) {
     }
 }
 
-void ll_parser_configure(LLParser *llParser, Grammar *llGrammar) {
-  llParser->llGrammar = llGrammar;
+void ll_parser_configure(LLParser *llParser) {
+  assert(llParser && llParser->llGrammar);
+  Grammar* llGrammar = llParser->llGrammar;
   bool first[MAX_TOKEN_TYPES_NUMBER];
   for (int i = 0; i < llGrammar->rulesNumber; i++) {
     GrammarRule *grammarRule = &(llGrammar->grammarRules[i]);

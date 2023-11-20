@@ -13,7 +13,7 @@ typedef struct ll_parser_t {
 } LLParser;
 
 void ll_parser_init(LLParser *llParser);
-void ll_parser_configure(LLParser *llParser, Grammar *llGrammar);
+void ll_parser_configure(LLParser *llParser);
 
 /// get by which rule we can get specified token
 /// \param llParser parser
