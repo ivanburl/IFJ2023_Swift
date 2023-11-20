@@ -7,7 +7,6 @@
 
 #include "../parser.h"
 
-
-void ifj_2023_parser_config(Parser *parser);
+Error ifj_2023_parser_config(Parser *parser);
 
 #endif // IFJ2023_SWIFT_CONFIG_PARSER_H
