@@ -62,6 +62,9 @@ Error token_create(TokenType type, char *str, Token *outToken) {
     token.data.double_value = strtod(str, NULL);
     break;
   }
+  case ID:
+    token.data.string = string_create(str);
+    break;
   default:
     break;
   }

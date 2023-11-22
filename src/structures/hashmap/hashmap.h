@@ -8,7 +8,7 @@
 #include <stddef.h>
 
 /// inspiration
-/// https://opensource.apple.com/source/Git/Git-98/src/git/hashmap.h.auto.html
+/// https://opensHashource.apple.com/source/Git/Git-98/src/git/hashmap.h.auto.html
 
 /// ############### EXAMPLE OF ENTRY #####################
 /// struct CustomEntry {

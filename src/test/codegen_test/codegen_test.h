@@ -1,0 +1,8 @@
+//
+// Created by thekr on 11/22/2023.
+//
+
+#ifndef IFJ2023_SWIFT_CODEGEN_TEST_H
+#define IFJ2023_SWIFT_CODEGEN_TEST_H
+
+#endif // IFJ2023_SWIFT_CODEGEN_TEST_H

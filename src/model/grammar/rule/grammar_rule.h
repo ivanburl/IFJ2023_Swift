@@ -12,8 +12,14 @@
 
 #define MAX_GRAMMAR_RULE_PRODUCTIONS_SIZE 128
 
+typedef struct address_code_t {
+    int op1;            //register r%d
+    int op2;
+    int result;
+} AddressCode;
+
 //TODO add symtable
-typedef Error (*AssemblerFn)(GrammarToken *grammarToken);
+typedef void (*AssemblerFn)(AddressCode *ad);
 
 typedef struct grammar_rule_t {
   /// non-terminal result token type like S,E,T,F

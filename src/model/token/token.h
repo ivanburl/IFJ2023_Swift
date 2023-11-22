@@ -107,7 +107,7 @@ typedef enum token_enum {
   IF_ELSE,
   /// declaration
   D,
-  /// parameter fo the function (declaration)
+  /// parameter for the function (declaration)
   PARAM,
   /// specific case for declaration functions (_ || id)
   FUNC_ID,

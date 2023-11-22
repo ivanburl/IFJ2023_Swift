@@ -3,6 +3,7 @@
 //
 
 #include "config_parser.h"
+#include "../../codegen/inter_code/inter_code.h"
 #include "../../structures/hashmap/hashmap.h"
 
 Error ifj_2023_parser_config(Parser *parser) {
@@ -79,11 +80,13 @@ Error ifj_2023_parser_config(Parser *parser) {
       grammar_rule_create(F, NULL, (TokenType[]){STRING}, 1),
       grammar_rule_create(F, NULL, (TokenType[]){DOUBLE}, 1),
       grammar_rule_create(F, NULL, (TokenType[]){BOOLEAN}, 1),
+      //Theoretically it should be here
+      grammar_rule_create(F, NULL, (TokenType[]){ID}, 1),
       grammar_rule_create(FUNC_ID, NULL, (TokenType[]){HARD_UNWRAP, F}, 2),
       grammar_rule_create(F_CALL, NULL,
                           (TokenType[]){LEFT_BRACKET, ARGS, RIGHT_BRACKET}, 3),
       grammar_rule_create(F_CALL, NULL, (TokenType[]){}, 0),
-      grammar_rule_create(F_CALL, NULL, (TokenType[]){HARD_UNWRAP}, 1),
+      grammar_rule_create(F_CALL, HardUnwrapInterCode, (TokenType[]){HARD_UNWRAP}, 1),
       grammar_rule_create(ARGS, NULL, (TokenType[]){ARG, ARGS_TMP}, 1),
       grammar_rule_create(ARGS_TMP, NULL, (TokenType[]){}, 0),
       grammar_rule_create(ARGS_TMP, NULL, (TokenType[]){COMMA, ARG, ARGS_TMP},
@@ -107,19 +110,20 @@ Error ifj_2023_parser_config(Parser *parser) {
 
   ll_parser_configure(parser->llParser);
   //TODO add boolean operations
-  int pGrammarRulesCount = 11;
+  int pGrammarRulesCount = 12;
   GrammarRule pGrammarRules[] = {
-      grammar_rule_create(E, NULL, (TokenType[]){E, PLUS, E}, 3),
-      grammar_rule_create(E, NULL, (TokenType[]){E, MINUS, E}, 3),
-      grammar_rule_create(E, NULL, (TokenType[]){E, MULTIPLY, E}, 3),
-      grammar_rule_create(E, NULL, (TokenType[]){E, DIVIDE, E}, 3),
-      grammar_rule_create(E, NULL, (TokenType[]){E, EQUAL, E}, 3),
-      grammar_rule_create(E, NULL, (TokenType[]){E, NOT_EQUAL, E}, 3),
-      grammar_rule_create(E, NULL, (TokenType[]){E, GREATER, E}, 3),
-      grammar_rule_create(E, NULL, (TokenType[]){E, LESS, E}, 3),
-      grammar_rule_create(E, NULL, (TokenType[]){E, GREATER_EQUAL, E}, 3),
-      grammar_rule_create(E, NULL, (TokenType[]){E, LESS_EQUAL, E}, 3),
-      grammar_rule_create(E, NULL, (TokenType[]){E, SOFT_UNWRAP, E}, 3)
+      grammar_rule_create(E, SumInterCode, (TokenType[]){E, PLUS, E}, 3),
+      grammar_rule_create(E, SubInterCode, (TokenType[]){E, MINUS, E}, 3),
+      grammar_rule_create(E, MulInterCode, (TokenType[]){E, MULTIPLY, E}, 3),
+      grammar_rule_create(E, DivInterCode, (TokenType[]){E, DIVIDE, E}, 3),
+      grammar_rule_create(E, EqualInterCode, (TokenType[]){E, EQUAL, E}, 3),
+      grammar_rule_create(E, NotEqualInterCode, (TokenType[]){E, NOT_EQUAL, E}, 3),
+      grammar_rule_create(E, GreaterInterCode, (TokenType[]){E, GREATER, E}, 3),
+      grammar_rule_create(E, LessInterCode, (TokenType[]){E, LESS, E}, 3),
+      grammar_rule_create(E, GreaterEqualInterCode, (TokenType[]){E, GREATER_EQUAL, E}, 3),
+      grammar_rule_create(E, LessEqualInterCode, (TokenType[]){E, LESS_EQUAL, E}, 3),
+      grammar_rule_create(E, SoftUnwrapInterCode, (TokenType[]){E, SOFT_UNWRAP, E}, 3),
+      grammar_rule_create(E, NULL, (TokenType[]){F}, 1)
   };
 
   grammar_configure(parser->expressionParser->pGrammar, pGrammarRules,
