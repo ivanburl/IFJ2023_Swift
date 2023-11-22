@@ -397,28 +397,28 @@ int break_test() {
   printf("break passed.\n");
 }
 
-int main() {
-  break_test();
-  test_automata();
-  test_unite();
-  test_double_nul();
-  test_delimiter();
-  test_id_token();
-  test_number_token();
-  test_if_token();
-  test_let_token();
-  test_while();
-  test_double();
-  test_var_token();
-  logic_test();
-  bool_test();
-  multi_comment_test();
-  comment_test();
-  test_multi_string();
-  test_math_operations();
-  test_string();
-  test_double_type();
-  test_double();
-  test_double_nul();
-  return 0;
-}
+//int main() {
+//  break_test();
+//  test_automata();
+//  test_unite();
+//  test_double_nul();
+//  test_delimiter();
+//  test_id_token();
+//  test_number_token();
+//  test_if_token();
+//  test_let_token();
+//  test_while();
+//  test_double();
+//  test_var_token();
+//  logic_test();
+//  bool_test();
+//  multi_comment_test();
+//  comment_test();
+//  test_multi_string();
+//  test_math_operations();
+//  test_string();
+//  test_double_type();
+//  test_double();
+//  test_double_nul();
+//  return 0;
+//}

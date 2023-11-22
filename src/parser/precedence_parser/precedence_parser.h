@@ -9,14 +9,14 @@
 #include "../ll_parser/ll_parser.h"
 
 typedef struct pparser_item_t {
-  int closingType;
+  bool closed, opened;
   Token *token;
 } PParserItem;
 
 void pparser_item_init(PParserItem *item);
 
 typedef struct p_parser_t {
-  /// 0 - no rule, throw error; 1 - open; -1 - close;
+  /// 0 - no rule, throw error; 1 - opened; -1 - closed;
   int priorityTable[MAX_TOKEN_TYPES_NUMBER][MAX_TOKEN_TYPES_NUMBER];
   /// define whether current symbol is operator
   bool isOperator[MAX_TOKEN_TYPES_NUMBER];
@@ -31,5 +31,6 @@ void precedence_parser_configure(
     PParser *parser, Grammar *pGrammar,
     const int operatorPriority[MAX_TOKEN_TYPES_NUMBER],
     const int operatorAssociation[MAX_TOKEN_TYPES_NUMBER]);
+bool precedence_parser_could_process(PParser *parser, TokenType type);
 
 #endif // IFJ2023_SWIFT_PRECEDENCE_PARSER_H

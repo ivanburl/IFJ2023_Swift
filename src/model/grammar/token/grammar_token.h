@@ -13,7 +13,8 @@
 struct grammar_token_t;
 
 typedef struct grammar_token_t {
-  GrammarRule *grammarRule;
+  int grammarRuleId;
+  GrammarRule* grammarRule;
   int tokensHolderSize;
   Token* tokensHolder[MAX_GRAMMAR_TOKEN_TOKENS_HOLDER_SIZE];
   int reg;

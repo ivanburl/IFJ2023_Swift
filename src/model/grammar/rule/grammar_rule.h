@@ -7,7 +7,6 @@
 
 #include "../../../structures/vector/vector.h"
 #include "../../error/error.h"
-#include "../token/grammar_token.h"
 #include <stdbool.h>
 
 #define MAX_GRAMMAR_RULE_PRODUCTIONS_SIZE 128

@@ -1,54 +1,120 @@
-////
-//// Created by burluiva on 11/13/2023.
-////
-//#include "config_test.h"
-//#include "../../../parser/parser.h"
-//#include "../../../utils/logger.h"
-//#include "stdio.h"
 //
-//int parser_config_test() {
-//  // Grammar to be tested
+// Created by burluiva on 11/13/2023.
 //
-//  // S -> (E)
-//  // S -> STRING
-//  // E -> S
-//  // E -> E, S
-//  int returnCode = 0;
-//  GrammarRule grammarRule[] = {
-//      grammar_rule_create(S, S_SEQUENTIAL,
-//                          (TokenType[]){LEFT_BRACKET, E, RIGHT_BRACKET}, 3),
-//      grammar_rule_create(S, S_SEQUENTIAL, (TokenType[]){STRING}, 1),
-//      grammar_rule_create(E, E_TERMINAL, (TokenType[]){S}, 1),
-//      grammar_rule_create(E, E_TERMINAL, (TokenType[]){E, COMMA, S}, 3),
-//  };
-//  Grammar grammar = grammar_configure(grammarRule, 4);
-//
-//  Parser parser;
-//  parser_init(&parser);
-//  parser_create(&parser, &grammar);
-//  parser_configure(&parser);
-//
-//  LOG_INFO_WHITE("Debug automata after configuration...");
-//
-//  for (int i = 0;i<MAX_AUTOMATA_STATES_NUMBER;i++) {
-//    bool nonNull = false;
-//    for (int j = 0; j < MAX_AUTOMATA_EDGE_TYPES; j++) {
-//      if (parser.automata.automata[i][j] == -1) continue;
-//      if (!nonNull) {
-//        printf("State: %d ; Links: ", i);
-//        nonNull = true;
-//      }
-//      printf("by %d -> %d, ", j, parser.automata.automata[i][j]);
-//    }
-//    if (nonNull) printf("\n");
-//  }
-//  printf("Return states: \n");
-//  for (int i=0;i<MAX_AUTOMATA_STATES_NUMBER;i++) {
-//    if (parser.automata.stateReturnValues[i] != -1)
-//      printf("State: %d returns %d\n", i, parser.automata.stateReturnValues[i]);
-//  }
-//
-//  LOG_INFO("First iteration finished!");
-//
-//  return returnCode;
-//}
+#include "config_test.h"
+#include "../../../parser/config/config_parser.h"
+#include "../../../utils/logger.h"
+
+Token fast_create_token(TokenType type) {
+  Token token;
+  token.type = type;
+  return token;
+}
+
+int parser_config_test() {
+  Parser parser;
+  parser_init(&parser);
+  ifj_2023_parser_config(&parser);
+
+  PParser *pParser = parser.expressionParser;
+  int operators[6] = {PLUS, MINUS, MULTIPLY, DIVIDE, F, DOLLAR};
+  char chOperators[6] = {'+', '-', '*', '/', 'f', '$'};
+  printf("  ");
+  for (int i = 0; i < 6; i++)
+    printf("%c ", chOperators[i]);
+  printf("\n");
+  for (int i = 0; i < 6; i++) {
+    printf("%c ", chOperators[i]);
+    for (int j = 0; j < 6; j++) {
+      char ch = 'x';
+      if (pParser->priorityTable[operators[i]][operators[j]] == 1)
+        ch = '<';
+      if (pParser->priorityTable[operators[i]][operators[j]] == -1)
+        ch = '>';
+      printf("%c ", ch);
+    }
+    printf("\n");
+  }
+
+  TokenVector tokenVector;
+  vector_init(&tokenVector);
+
+  /**
+   * while id >= id {
+   *
+   *    let id = (id+id)*(id/id-INTEGER*DOUBLE)
+   *
+   *    if let id { return INTEGER
+   *    }
+   *    if id == INTEGER { return id + id }
+   *
+   * }
+   *
+   *
+   */
+  vector_push_back(&tokenVector, fast_create_token(WHILE));
+  vector_push_back(&tokenVector, fast_create_token(ID));
+  vector_push_back(&tokenVector, fast_create_token(GREATER_EQUAL));
+  vector_push_back(&tokenVector, fast_create_token(ID));
+  vector_push_back(&tokenVector, fast_create_token(LEFT_CURL_BRACKET));
+
+  vector_push_back(&tokenVector, fast_create_token(LET));
+  vector_push_back(&tokenVector, fast_create_token(ID));
+  vector_push_back(&tokenVector, fast_create_token(ASSIGN));
+  vector_push_back(&tokenVector, fast_create_token(LEFT_BRACKET));
+  vector_push_back(&tokenVector, fast_create_token(ID));
+  vector_push_back(&tokenVector, fast_create_token(PLUS));
+  vector_push_back(&tokenVector, fast_create_token(ID));
+  vector_push_back(&tokenVector, fast_create_token(RIGHT_BRACKET));
+  vector_push_back(&tokenVector, fast_create_token(MULTIPLY));
+  vector_push_back(&tokenVector, fast_create_token(LEFT_BRACKET));
+  vector_push_back(&tokenVector, fast_create_token(ID));
+  vector_push_back(&tokenVector, fast_create_token(DIVIDE));
+  vector_push_back(&tokenVector, fast_create_token(ID));
+  vector_push_back(&tokenVector, fast_create_token(MINUS));
+  vector_push_back(&tokenVector, fast_create_token(INTEGER));
+  vector_push_back(&tokenVector, fast_create_token(MULTIPLY));
+  vector_push_back(&tokenVector, fast_create_token(DOUBLE));
+  vector_push_back(&tokenVector, fast_create_token(RIGHT_BRACKET));
+
+  vector_push_back(&tokenVector, fast_create_token(DELIMITER));
+  vector_push_back(&tokenVector, fast_create_token(DELIMITER));
+
+  vector_push_back(&tokenVector, fast_create_token(IF));
+  vector_push_back(&tokenVector, fast_create_token(LET));
+  vector_push_back(&tokenVector, fast_create_token(ID));
+  vector_push_back(&tokenVector, fast_create_token(LEFT_CURL_BRACKET));
+  vector_push_back(&tokenVector, fast_create_token(RETURN));
+  vector_push_back(&tokenVector, fast_create_token(ID));
+  vector_push_back(&tokenVector, fast_create_token(DELIMITER));
+  vector_push_back(&tokenVector, fast_create_token(RIGHT_CURL_BRACKET));
+  vector_push_back(&tokenVector, fast_create_token(DELIMITER));
+
+  vector_push_back(&tokenVector, fast_create_token(IF));
+  vector_push_back(&tokenVector, fast_create_token(ID));
+  vector_push_back(&tokenVector, fast_create_token(EQUAL));
+  vector_push_back(&tokenVector, fast_create_token(INTEGER));
+  vector_push_back(&tokenVector, fast_create_token(LEFT_CURL_BRACKET));
+  vector_push_back(&tokenVector, fast_create_token(RETURN));
+  vector_push_back(&tokenVector, fast_create_token(ID));
+  vector_push_back(&tokenVector, fast_create_token(PLUS));
+  vector_push_back(&tokenVector, fast_create_token(ID));
+  vector_push_back(&tokenVector, fast_create_token(RIGHT_CURL_BRACKET));
+
+  vector_push_back(&tokenVector, fast_create_token(DELIMITER));
+  vector_push_back(&tokenVector, fast_create_token(DELIMITER));
+  vector_push_back(&tokenVector, fast_create_token(RIGHT_CURL_BRACKET));
+  vector_push_back(&tokenVector, fast_create_token(DELIMITER));
+  vector_push_back(&tokenVector, fast_create_token(DELIMITER));
+  vector_push_back(&tokenVector, fast_create_token(DELIMITER));
+
+  GrammarToken grammarToken;
+  grammar_token_init(&grammarToken);
+  int offset = 0;
+  Error err = parser_parse(&parser, &grammarToken, &tokenVector, &offset, STS,
+                           LL_PARSER);
+  assert(err.errorType == NONE);
+  return 0;
+}
+
+int main() { parser_config_test(); }

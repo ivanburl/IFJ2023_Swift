@@ -99,8 +99,8 @@ void error_code_create(Error *error){
 
 Error error_create(ErrorType errorType, char *msg) {
   Error error;
-  error_code_create(&error);
   error.errorType = errorType;
+  error_code_create(&error);
   if (msg == NULL) msg = "No error message!\0";
   strcpy(error.msg, msg);
   return error;

@@ -52,7 +52,7 @@ void ll_parser_configure(LLParser *llParser) {
 /// \return the number of rule
 int ll_parser_get_rule(LLParser *llParser, TokenType tokenToParse,
                        TokenType inputToken) {
-  if (inputToken == UNDEFINED ||
+  if (inputToken == UNDEFINED &&
       llParser->llGrammar->nullable[tokenToParse] == true) {
     for (int i = 0; i < llParser->llGrammar->rulesNumber; i++) {
       if (llParser->llGrammar->grammarRules[i].resultTokenType ==
