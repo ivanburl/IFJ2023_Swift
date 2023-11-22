@@ -32,14 +32,11 @@ Error ifj_2023_parser_config(Parser *parser) {
   assert(parser->expressionParser && parser->llParser &&
          "Set the ll parser and precedence parser");
 
-  int llGrammarRulesCount = 54;//52
+  int llGrammarRulesCount = 52;//52
   GrammarRule llGrammarRules[] = {
-      grammar_rule_create(SUPER_DELIMITER, NULL, (TokenType[]){DELIMITER, SUPER_DELIMITER}, 2),
-      grammar_rule_create(SUPER_DELIMITER, NULL, (TokenType[]){0}, 0),
-
       grammar_rule_create(STS, NULL, (TokenType[]){S, STS_TMP}, 2),
       grammar_rule_create(STS, NULL, (TokenType[]){}, 0),
-      grammar_rule_create(STS_TMP, NULL, (TokenType[]){DELIMITER, SUPER_DELIMITER, S, STS_TMP},
+      grammar_rule_create(STS_TMP, NULL, (TokenType[]){DELIMITER, S, STS_TMP},
                           3),
       grammar_rule_create(STS_TMP, NULL, (TokenType[]){}, 0),
       grammar_rule_create(S, NULL, (TokenType[]){WHILE, COND, BLOCK}, 3),
