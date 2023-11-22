@@ -7,14 +7,9 @@
 void pparser_item_init(PParserItem *item) {
   assert(item);
   item->token = NULL;
-  item->closingType = 0;
+  item->opened = 0;
+  item->closed = 0;
 }
-
-void precedence_parser_build_priority_table(
-    int priorityTable[MAX_TOKEN_TYPES_NUMBER][MAX_TOKEN_TYPES_NUMBER],
-    int operatorPriority[MAX_TOKEN_TYPES_NUMBER],
-    int operatorAssociation[MAX_TOKEN_TYPES_NUMBER],
-    TokenType idRepresentative);
 
 TokenType precedence_operator_find_id_representative(Grammar *grammar) {
   assert(grammar);
@@ -64,24 +59,39 @@ void precedence_parser_configure(
     GrammarRule *grammarRule = &(pGrammar->grammarRules[i]);
     assert(parser->resultTokenType == grammarRule->resultTokenType);
 
+    // resolving operator and id order
     for (int j = 0; j < grammarRule->productionsNumber; j++) {
-      if (grammarRule->productions[j] < NON_TERMINAL_UNDEFINED) {
-        TokenType operator= grammarRule->productions[j];
-        parser->isOperator[operator] = true;
-        assert(operatorPriority[operator] == -1 &&
-               "Priority of operator is not set...");
 
-        parser->priorityTable[operator][idRepresentative] = (j > 0) ? 1 : 0;
-        parser->priorityTable[idRepresentative][i] =
-            (j < grammarRule->productionsNumber - 1) ? -1 : 0;
-
-        parser->priorityTable[operator][DOLLAR] = -1;
-        parser->priorityTable[DOLLAR][operator] = 1;
-
+      if (grammarRule->productions[j] > NON_TERMINAL_UNDEFINED) {
         if (j == 0)
-          parser->priorityTable[operator][DOLLAR] = 0;
-        if (j == pGrammar->rulesNumber - 1)
-          parser->priorityTable[DOLLAR][operator] = 0;
+          parser->priorityTable[idRepresentative][DOLLAR] = -1;
+        if (j == grammarRule->productionsNumber - 1)
+          parser->priorityTable[DOLLAR][idRepresentative] = 1;
+        continue; // we need only operators
+      }
+
+      TokenType operator= grammarRule->productions[j];
+      parser->isOperator[operator] = true;
+      assert(operatorPriority[operator] != -1 &&
+      "Priority of operator is not set...");
+
+      parser->priorityTable[operator][idRepresentative] =
+        (j > 0) ? 1 :
+          parser->priorityTable[operator][idRepresentative];
+      parser->priorityTable[idRepresentative][operator] =
+        (j < grammarRule->productionsNumber - 1) ? -1 :
+          parser->priorityTable[idRepresentative][operator];
+
+      assert(parser->priorityTable[operator][DOLLAR] == 0);
+      assert(parser->priorityTable[DOLLAR][operator] == 0);
+      parser->priorityTable[operator][DOLLAR] = -1;
+      parser->priorityTable[DOLLAR][operator] = 1;
+
+      if (j == 0) {
+        parser->priorityTable[operator][DOLLAR] = 0;
+      }
+      if (j == pGrammar->rulesNumber - 1) {
+        parser->priorityTable[DOLLAR][operator] = 0;
       }
     }
   }
@@ -102,4 +112,9 @@ void precedence_parser_configure(
             operatorPriority[i] > operatorPriority[j] ? 1 : -1;
       }
     }
+}
+
+bool precedence_parser_could_process(PParser *parser, TokenType type) {
+  return parser->isOperator[type] || parser->idRepresentative == type ||
+      type == DOLLAR;
 }

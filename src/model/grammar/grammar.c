@@ -50,7 +50,7 @@ bool calculate_first(Grammar *grammar, const TokenType *types, int n,
         changed = (first[j] == false && grammar->first[types[i]][j] == true);
         first[j] |= grammar->first[types[i]][j];
       }
-    }
+    } else break;
   }
   return changed;
 }
