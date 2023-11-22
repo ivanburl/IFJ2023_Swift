@@ -7,13 +7,12 @@
 
 #include "../../../structures/vector/vector.h"
 #include "../../error/error.h"
-#include "../token/grammar_token.h"
 #include <stdbool.h>
 
 #define MAX_GRAMMAR_RULE_PRODUCTIONS_SIZE 128
 
 //TODO add symtable
-typedef Error (*AssemblerFn)(GrammarToken *grammarToken);
+typedef Error (*AssemblerFn)(void *grammarToken);
 
 typedef struct grammar_rule_t {
   /// non-terminal result token type like S,E,T,F

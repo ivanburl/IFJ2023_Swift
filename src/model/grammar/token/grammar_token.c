@@ -7,6 +7,8 @@
 
 void grammar_token_init(GrammarToken *grammarToken) {
   assert(grammarToken);
+  grammarToken->grammarRuleId = -1;
+  grammarToken->grammarRule = NULL;
   grammarToken->tokensHolderSize = 0;
   for (int i = 0; i < MAX_GRAMMAR_TOKEN_TOKENS_HOLDER_SIZE; i++) {
     grammarToken->tokensHolder[i] = NULL;
@@ -28,4 +30,6 @@ void grammar_token_free(GrammarToken *grammarToken) {
     grammarToken->tokensHolder[i] = NULL;
   }
   grammarToken->tokensHolderSize = 0;
+  grammarToken->grammarRuleId = -1;
+  grammarToken->grammarRule = NULL;
 }

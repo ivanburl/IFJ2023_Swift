@@ -11,10 +11,20 @@ void parser_init(Parser *parser) {
   parser->expressionParser = NULL;
 }
 
+TokenType parser_get_current_token(TokenVector *tokenVector,
+                                   const int *offset) {
+  return *offset >= tokenVector->length ? UNDEFINED
+                                        : tokenVector->data[*offset].type;
+}
+
 Error parser_eat(GrammarToken *grammarToken, TokenType tokenType,
                  TokenVector *tokenVector, int *curOffset) {
   if (tokenType == UNDEFINED)
     return error_create(NONE, NULL);
+
+  if (*curOffset >= tokenVector->length) {
+    return error_create(PARSER_ERROR, "Missing token!");
+  }
 
   if (tokenVector->data[*curOffset].type == tokenType) {
 
@@ -40,12 +50,6 @@ Error parser_eat(GrammarToken *grammarToken, TokenType tokenType,
   return error_create(
       PARSER_ERROR,
       "Missing token!"); // TODO fix error message plus other fixes
-}
-
-TokenType parser_get_current_token(TokenVector *tokenVector,
-                                   const int *offset) {
-  return *offset >= tokenVector->length ? UNDEFINED
-                                        : tokenVector->data[*offset].type;
 }
 
 /// Using precedence SA parse (mainly expressions)
@@ -86,6 +90,9 @@ Error parser_parse(Parser *parser, GrammarToken *grammarToken,
   }
 
   grammarToken->grammarRuleId = ruleId;
+  grammarToken->grammarRule =
+      &(parser->llParser->llGrammar->grammarRules[ruleId]);
+
   GrammarRule *grammarRule =
       &(parser->llParser->llGrammar->grammarRules[ruleId]);
 
@@ -93,6 +100,14 @@ Error parser_parse(Parser *parser, GrammarToken *grammarToken,
   for (int i = 0; i < grammarRule->productionsNumber; i++) {
     TokenType requiredTokenType = grammarRule->productions[i];
     if (requiredTokenType < NON_TERMINAL_UNDEFINED) {
+
+      if (requiredTokenType != DELIMITER) {
+        while (*offset < tokens->length &&
+               tokens->data[*offset].type == DELIMITER) {
+          *offset = *offset + 1;
+        }
+      }
+
       err = parser_eat(grammarToken, requiredTokenType, tokens, offset);
       if (err.errorType != NONE)
         return err;
@@ -221,9 +236,10 @@ Error precedence_parser_parse(Parser *parser, Token **tokenPointer,
         *offset = *offset - 1;
 
       free(token);
-      while (stack.length > 2) {
+      while (stack.length >= 2 && balance > 0) {
         stack.data[stack.length - 1].closed = 1;
         err = precedence_parser_reduce(parser->expressionParser, &stack);
+        balance -= 1;
         if (err.errorType != NONE) {
           // TODO clean the memory used + unite errors
           free(stack.data);
@@ -310,6 +326,8 @@ Error precedence_parser_reduce(PParser *pParser,
 
   reducedToken->type = pParser->pGrammar->grammarRules[ruleId].resultTokenType;
   reducedToken->data.grammarToken->grammarRuleId = ruleId;
+  reducedToken->data.grammarToken->grammarRule =
+      &(pParser->pGrammar->grammarRules[ruleId]);
 
   for (int i = leftPointer; i <= rightPointer; i++) {
     grammar_token_add(reducedToken->data.grammarToken,

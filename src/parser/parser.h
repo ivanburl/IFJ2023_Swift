@@ -6,6 +6,7 @@
 #define IFJ2023_SWIFT_PARSER_H
 
 #include "../model/grammar/grammar.h"
+#include "../model/grammar/token/grammar_token.h"
 #include "../structures/automata/automata.h"
 #include "ll_parser/ll_parser.h"
 #include "precedence_parser/precedence_parser.h"

@@ -129,7 +129,9 @@ typedef enum token_enum {
   /// collection of arguments (calling function) (USED FOR LL)
   ARGS_TMP,
   /// function argument (calling function)
-  ARG
+  ARG,
+  // function of arguments (calling)
+  ARG_TMP,
 } TokenType;
 
 struct grammar_token_t;

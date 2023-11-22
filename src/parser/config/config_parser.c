@@ -32,13 +32,14 @@ Error ifj_2023_parser_config(Parser *parser) {
   assert(parser->expressionParser && parser->llParser &&
          "Set the ll parser and precedence parser");
 
-  int llGrammarRulesCount = 52;//52
+  int llGrammarRulesCount = 54;//52
   GrammarRule llGrammarRules[] = {
       grammar_rule_create(STS, NULL, (TokenType[]){S, STS_TMP}, 2),
-      grammar_rule_create(STS, NULL, (TokenType[]){}, 0),
       grammar_rule_create(STS_TMP, NULL, (TokenType[]){DELIMITER, S, STS_TMP},
                           3),
       grammar_rule_create(STS_TMP, NULL, (TokenType[]){}, 0),
+
+      grammar_rule_create(S, NULL, (TokenType[]){}, 0),
       grammar_rule_create(S, NULL, (TokenType[]){WHILE, COND, BLOCK}, 3),
       grammar_rule_create(S, NULL, (TokenType[]){IF, COND, BLOCK, IF_ELSE}, 4),
       grammar_rule_create(S, NULL, (TokenType[]){E}, 1),
@@ -88,8 +89,10 @@ Error ifj_2023_parser_config(Parser *parser) {
       grammar_rule_create(ARGS_TMP, NULL, (TokenType[]){}, 0),
       grammar_rule_create(ARGS_TMP, NULL, (TokenType[]){COMMA, ARG, ARGS_TMP},
                           3),
-      grammar_rule_create(ARG, NULL, (TokenType[]){ID, COLON, E}, 3),
-      grammar_rule_create(ARG, NULL, (TokenType[]){E}, 1),
+
+      grammar_rule_create(ARG, NULL, (TokenType[]){E, ARG_TMP}, 2),
+      grammar_rule_create(ARG_TMP, NULL, (TokenType[]){COLON, E}, 2),
+      grammar_rule_create(ARG_TMP, NULL, (TokenType[]){}, 0),
 
       grammar_rule_create(TYPE, NULL, (TokenType[]){INT_TYPE}, 1),
       grammar_rule_create(TYPE, NULL, (TokenType[]){INT_NULLABLE_TYPE}, 1),
@@ -97,47 +100,9 @@ Error ifj_2023_parser_config(Parser *parser) {
       grammar_rule_create(TYPE, NULL, (TokenType[]){STRING_NULLABLE_TYPE}, 1),
       grammar_rule_create(TYPE, NULL, (TokenType[]){DOUBLE_TYPE}, 1),
       grammar_rule_create(TYPE, NULL, (TokenType[]){DOUBLE_NULLABLE_TYPE}, 1),
+      grammar_rule_create(E, NULL, (TokenType[]){F}, 1),
       // TODO BOOLEAN
       // TODO BOOLEAN NULLABLE
-
-      /// THESE RULES ARE NOT THE PART OF PARSER TREE, ONLY FOR NEXT AND FORWARD
-      /// CALC
-//      grammar_rule_create(E1_TMP, NULL, (TokenType[]){}, 0),
-//      grammar_rule_create(E2_TMP, NULL, (TokenType[]){}, 0),
-//      grammar_rule_create(E3_TMP, NULL, (TokenType[]){}, 0),
-//      grammar_rule_create(E4_TMP, NULL, (TokenType[]){}, 0),
-//      grammar_rule_create(E5_TMP, NULL, (TokenType[]){}, 0),
-//
-//      grammar_rule_create(E, NULL, (TokenType[]){E1, E1_TMP}, 2),
-//      grammar_rule_create(E1_TMP, NULL, (TokenType[]){LOGICAL_OR, E1, E1_TMP},
-//                          3),
-//      grammar_rule_create(E1_TMP, NULL, (TokenType[]){LOGICAL_AND, E1, E1_TMP},
-//                          3),
-//
-//      grammar_rule_create(E1, NULL, (TokenType[]){E2, E2_TMP}, 2),//TODO think about right association
-//      grammar_rule_create(E2_TMP, NULL, (TokenType[]){SOFT_UNWRAP, E2, E2_TMP},
-//                          3),
-//
-//      grammar_rule_create(E2, NULL, (TokenType[]){E3, E3_TMP}, 2),
-//      grammar_rule_create(E3_TMP, NULL, (TokenType[]){EQUAL, E3, E3_TMP}, 3),
-//      grammar_rule_create(E3_TMP, NULL, (TokenType[]){GREATER, E3, E3_TMP}, 3),
-//      grammar_rule_create(E3_TMP, NULL, (TokenType[]){LESS, E3, E3_TMP}, 3),
-//      grammar_rule_create(E3_TMP, NULL,
-//                          (TokenType[]){GREATER_EQUAL, E3, E3_TMP}, 3),
-//      grammar_rule_create(E3_TMP, NULL, (TokenType[]){LESS_EQUAL, E3, E3_TMP},
-//                          3),
-//      grammar_rule_create(E3_TMP, NULL, (TokenType[]){NOT_EQUAL, E3, E3_TMP},
-//                          3),
-//
-//      grammar_rule_create(E3, NULL, (TokenType[]){E4, E4_TMP}, 2),
-//      grammar_rule_create(E4_TMP, NULL, (TokenType[]){PLUS, E4, E4_TMP}, 3),
-//      grammar_rule_create(E4_TMP, NULL, (TokenType[]){MINUS, E4, E4_TMP}, 3),
-//
-//      grammar_rule_create(E4, NULL, (TokenType[]){E5, E5_TMP}, 2),
-//      grammar_rule_create(E5_TMP, NULL, (TokenType[]){MULTIPLY, E5, E5_TMP}, 3),
-//      grammar_rule_create(E4_TMP, NULL, (TokenType[]){DIVIDE, E5, E5_TMP}, 3),
-//
-//      grammar_rule_create(E5, NULL, (TokenType[]){F}, 1),
   };
 
   grammar_configure(parser->llParser->llGrammar, llGrammarRules,
