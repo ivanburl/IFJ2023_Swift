@@ -117,4 +117,4 @@ int parser_config_test() {
   return 0;
 }
 
-int main() { parser_config_test(); }
+//int main() { parser_config_test(); }
