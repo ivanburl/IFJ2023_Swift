@@ -348,21 +348,33 @@ void geBlockWhileInterCode (AddressCode *addressCode){
 }
 
 void GenerateFunctionInterCode(AddressCode *addressCode) {
-  int blockId = addressCode->op1;
-  printf("LABEL Fun%d\n", blockId);
+  printf("LABEL Fun%d\n",addressCode->op1);
 //обработка параметров
-  printf("JUMP CodeBlockF%d\n",blockId);
+//  printf("JUMP CodeBlock%d\n",addressCode->op1);
 //блок функции
-  printf("LABEL ReturnFunc%d\n",blockId);
+//  printf("LABEL ReturnFunc%d\n",addressCode->op1);
   printf("RETURN\n");
 }
 
-//короче тут вообще хз, сильно на меня не матерись я уже заебанный пишу это
-void GenerateBlock(int blockid){
-  printf("LABEL CodeBlocklock%d\n", blockid);
+void GenerateIfInterCode (AddressCode *addressCode) {
+  printf("LABEL If%d\n",addressCode->op1);
+  printf("JUMPIFEQ CodeBlock%d LF@r%d bool@true\n",addressCode->op1,addressCode->op2);
+  printf("LABEL Else%d\n",addressCode->result);
+  printf("JUMP CodeBlock%d\n",addressCode->result);
+}
+
+void GenerateCodeBlock(int blockID,int argCount){
+  for (int i = 0; i < argCount; i++) {
+    printf("POPS TF@arg%d\n",argCount);
+  }
+  printf("LABEL CodeBlocklock%d\n", blockID);
   printf("DEFVAR LF@tempVar\n");
 
-  printf("JUMP EndCodeBlock%d LF@tempVar\n", blockid);//короче тут хз еще тип если что то сиганет в конец
+  printf("JUMPIFEQ EndCodeBlock%d LF@tempVar bool@true\n", blockID);//короче тут хз еще тип если что то сиганет в конец
 
-  printf("LABEL EndCodeBlock%d\n", blockid);
+  printf("LABEL EndCodeBlock%d\n", blockID);
+}
+
+void IfGeneration(AddressCode *addressCode) {
+
 }
