@@ -50,6 +50,7 @@ int codegen_test() {
 //  vector_push_back(&tokenVector, fast_create_token(ASSIGN));
   vector_push_back(&tokenVector, fast_create_token(LET));
   vector_push_back(&tokenVector, fast_create_token(ID));
+  tokenVector.data[1].data.string = string_create("a");
   vector_push_back(&tokenVector, fast_create_token(ASSIGN));
   vector_push_back(&tokenVector, fast_create_token(INTEGER));
   tokenVector.data[3].data.integer_value = 1;

@@ -4,17 +4,18 @@
 
 #ifndef IFJ2023_SWIFT_INTER_CODE_H
 #define IFJ2023_SWIFT_INTER_CODE_H
-#include "ctype.h"
-#include <stdio.h>
-#include "stdbool.h"
 #include "../../model/grammar/rule/grammar_rule.h"
+#include "../../model/grammar/token/grammar_token.h"
+#include "ctype.h"
+#include "stdbool.h"
+#include <stdio.h>
 
 void InterCodeInit();
 void InterCodeEnd();
 void StoreString(int reg, String *str);
 void StoreInt(int reg, long long i);
 void StoreDouble(int reg, double d);
-void ReadDouble(AddressCode *addressCode);
+void ReadDouble(GrammarToken *grammarToken, AddressTable *addressTable);
 void ReadString(AddressCode *addressCode);
 void ReadInt(AddressCode *addressCode);
 void StoreBool(int reg,bool b );

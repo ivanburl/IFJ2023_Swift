@@ -17,13 +17,14 @@ void InterCodeEnd() {
   printf("POPFRAME\n");
 }
 
-void PushArg(AddressCode *addressCode) {
-  printf("PUSHS LF@r%d\n",addressCode->result);
+//ARG, NULL, (TokenType[]){E, ARG_TMP
+void PushArg(GrammarToken *grammarToken, AddressTable *addressTable) {
+  printf("PUSHS LF@r%d\n", grammarToken->tokensHolder[0]->data.grammarToken->reg);
 }
 //string - arg0
 //od - arg1
 //do - arg2
-void SubStringIntercode(AddressCode *addressCode) {
+void SubStringIntercode(GrammarToken *grammarToken, AddressTable *addressTable) {
   printf("DEFVAR TF@tempBool\n");
   printf("DEFVAR TF@arg2\n");
   printf("POPS TF@arg2\n");
@@ -42,7 +43,7 @@ void SubStringIntercode(AddressCode *addressCode) {
   printf("JUMPIFEQ ReturnNil TF@tempBool bool@true\n");
   //strlen(s)
   printf("DEFVAR TF@TempInt\n");
-  printf("STRLEN TF@TempInt FL@r%d\n",addressCode->result);
+  printf("STRLEN TF@TempInt FL@r%d\n",grammarToken->tokensHolder[0]->data.grammarToken->reg);
   //i>=strlen(s)
   printf("DEFVAR TF@TempBool1\n");
   printf("DEFVAR TF@TempBool2\n");
@@ -73,7 +74,7 @@ void SubStringIntercode(AddressCode *addressCode) {
   printf("JUMPIFEQ For TF@boolCycle bool@true\n");
   //*-----*-----*-----*-----*-----*-----*-----*-----*-----*//
   //after For
-  printf("MOVE LF@r%d TF@SubString\n",addressCode->result);
+  printf("MOVE LF@r%d TF@SubString\n",grammarToken->tokensHolder[0]->data.grammarToken->reg);
   printf("JUMP SubStringIntercodeEnd\n");
   //*-----*-----*-----*-----*-----*-----*-----*-----*-----*//
   printf("LABEL For\n");
@@ -88,7 +89,7 @@ void SubStringIntercode(AddressCode *addressCode) {
   printf("JUMP For_Head\n");
   //*-----*-----*-----*-----*-----*-----*-----*-----*-----*-----*-----*-----*//
   printf("LABEL ReturnNil\n");
-  printf("MOV LF@r%d nil@nil\n",addressCode->result);
+  printf("MOV LF@r%d nil@nil\n",grammarToken->tokensHolder[0]->data.grammarToken->reg);
   printf("LABEL SubStringIntercodeEnd\n");
 }
 
@@ -99,20 +100,20 @@ void SubStringIntercode(AddressCode *addressCode) {
 
 // func ord(_ 𝑐 : String) -> Int – Vrátí ordinální hodnotu (ASCII) prvního znaku
 // v řetězci 𝑐. Je-li řetězec prázdný, vrací funkce 0.
-void ord(AddressCode *addressCode){
-  printf("DEFVAR LF@r%d\n", addressCode->result);
+void ord(GrammarToken *grammarToken, AddressTable *addressTable){
+  printf("DEFVAR LF@r%d\n",grammarToken->tokensHolder[0]->data.grammarToken->reg);
 //чекаем пустую строку
   printf("DEFVAR LF@len\n");
-  printf("STRLEN LF@len LF@r%d\n",addressCode->result);
+  printf("STRLEN LF@len LF@r%d\n",grammarToken->tokensHolder[0]->data.grammarToken->reg);
   printf("JUMPIFEQ ordEmpty LF@len int@0\n");
 //первый символ значение получаем
   printf("DEFVAR LF@fchar\n");
-  printf("GETCHAR LF@cfhar LF@r%d int@0\n", addressCode->result);
-  printf("STRI2INT LF@r%d LF@fchar int@0\n", addressCode->result);
+  printf("GETCHAR LF@cfhar LF@r%d int@0\n", grammarToken->tokensHolder[0]->data.grammarToken->reg);
+  printf("STRI2INT LF@r%d LF@fchar int@0\n", grammarToken->tokensHolder[0]->data.grammarToken->reg);
   printf("JUMP ordEnd\n");
 //работаем с пустой строкой
   printf("LABEL ordEmpty\n");
-  printf("MOVE LF@r%d int@0\n", addressCode->result);
+  printf("MOVE LF@r%d int@0\n", grammarToken->tokensHolder[0]->data.grammarToken->reg);
 
   printf("LABEL ordEnd");
   //printf("JUMP ProgramEnd\n");
@@ -120,65 +121,65 @@ void ord(AddressCode *addressCode){
 
 // func chr(_ 𝑖 : Int) -> String – Vrátí jednoznakový řetězec se znakem, jehož
 // ASCII kód je zadán parametrem 𝑖. Hodnotu 𝑖 mimo interval[0; 255]řeší odpovídající instrukce IFJcode23.
-void chr(AddressCode *addressCode){
-  printf("DEFVAR LF@r%d\n", addressCode->result);
+void chr(GrammarToken *grammarToken, AddressTable *addressTable){
+  printf("DEFVAR LF@r%d\n", grammarToken->tokensHolder[0]->data.grammarToken->reg);
   // чукаем лежит ли в интервале 0-255
   printf("LT LF@Range int@0 LF@r%d\n", addressCode->op1);
   printf("JUMPIFEQ chrRange LF@Range bool@true\n");
   // ставим 0, если меньше 0
-  printf("MOVE LF@r%d int@0\n", addressCode->result);
+  printf("MOVE LF@r%d int@0\n", grammarToken->tokensHolder[0]->data.grammarToken->reg);
   printf("JUMP chrend\n");
   printf("LABEL chrRange\n");
   printf("GT LF@chRange LF@r%d int@255\n", addressCode->op1);
   printf("JUMPIFEQ chrRange LF@Range bool@true\n");
   //ставим 255 если больше 255
-  printf("MOVE LF@r%d int@255\n", addressCode->result);
+  printf("MOVE LF@r%d int@255\n", grammarToken->tokensHolder[0]->data.grammarToken->reg);
 // конвертуем в символ
-  printf("INT2CHAR LF@r%d LF@r%d\n", addressCode->op1, addressCode->result);
+  printf("INT2CHAR LF@r%d LF@r%d\n", addressCode->op1, grammarToken->tokensHolder[0]->data.grammarToken->reg);
   printf("LABEL chrend\n");
 }
 
 //func readString() -> String?
-void ReadString(AddressCode *addressCode){
-  printf("DEFVAR LF@r%d\n", addressCode->result);
-  printf("READ LF@r%d string\n", addressCode->result);
+void ReadString(GrammarToken *grammarToken, AddressTable *addressTable){
+  printf("DEFVAR LF@r%d\n", grammarToken->tokensHolder[0]->data.grammarToken->reg);
+  printf("READ LF@r%d string\n", grammarToken->tokensHolder[0]->data.grammarToken->reg);
 }
 
 //func readInt() -> Int?
-void ReadInt(AddressCode *addressCode){
-  printf("DEFVAR LF@r%d\n", addressCode->result);
-  printf("READ LF@r%d int\n", addressCode->result);
+void ReadInt(GrammarToken *grammarToken, AddressTable *addressTable){
+  printf("DEFVAR LF@r%d\n", grammarToken->tokensHolder[0]->data.grammarToken->reg);
+  printf("READ LF@r%d int\n", grammarToken->tokensHolder[0]->data.grammarToken->reg);
 }
 
 //call ReadDouble
 //func readDouble() -> Double?
-void ReadDouble(AddressCode *addressCode){
+void ReadDouble(GrammarToken *grammarToken, AddressTable *addressTable){
   //jump end of double
   //ReadDouble:
 
-  printf("DEFVAR LF@r%d\n", addressCode->result);
-  printf("READ LF@r%d double\n", addressCode->result);
+  printf("DEFVAR LF@r%d\n", grammarToken->tokensHolder[0]->data.grammarToken->reg);
+  printf("READ LF@r%d double\n", grammarToken->tokensHolder[0]->data.grammarToken->reg);
 
   //return
   //end of double:
 }
 // func Int2Double(_ term ∶ Int) -> Double – Vrátí hodnotu celočíselného termu
 // term konvertovanou na desetinné číslo. Pro konverzi z celého čísla využijte odpovídající instrukci z IFJcode23.
-void Int2Double(AddressCode *addressCode) {
-  printf("DEFVAR LF@r%d\n",addressCode->result);
-  printf("INT2FLOAT LF@r%d LF@r%d\n", addressCode->result, addressCode->op1);
+void Int2Double(GrammarToken *grammarToken, AddressTable *addressTable) {
+  printf("DEFVAR LF@r%d\n",grammarToken->tokensHolder[0]->data.grammarToken->reg);
+  printf("INT2FLOAT LF@r%d LF@r%d\n", grammarToken->tokensHolder[0]->data.grammarToken->reg, addressCode->op1);
 }
 // func Double2Int(_ term ∶ Double) -> Int – Vrátí hodnotu desetinného termu
 // term konvertovanou na celé číslo, a to oříznutím desetinné části. Pro konverzi z desetinného čísla využijte odpovídající instrukci z IFJcode23.
-void Double2Int(AddressCode *addressCode) {
-  printf("DEFVAR LF@r%d\n",addressCode->result);
-  printf("FLOAT2INT LF@r%d LF@r%d\n", addressCode->result, addressCode->op1);
+void Double2Int(GrammarToken *grammarToken, AddressTable *addressTable) {
+  printf("DEFVAR LF@r%d\n",grammarToken->tokensHolder[0]->data.grammarToken->reg);
+  printf("FLOAT2INT LF@r%d LF@r%d\n", grammarToken->tokensHolder[0]->data.grammarToken->reg, addressCode->op1);
 }
 // func length(_ 𝑠 : String) -> Int – Vrátí délku (počet znaků) řetězce 𝑠. Např.
 // length("x\nz") vrací 3.
-void func_length(AddressCode *addressCode) {
-  printf("DEFVAR LF@r%d\n",addressCode->result);
-  printf("STRLEN LF@r%d LF@r%d\n", addressCode->result,addressCode->op1);
+void func_length(GrammarToken *grammarToken, AddressTable *addressTable) {
+  printf("DEFVAR LF@r%d\n",grammarToken->tokensHolder[0]->data.grammarToken->reg);
+  printf("STRLEN LF@r%d LF@r%d\n", grammarToken->tokensHolder[0]->data.grammarToken->reg,addressCode->op1);
 }
 
 

@@ -33,7 +33,7 @@ Error ifj_2023_parser_config(Parser *parser) {
   assert(parser->expressionParser && parser->llParser &&
          "Set the ll parser and precedence parser");
 
-  int llGrammarRulesCount = 54;//52
+  int llGrammarRulesCount = 53;//52
   GrammarRule llGrammarRules[] = {
       grammar_rule_create(STS, NULL, (TokenType[]){S, STS_TMP}, 2),
       grammar_rule_create(STS_TMP, NULL, (TokenType[]){DELIMITER, S, STS_TMP},
@@ -44,7 +44,7 @@ Error ifj_2023_parser_config(Parser *parser) {
       grammar_rule_create(S, BlockWhileInterCode, (TokenType[]){WHILE, COND, BLOCK}, 3),
       grammar_rule_create(S, NULL, (TokenType[]){IF, COND, BLOCK, IF_ELSE}, 4),
       grammar_rule_create(S, NULL, (TokenType[]){D}, 1),
-      grammar_rule_create(S, NULL, (TokenType[]){RETURN, E}, 2),    //TODO: ADD FUNCTION | result = reg num
+      grammar_rule_create(S, NULL, (TokenType[]){RETURN, E}, 2),    //TODO: ADD FUNCTION | result = reg
       grammar_rule_create(S, NULL, (TokenType[]){CONTINUE}, 1),     //TODO: ADD FUNCTION | result = cycleLabel
       grammar_rule_create(S, NULL, (TokenType[]){BREAK}, 1),        //TODO: ADD FUNCTION | result = cycleLabel
       grammar_rule_create(COND, CondWhileInterCode, (TokenType[]){E}, 1),
