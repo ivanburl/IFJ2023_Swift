@@ -6,7 +6,7 @@
 
 void InterCodeInit() {
   printf(".IFJcode23\n");
-  printf("DEFVAR GF@FuncReturn");
+  printf("DEFVAR GF@FuncReturn\n");
   printf("CREATEFRAME\n");
   printf("PUSHFRAME\n");
   //InsertPrebuildFUNCS
@@ -18,19 +18,19 @@ void InterCodeEnd() {
 }
 
 void PushArg(AddressCode *addressCode) {
-  printf("PUSHS LF@r%d",addressCode->result);
+  printf("PUSHS LF@r%d\n",addressCode->result);
 }
 //string - arg0
 //od - arg1
 //do - arg2
 void SubStringIntercode(AddressCode *addressCode) {
   printf("DEFVAR TF@tempBool\n");
-  printf("DEFVAR TF@arg2");
-  printf("POPS TF@arg2");
-  printf("DEFVAR TF@arg1");
-  printf("POPS TF@arg1");
-  printf("DEFVAR TF@arg0");
-  printf("POPS TF@arg0");
+  printf("DEFVAR TF@arg2\n");
+  printf("POPS TF@arg2\n");
+  printf("DEFVAR TF@arg1\n");
+  printf("POPS TF@arg1\n");
+  printf("DEFVAR TF@arg0\n");
+  printf("POPS TF@arg0\n");
   //i<0
   printf("LT TF@tempBool FL@arg1 int@0\n");
   printf("JUMPIFEQ ReturnNil TF@tempBool bool@true\n");
