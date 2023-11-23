@@ -39,7 +39,7 @@ Error scanner_code_to_tokens(Scanner *scanner, char *code,
       if (error.errorType != NONE) {
         return error;
       }
-      vector_push_back(tokenVector, token);
+      token_vector_push_back(tokenVector, token);
 
       tokenStr[0] = 0;
       tokenStrPointer = 0;
@@ -68,7 +68,7 @@ Error scanner_code_to_tokens(Scanner *scanner, char *code,
   if (error.errorType != NONE) {
     return error;
   }
-  vector_push_back(tokenVector, token);
+  token_vector_push_back(tokenVector, token);
 
   return error_create(NONE, "finished successfully");
 }

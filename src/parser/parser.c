@@ -144,8 +144,6 @@ Error parser_parse(Parser *parser, GrammarToken *grammarToken,
   return error_create(NONE, NULL);
 }
 
-typedef vector(PParserItem) PParserItemVector;
-
 Error precedence_parser_reduce(PParser *pParser, PParserItemVector *tokenStack);
 
 /// uses precedence
@@ -155,7 +153,7 @@ Error precedence_parser_parse(Parser *parser, Token **tokenPointer,
   int balance = 0;
 
   PParserItemVector stack;
-  vector_init(&stack);
+  pparser_item_vector_init(&stack);
 
   Token dollarToken;
   token_init(&dollarToken);
@@ -166,7 +164,7 @@ Error precedence_parser_parse(Parser *parser, Token **tokenPointer,
 
   initItem.token = &dollarToken;
 
-  vector_push_back(&stack, initItem);
+  pparser_item_vector_push_back(&stack, initItem);
 
   while (true) {
     bool delimiterRemoved = false;
@@ -255,7 +253,7 @@ Error precedence_parser_parse(Parser *parser, Token **tokenPointer,
       free(stack.data);
       return error_create(NONE, NULL);
     } else if (closeType == 1) {
-      vector_push_back(&stack, item);
+      pparser_item_vector_push_back(&stack, item);
       assert(stack.data[foundTerminalPointer + 1].opened == 0);
       stack.data[foundTerminalPointer + 1].opened = 1;
       balance += 1;
@@ -339,6 +337,6 @@ Error precedence_parser_reduce(PParser *pParser,
   pparser_item_init(&reducedItem);
   reducedItem.token = reducedToken;
 
-  vector_push_back(tokenStack, reducedItem);
+  pparser_item_vector_push_back(tokenStack, reducedItem);
   return error_create(NONE, NULL);
 }

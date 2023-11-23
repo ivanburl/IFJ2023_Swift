@@ -99,4 +99,5 @@ add_executable(IFJ2023_Swift src/main.c
         src/codegen/AddressTable/address_table.h
         src/test/codegen_test/codegen_test.c
         src/test/codegen_test/codegen_test.h
+        src/structures/vector/vector.c
 )

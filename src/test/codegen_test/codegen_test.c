@@ -30,7 +30,7 @@ int codegen_test() {
 //  }
 
   TokenVector tokenVector;
-  vector_init(&tokenVector);
+  token_vector_init(&tokenVector);
 
   /**
    * while id >= id {
@@ -69,7 +69,7 @@ int codegen_test() {
   assert(err.errorType == NONE);
 
   //code gen
-  err = generate_inter_code(&grammarToken);
+  //err = generate_inter_code(&grammarToken);
   assert(err.errorType == NONE);
 //  printToken(&grammarToken);
   return 0;

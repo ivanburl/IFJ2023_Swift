@@ -1,5 +1,8 @@
+////
+//// Created by thekr on 11/21/2023.
+////
 //
-// Created by thekr on 11/21/2023.
+//#include "inter_code.h"
 //
 
 #include "inter_code.h"
@@ -412,8 +415,62 @@ void SoftUnwrapInterCode(GrammarToken *grammarToken, AddressTable *addressTable)
 
 //void HardUnwrapInterCode(GrammarToken *grammarToken, AddressTable *addressTable) {
 //  if (addressCode->op1 == -1) {
-//    printf("EXIT 99\n");
+//    printf("DEFVAR LF@r%d\n",addressCode->result);
+//    printf("MOVE LF@r%d LF@r%d\n",addressCode->result,addressCode->op2);
 //  }
+//}
+//
+////void HardUnwrapInterCode(AddressCode *addressCode) {
+////  if (addressCode->op1 == -1) {
+////    printf("EXIT 99\n");
+////  }
+//
+//void WhileInitInterCode(AddressCode *addressCode){
+//  printf("LABEL cycle%d\n", addressCode->result);
+//}
+//
+//void CondWhileInterCode (AddressCode *addressCode){
+//  printf("JUMPIFEQ BLOCK%d LF@r%d bool@true\n",addressCode->result,addressCode->op1);
+//  printf("JUMPIFEQ ESCAPE%d LF@r%d bool@false\n",addressCode->result,addressCode->op1);
+//  printf("LABEL BLOCK%d\n",addressCode->result);
+//}
+//
+//void geBlockWhileInterCode (AddressCode *addressCode){
+//  printf("JUMP cycle%d\n",addressCode->result);
+//  printf("LABEL ESCAPE%d\n",addressCode->result);
+//}
+//
+//void GenerateFunctionInterCode(AddressCode *addressCode) {
+//  printf("LABEL Fun%d\n",addressCode->op1);
+////обработка параметров
+////  printf("JUMP CodeBlock%d\n",addressCode->op1);
+////блок функции
+////  printf("LABEL ReturnFunc%d\n",addressCode->op1);
+//  printf("RETURN\n");
+//}
+//
+//void GenerateIfInterCode (AddressCode *addressCode) {
+//  printf("LABEL If%d\n",addressCode->op1);
+//  printf("JUMPIFEQ CodeBlock%d LF@r%d bool@true\n",addressCode->op1,addressCode->op2);
+//  printf("LABEL Else%d\n",addressCode->result);
+//  printf("JUMP CodeBlock%d\n",addressCode->result);
+//}
+//
+//void GenerateCodeBlock(int blockID,int argCount){
+//  for (int i = 0; i < argCount; i++) {
+//    printf("POPS TF@arg%d\n",argCount);
+//  }
+//  printf("LABEL CodeBlocklock%d\n", blockID);
+//  printf("DEFVAR LF@tempVar\n");
+//
+//  printf("JUMPIFEQ EndCodeBlock%d LF@tempVar bool@true\n", blockID);//короче тут хз еще тип если что то сиганет в конец
+//
+//  printf("LABEL EndCodeBlock%d\n", blockID);
+//}
+//
+//void IfGeneration(AddressCode *addressCode) {
+//
+//}
 
 /*
 void WhileInitInterCode(AddressCode *addressCode){

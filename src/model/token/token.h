@@ -6,8 +6,8 @@
 #define IFJ2023_SWIFT_TOKEN_H
 
 #include "../../structures/string/string.h"
+#include "../../structures/vector/vector.h"
 #include "../error/error.h"
-#include "../../structures/vector/vector_t.h"
 
 #define MAX_TOKEN_TYPES_NUMBER 128
 
@@ -16,82 +16,83 @@
  */
 typedef enum token_enum {
   /// TERMINALS (should be constructed by scanner)
-  UNDEFINED=0,
+  UNDEFINED = 0,
 
-  STRING=1,
-  INTEGER=2,
-  DOUBLE=3,
-  NIL=4,
-  MULTI_STRING=5,
-  COMMENT=6,
-  MULTI_COMMENT=7,
-  BOOLEAN=8,
+  STRING = 1,
+  INTEGER = 2,
+  DOUBLE = 3,
+  NIL = 4,
+  MULTI_STRING = 5,
+  COMMENT = 6,
+  MULTI_COMMENT = 7,
+  BOOLEAN = 8,
 
-  ID=9,
+  ID = 9,
 
-  BLANK=10,
-  DELIMITER=11,
+  BLANK = 10,
+  DELIMITER = 11,
 
-  STRING_TYPE=12,
-  INT_TYPE=13,
-  DOUBLE_TYPE=14,
-  BOOLEAN_TYPE=15,
-  STRING_NULLABLE_TYPE=16,
-  INT_NULLABLE_TYPE=17,
-  DOUBLE_NULLABLE_TYPE=18,
-  BOOLEAN_NULLABLE_TYPE=19,
+  STRING_TYPE = 12,
+  INT_TYPE = 13,
+  DOUBLE_TYPE = 14,
+  BOOLEAN_TYPE = 15,
+  STRING_NULLABLE_TYPE = 16,
+  INT_NULLABLE_TYPE = 17,
+  DOUBLE_NULLABLE_TYPE = 18,
+  BOOLEAN_NULLABLE_TYPE = 19,
 
-  IF=20,
-  ELSE=21,
+  IF = 20,
+  ELSE = 21,
 
-  LET=22,
-  VAR=23,
-  CONTINUE=24,
-  BREAK=25,
+  LET = 22,
+  VAR = 23,
+  CONTINUE = 24,
+  BREAK = 25,
 
-  WHILE=26,
+  WHILE = 26,
 
-  //QUOTE,
-  LEFT_CURL_BRACKET=27,
-  RIGHT_CURL_BRACKET=28,
-  LEFT_BRACKET=29,
-  RIGHT_BRACKET=30,
-  COLON=31,
-  SEMICOLON=32,
+  // QUOTE,
+  LEFT_CURL_BRACKET = 27,
+  RIGHT_CURL_BRACKET = 28,
+  LEFT_BRACKET = 29,
+  RIGHT_BRACKET = 30,
+  COLON = 31,
+  SEMICOLON = 32,
 
-  PLUS=33,
-  MINUS=34,
-  MULTIPLY=35,
-  DIVIDE=36,
-  EQUAL=37,
-  ASSIGN=38,
-  LESS_EQUAL=39,
-  GREATER_EQUAL=40,
-  GREATER=41,
-  LESS=42,
-  NOT_EQUAL=43,
+  PLUS = 33,
+  MINUS = 34,
+  MULTIPLY = 35,
+  DIVIDE = 36,
+  EQUAL = 37,
+  ASSIGN = 38,
+  LESS_EQUAL = 39,
+  GREATER_EQUAL = 40,
+  GREATER = 41,
+  LESS = 42,
+  NOT_EQUAL = 43,
 
-  SOFT_UNWRAP=44,
-  HARD_UNWRAP=45,
+  SOFT_UNWRAP = 44,
+  HARD_UNWRAP = 45,
 
-  FUNC=46,
-  ARROW=47,
-  COMMA=48,
-  RETURN=49,
-  UNDERSCORE=50,
-  LOGICAL_AND=51,
-  LOGICAL_OR=52,
+  FUNC = 46,
+  ARROW = 47,
+  COMMA = 48,
+  RETURN = 49,
+  UNDERSCORE = 50,
+  LOGICAL_AND = 51,
+  LOGICAL_OR = 52,
 
-  ///used only for PSA algo
-  DOLLAR=53,
+  /// used only for PSA algo
+  DOLLAR = 53,
 
   /// NON_TERMINALS (should be constructed by parser)
-  /// tokeType < NON_TERMINAL -> terminal, tokeType > NON_TERMINAL - non-terminal
-  NON_TERMINAL_UNDEFINED, //the start of non-terminal symbols
+  /// tokeType < NON_TERMINAL -> terminal, tokeType > NON_TERMINAL -
+  /// non-terminal
+  NON_TERMINAL_UNDEFINED, // the start of non-terminal symbols
 
-  ///one statements
+  /// one statements
   S,
-  ///expression
+  /// expression
   E,
   /// factor of expression
   F,
@@ -113,7 +114,7 @@ typedef enum token_enum {
   FUNC_ID,
   /// collection of params
   PARAMS,
-  ///collection of params (USED FOR LL)
+  /// collection of params (USED FOR LL)
   PARAMS_TMP,
   /// annotation of the type (Example = id : Integer), could not be null
   TANN,
@@ -145,6 +146,8 @@ typedef struct token {
     struct grammar_token_t *grammarToken;
   } data;
 } Token;
+
+vector_def(Token, Token, token_);
 
 void token_init(Token *token);
 

@@ -11,7 +11,7 @@
 unsigned int strhash(const char *str)
 {
   unsigned int c, hash = FNV32_BASE;
-  while ((c = (unsigned char) *str++))
+  while ((c = (unsigned char)*str++))
     hash = (hash * FNV32_PRIME) ^ c;
   return hash;
 }
@@ -71,16 +71,16 @@ int AT_put(AddressTable *addressTable, String *var, int reg) {
 //------------WHILE------------
 int init_cycle(AddressTable *addressTable) {
   int cur_while = addressTable->resCycles++;
-  vector_push_back(addressTable->curCycle, cur_while);
+  int_vector_push_back(addressTable->curCycle, cur_while);
   return cur_while;
 }
 
 int end_cycle(AddressTable *addressTable) {
   int cur_while = get_cur_cycle(addressTable);
-  vector_erase_back(addressTable->curCycle);
+  int_vector_pop(addressTable->curCycle);
   return cur_while;
 }
 
 int get_cur_cycle(AddressTable *addressTable) {
-  return vector_at(addressTable->curCycle, addressTable->curCycle->length-1);
+  return int_vector_at(addressTable->curCycle, addressTable->curCycle->length - 1);
 }

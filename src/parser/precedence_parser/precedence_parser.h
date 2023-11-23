@@ -6,12 +6,16 @@
 #define IFJ2023_SWIFT_PRECEDENCE_PARSER_H
 
 #include "../../model/grammar/grammar.h"
+#include "../../model/token/token.h"
 #include "../ll_parser/ll_parser.h"
+#include "../../structures/vector/vector.h"
 
 typedef struct pparser_item_t {
   bool closed, opened;
   Token *token;
 } PParserItem;
+
+vector_def(PParserItem, PParserItem, pparser_item_);
 
 void pparser_item_init(PParserItem *item);
 

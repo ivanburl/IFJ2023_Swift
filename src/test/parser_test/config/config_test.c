@@ -36,7 +36,7 @@ int parser_config_test() {
   }
 
   TokenVector tokenVector;
-  vector_init(&tokenVector);
+  token_vector_init(&tokenVector);
 
   /**
    * while id >= id {
@@ -51,61 +51,61 @@ int parser_config_test() {
    *
    *
    */
-  vector_push_back(&tokenVector, fast_create_token(WHILE));
-  vector_push_back(&tokenVector, fast_create_token(ID));
-  vector_push_back(&tokenVector, fast_create_token(GREATER_EQUAL));
-  vector_push_back(&tokenVector, fast_create_token(ID));
-  vector_push_back(&tokenVector, fast_create_token(LEFT_CURL_BRACKET));
+  token_vector_push_back(&tokenVector, fast_create_token(WHILE));
+  token_vector_push_back(&tokenVector, fast_create_token(ID));
+  token_vector_push_back(&tokenVector, fast_create_token(GREATER_EQUAL));
+  token_vector_push_back(&tokenVector, fast_create_token(ID));
+  token_vector_push_back(&tokenVector, fast_create_token(LEFT_CURL_BRACKET));
 
-  vector_push_back(&tokenVector, fast_create_token(LET));
-  vector_push_back(&tokenVector, fast_create_token(ID));
-  vector_push_back(&tokenVector, fast_create_token(ASSIGN));
-  vector_push_back(&tokenVector, fast_create_token(LEFT_BRACKET));
-  vector_push_back(&tokenVector, fast_create_token(ID));
-  vector_push_back(&tokenVector, fast_create_token(PLUS));
-  vector_push_back(&tokenVector, fast_create_token(ID));
-  vector_push_back(&tokenVector, fast_create_token(RIGHT_BRACKET));
-  vector_push_back(&tokenVector, fast_create_token(MULTIPLY));
-  vector_push_back(&tokenVector, fast_create_token(LEFT_BRACKET));
-  vector_push_back(&tokenVector, fast_create_token(ID));
-  vector_push_back(&tokenVector, fast_create_token(DIVIDE));
-  vector_push_back(&tokenVector, fast_create_token(ID));
-  vector_push_back(&tokenVector, fast_create_token(MINUS));
-  vector_push_back(&tokenVector, fast_create_token(INTEGER));
-  vector_push_back(&tokenVector, fast_create_token(MULTIPLY));
-  vector_push_back(&tokenVector, fast_create_token(DOUBLE));
-  vector_push_back(&tokenVector, fast_create_token(RIGHT_BRACKET));
+  token_vector_push_back(&tokenVector, fast_create_token(LET));
+  token_vector_push_back(&tokenVector, fast_create_token(ID));
+  token_vector_push_back(&tokenVector, fast_create_token(ASSIGN));
+  token_vector_push_back(&tokenVector, fast_create_token(LEFT_BRACKET));
+  token_vector_push_back(&tokenVector, fast_create_token(ID));
+  token_vector_push_back(&tokenVector, fast_create_token(PLUS));
+  token_vector_push_back(&tokenVector, fast_create_token(ID));
+  token_vector_push_back(&tokenVector, fast_create_token(RIGHT_BRACKET));
+  token_vector_push_back(&tokenVector, fast_create_token(MULTIPLY));
+  token_vector_push_back(&tokenVector, fast_create_token(LEFT_BRACKET));
+  token_vector_push_back(&tokenVector, fast_create_token(ID));
+  token_vector_push_back(&tokenVector, fast_create_token(DIVIDE));
+  token_vector_push_back(&tokenVector, fast_create_token(ID));
+  token_vector_push_back(&tokenVector, fast_create_token(MINUS));
+  token_vector_push_back(&tokenVector, fast_create_token(INTEGER));
+  token_vector_push_back(&tokenVector, fast_create_token(MULTIPLY));
+  token_vector_push_back(&tokenVector, fast_create_token(DOUBLE));
+  token_vector_push_back(&tokenVector, fast_create_token(RIGHT_BRACKET));
 
-  vector_push_back(&tokenVector, fast_create_token(DELIMITER));
-  vector_push_back(&tokenVector, fast_create_token(DELIMITER));
+  token_vector_push_back(&tokenVector, fast_create_token(DELIMITER));
+  token_vector_push_back(&tokenVector, fast_create_token(DELIMITER));
 
-  vector_push_back(&tokenVector, fast_create_token(IF));
-  vector_push_back(&tokenVector, fast_create_token(LET));
-  vector_push_back(&tokenVector, fast_create_token(ID));
-  vector_push_back(&tokenVector, fast_create_token(LEFT_CURL_BRACKET));
-  vector_push_back(&tokenVector, fast_create_token(RETURN));
-  vector_push_back(&tokenVector, fast_create_token(ID));
-  vector_push_back(&tokenVector, fast_create_token(DELIMITER));
-  vector_push_back(&tokenVector, fast_create_token(RIGHT_CURL_BRACKET));
-  vector_push_back(&tokenVector, fast_create_token(DELIMITER));
+  token_vector_push_back(&tokenVector, fast_create_token(IF));
+  token_vector_push_back(&tokenVector, fast_create_token(LET));
+  token_vector_push_back(&tokenVector, fast_create_token(ID));
+  token_vector_push_back(&tokenVector, fast_create_token(LEFT_CURL_BRACKET));
+  token_vector_push_back(&tokenVector, fast_create_token(RETURN));
+  token_vector_push_back(&tokenVector, fast_create_token(ID));
+  token_vector_push_back(&tokenVector, fast_create_token(DELIMITER));
+  token_vector_push_back(&tokenVector, fast_create_token(RIGHT_CURL_BRACKET));
+  token_vector_push_back(&tokenVector, fast_create_token(DELIMITER));
 
-  vector_push_back(&tokenVector, fast_create_token(IF));
-  vector_push_back(&tokenVector, fast_create_token(ID));
-  vector_push_back(&tokenVector, fast_create_token(EQUAL));
-  vector_push_back(&tokenVector, fast_create_token(INTEGER));
-  vector_push_back(&tokenVector, fast_create_token(LEFT_CURL_BRACKET));
-  vector_push_back(&tokenVector, fast_create_token(RETURN));
-  vector_push_back(&tokenVector, fast_create_token(ID));
-  vector_push_back(&tokenVector, fast_create_token(PLUS));
-  vector_push_back(&tokenVector, fast_create_token(ID));
-  vector_push_back(&tokenVector, fast_create_token(RIGHT_CURL_BRACKET));
+  token_vector_push_back(&tokenVector, fast_create_token(IF));
+  token_vector_push_back(&tokenVector, fast_create_token(ID));
+  token_vector_push_back(&tokenVector, fast_create_token(EQUAL));
+  token_vector_push_back(&tokenVector, fast_create_token(INTEGER));
+  token_vector_push_back(&tokenVector, fast_create_token(LEFT_CURL_BRACKET));
+  token_vector_push_back(&tokenVector, fast_create_token(RETURN));
+  token_vector_push_back(&tokenVector, fast_create_token(ID));
+  token_vector_push_back(&tokenVector, fast_create_token(PLUS));
+  token_vector_push_back(&tokenVector, fast_create_token(ID));
+  token_vector_push_back(&tokenVector, fast_create_token(RIGHT_CURL_BRACKET));
 
-  vector_push_back(&tokenVector, fast_create_token(DELIMITER));
-  vector_push_back(&tokenVector, fast_create_token(DELIMITER));
-  vector_push_back(&tokenVector, fast_create_token(RIGHT_CURL_BRACKET));
-  vector_push_back(&tokenVector, fast_create_token(DELIMITER));
-  vector_push_back(&tokenVector, fast_create_token(DELIMITER));
-  vector_push_back(&tokenVector, fast_create_token(DELIMITER));
+  token_vector_push_back(&tokenVector, fast_create_token(DELIMITER));
+  token_vector_push_back(&tokenVector, fast_create_token(DELIMITER));
+  token_vector_push_back(&tokenVector, fast_create_token(RIGHT_CURL_BRACKET));
+  token_vector_push_back(&tokenVector, fast_create_token(DELIMITER));
+  token_vector_push_back(&tokenVector, fast_create_token(DELIMITER));
+  token_vector_push_back(&tokenVector, fast_create_token(DELIMITER));
 
   GrammarToken grammarToken;
   grammar_token_init(&grammarToken);

@@ -5,25 +5,25 @@
 #ifndef IFJ2023_SWIFT_ADDRESS_TABLE_H
 #define IFJ2023_SWIFT_ADDRESS_TABLE_H
 
-#include "../../model/token/token.h"
 #include "../../structures/hashmap/hashmap.h"
 #include "../../structures/string/string.h"
+#include "../../structures/vector/vector.h"
 
-//TODO: ADDRESS_TABLE supports only global variables
+// TODO: ADDRESS_TABLE supports only global variables
 typedef struct address_table_t {
-  //vars
+  // vars
   HashMap *hashMap;
   int resRegisters;
 
-  //cycles
+  // cycles
   int resCycles;
-  vector(int) *curCycle;
+  IntVector *curCycle;
 } AddressTable;
 
 typedef struct var_address_t {
-  struct hashmap_entry entry; //hash holder
-  String *key; //key of entry
-  int value; //value of entry
+  struct hashmap_entry entry; // hash holder
+  String *key;                // key of entry
+  int value;                  // value of entry
 } VarAddress;
 
 unsigned int strhash(const char *str);
