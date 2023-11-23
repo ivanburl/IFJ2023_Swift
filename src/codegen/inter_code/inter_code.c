@@ -333,7 +333,7 @@ void SoftUnwrapInterCode(AddressCode *addressCode) {
 //  }
 
 void WhileInitInterCode(AddressCode *addressCode){
-  printf("LABEL WHILE%d\n", addressCode->result);
+  printf("LABEL cycle%d\n", addressCode->result);
 }
 
 void CondWhileInterCode (AddressCode *addressCode){
@@ -343,27 +343,26 @@ void CondWhileInterCode (AddressCode *addressCode){
 }
 
 void geBlockWhileInterCode (AddressCode *addressCode){
-  printf("JUMP WHILE%d\n",addressCode->result);
+  printf("JUMP cycle%d\n",addressCode->result);
   printf("LABEL ESCAPE%d\n",addressCode->result);
 }
 
 void GenerateFunctionInterCode(AddressCode *addressCode) {
-  printf("LABEL Fun%d\n", addressCode->op1);
+  int blockId = addressCode->op1;
+  printf("LABEL Fun%d\n", blockId);
 //обработка параметров
-  printf("JUMP CodeBlockF%d\n",addressCode->op1);
+  printf("JUMP CodeBlockF%d\n",blockId);
 //блок функции
-  printf("LABEL ReturnFunc%d\n",addressCode->op1);
+  printf("LABEL ReturnFunc%d\n",blockId);
   printf("RETURN\n");
 }
 
 //короче тут вообще хз, сильно на меня не матерись я уже заебанный пишу это
-void GenerateBlock(AddressCode *addressCode){
-  printf("LABEL CodeBlocklock%d\n", addressCode->op1);
+void GenerateBlock(int blockid){
+  printf("LABEL CodeBlocklock%d\n", blockid);
   printf("DEFVAR LF@tempVar\n");
 
-  printf("JUMPZ EndCodeBlock%d LF@tempVar\n", addressCode->op1);//короче тут хз еще тип если что то сиганет в конец
+  printf("JUMP EndCodeBlock%d LF@tempVar\n", blockid);//короче тут хз еще тип если что то сиганет в конец
 
-  printf("WRITE LF@tempVar\n");// Код, который будет выполнен, если все заебись
-
-  printf("LABEL EndCodeBlock%d\n", addressCode->op1);
+  printf("LABEL EndCodeBlock%d\n", blockid);
 }
