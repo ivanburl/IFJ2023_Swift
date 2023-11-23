@@ -41,14 +41,13 @@ Error ifj_2023_parser_config(Parser *parser) {
       grammar_rule_create(STS_TMP, NULL, (TokenType[]){}, 0),
 
       grammar_rule_create(S, NULL, (TokenType[]){}, 0),
-      grammar_rule_create(S, NULL, (TokenType[]){WHILE, COND, BLOCK}, 3),
+      grammar_rule_create(S, BlockWhileInterCode, (TokenType[]){WHILE, COND, BLOCK}, 3),
       grammar_rule_create(S, NULL, (TokenType[]){IF, COND, BLOCK, IF_ELSE}, 4),
-      grammar_rule_create(S, NULL, (TokenType[]){E}, 1),
       grammar_rule_create(S, NULL, (TokenType[]){D}, 1),
-      grammar_rule_create(S, NULL, (TokenType[]){RETURN, E}, 2),
-      grammar_rule_create(S, NULL, (TokenType[]){CONTINUE}, 1),
-      grammar_rule_create(S, NULL, (TokenType[]){BREAK}, 1),
-      grammar_rule_create(COND, NULL, (TokenType[]){E}, 1),
+      grammar_rule_create(S, NULL, (TokenType[]){RETURN, E}, 2),    //TODO: ADD FUNCTION | result = reg num
+      grammar_rule_create(S, NULL, (TokenType[]){CONTINUE}, 1),     //TODO: ADD FUNCTION | result = cycleLabel
+      grammar_rule_create(S, NULL, (TokenType[]){BREAK}, 1),        //TODO: ADD FUNCTION | result = cycleLabel
+      grammar_rule_create(COND, CondWhileInterCode, (TokenType[]){E}, 1),
       grammar_rule_create(COND, NULL, (TokenType[]){LET, ID}, 2),
       grammar_rule_create(IF_ELSE, NULL, (TokenType[]){}, 0),
       grammar_rule_create(IF_ELSE, NULL, (TokenType[]){ELSE, BLOCK}, 2),
@@ -85,7 +84,7 @@ Error ifj_2023_parser_config(Parser *parser) {
       grammar_rule_create(F_CALL, NULL,
                           (TokenType[]){LEFT_BRACKET, ARGS, RIGHT_BRACKET}, 3),
       grammar_rule_create(F_CALL, NULL, (TokenType[]){}, 0),
-      grammar_rule_create(F_CALL, HardUnwrapInterCode, (TokenType[]){HARD_UNWRAP}, 1),
+      grammar_rule_create(F_CALL, NULL, (TokenType[]){HARD_UNWRAP}, 1),
       grammar_rule_create(ARGS, NULL, (TokenType[]){ARG, ARGS_TMP}, 1),
       grammar_rule_create(ARGS_TMP, NULL, (TokenType[]){}, 0),
       grammar_rule_create(ARGS_TMP, NULL, (TokenType[]){COMMA, ARG, ARGS_TMP},
@@ -113,19 +112,19 @@ Error ifj_2023_parser_config(Parser *parser) {
   // TODO add boolean operations
   int pGrammarRulesCount = 14;
   GrammarRule pGrammarRules[] = {
-      grammar_rule_create(E, NULL, (TokenType[]){E, PLUS, E}, 3),
-      grammar_rule_create(E, NULL, (TokenType[]){E, MINUS, E}, 3),
-      grammar_rule_create(E, NULL, (TokenType[]){E, MULTIPLY, E}, 3),
-      grammar_rule_create(E, NULL, (TokenType[]){E, DIVIDE, E}, 3),
-      grammar_rule_create(E, NULL, (TokenType[]){E, EQUAL, E}, 3),
-      grammar_rule_create(E, NULL, (TokenType[]){E, NOT_EQUAL, E}, 3),
-      grammar_rule_create(E, NULL, (TokenType[]){E, GREATER, E}, 3),
-      grammar_rule_create(E, NULL, (TokenType[]){E, LESS, E}, 3),
-      grammar_rule_create(E, NULL, (TokenType[]){E, GREATER_EQUAL, E}, 3),
-      grammar_rule_create(E, NULL, (TokenType[]){E, LESS_EQUAL, E}, 3),
-      grammar_rule_create(E, NULL, (TokenType[]){E, SOFT_UNWRAP, E}, 3),
-      grammar_rule_create(E, NULL, (TokenType[]){E, LOGICAL_OR, E}, 3),
-      grammar_rule_create(E, NULL, (TokenType[]){E, LOGICAL_AND, E}, 3),
+      grammar_rule_create(E, SumInterCode, (TokenType[]){E, PLUS, E}, 3),
+      grammar_rule_create(E, SubInterCode, (TokenType[]){E, MINUS, E}, 3),
+      grammar_rule_create(E, MulInterCode, (TokenType[]){E, MULTIPLY, E}, 3),
+      grammar_rule_create(E, DivInterCode, (TokenType[]){E, DIVIDE, E}, 3),
+      grammar_rule_create(E, EqualInterCode, (TokenType[]){E, EQUAL, E}, 3),
+      grammar_rule_create(E, NotEqualInterCode, (TokenType[]){E, NOT_EQUAL, E}, 3),
+      grammar_rule_create(E, GreaterInterCode, (TokenType[]){E, GREATER, E}, 3),
+      grammar_rule_create(E, LessInterCode, (TokenType[]){E, LESS, E}, 3),
+      grammar_rule_create(E, GreaterEqualInterCode, (TokenType[]){E, GREATER_EQUAL, E}, 3),
+      grammar_rule_create(E, LessEqualInterCode, (TokenType[]){E, LESS_EQUAL, E}, 3),
+      grammar_rule_create(E, SoftUnwrapInterCode, (TokenType[]){E, SOFT_UNWRAP, E}, 3),
+      grammar_rule_create(E, OrInterCode, (TokenType[]){E, LOGICAL_OR, E}, 3),
+      grammar_rule_create(E, AndInterCode, (TokenType[]){E, LOGICAL_AND, E}, 3),
       grammar_rule_create(E, NULL, (TokenType[]){F}, 1),
   };
 

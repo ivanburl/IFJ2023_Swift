@@ -1,9 +1,8 @@
 //
 // Created by burluiva on 11/13/2023.
 //
+
 #include "config_test.h"
-#include "../../../parser/config/config_parser.h"
-#include "../../../utils/logger.h"
 
 Token fast_create_token(TokenType type) {
   Token token;

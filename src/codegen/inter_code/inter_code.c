@@ -6,9 +6,9 @@
 
 void InterCodeInit() {
   printf(".IFJcode23\n");
+  printf("DEFVAR GF@FuncReturn");
   printf("CREATEFRAME\n");
   printf("PUSHFRAME\n");
-
   //InsertPrebuildFUNCS
 }
 
@@ -17,11 +17,20 @@ void InterCodeEnd() {
   printf("POPFRAME\n");
 }
 
+void PushArg(AddressCode *addressCode) {
+  printf("PUSHS LF@r%d",addressCode->result);
+}
 //string - arg0
 //od - arg1
 //do - arg2
-void SubStringIntercode(AddressCode *addressCode){
+void SubStringIntercode(AddressCode *addressCode) {
   printf("DEFVAR TF@tempBool\n");
+  printf("DEFVAR TF@arg2");
+  printf("POPS TF@arg2");
+  printf("DEFVAR TF@arg1");
+  printf("POPS TF@arg1");
+  printf("DEFVAR TF@arg0");
+  printf("POPS TF@arg0");
   //i<0
   printf("LT TF@tempBool FL@arg1 int@0\n");
   printf("JUMPIFEQ ReturnNil TF@tempBool bool@true\n");
@@ -193,6 +202,15 @@ void StoreDouble(int reg, double d) {
   }
 }
 
+void StoreBool(int reg,bool b ){
+  printf("DEFVAR LF@r%d\n", reg);
+  if (b == false) {
+    printf("MOVE LF@r%d nil@nil\n",reg);
+  } else {
+    printf("MOVE LF@r%d bool@%d\n",reg,b);
+  }
+}
+
 
 
 //typedef struct string {
@@ -221,6 +239,15 @@ void StoreString(int reg, String *str) {
   }
 }
 
+void OrInterCode(AddressCode *addressCode) {
+  printf("DEFVAR LF@r%d\n",addressCode->result);
+  printf("OR LF@r%d LF@r%d LF@r%d\n",addressCode->result,addressCode->op1,addressCode->op2);
+}
+
+void AndInterCode(AddressCode *addressCode) {
+  printf("DEFVAR LF@r%d\n",addressCode->result);
+  printf("AND LF@r%d LF@r%d LF@r%d\n",addressCode->result,addressCode->op1,addressCode->op2);
+}
 
 void SumInterCode(AddressCode *addressCode) {
   printf("DEFVAR LF@r%d\n",addressCode->result);
@@ -300,8 +327,43 @@ void SoftUnwrapInterCode(AddressCode *addressCode) {
   }
 }
 
-void HardUnwrapInterCode(AddressCode *addressCode) {
-  if (addressCode->op1 == -1) {
-    printf("EXIT 99\n");
-  }
+//void HardUnwrapInterCode(AddressCode *addressCode) {
+//  if (addressCode->op1 == -1) {
+//    printf("EXIT 99\n");
+//  }
+
+void WhileInitInterCode(AddressCode *addressCode){
+  printf("LABEL WHILE%d\n", addressCode->result);
+}
+
+void CondWhileInterCode (AddressCode *addressCode){
+  printf("JUMPIFEQ BLOCK%d LF@r%d bool@true\n",addressCode->result,addressCode->op1);
+  printf("JUMPIFEQ ESCAPE%d LF@r%d bool@false\n",addressCode->result,addressCode->op1);
+  printf("LABEL BLOCK%d\n",addressCode->result);
+}
+
+void geBlockWhileInterCode (AddressCode *addressCode){
+  printf("JUMP WHILE%d\n",addressCode->result);
+  printf("LABEL ESCAPE%d\n",addressCode->result);
+}
+
+void GenerateFunctionInterCode(AddressCode *addressCode) {
+  printf("LABEL Fun%d\n", addressCode->op1);
+//обработка параметров
+  printf("JUMP CodeBlockF%d\n",addressCode->op1);
+//блок функции
+  printf("LABEL ReturnFunc%d\n",addressCode->op1);
+  printf("RETURN\n");
+}
+
+//короче тут вообще хз, сильно на меня не матерись я уже заебанный пишу это
+void GenerateBlock(AddressCode *addressCode){
+  printf("LABEL CodeBlocklock%d\n", addressCode->op1);
+  printf("DEFVAR LF@tempVar\n");
+
+  printf("JUMPZ EndCodeBlock%d LF@tempVar\n", addressCode->op1);//короче тут хз еще тип если что то сиганет в конец
+
+  printf("WRITE LF@tempVar\n");// Код, который будет выполнен, если все заебись
+
+  printf("LABEL EndCodeBlock%d\n", addressCode->op1);
 }

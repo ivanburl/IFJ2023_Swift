@@ -19,7 +19,6 @@
 
 /// FNV-1 algorithm
 /// http://www.isthe.com/chongo/tech/comp/fnv).
-extern unsigned int memhash(const void *buf, size_t len);
 
 typedef struct hashmap_entry {
   struct hashmap_entry *next;

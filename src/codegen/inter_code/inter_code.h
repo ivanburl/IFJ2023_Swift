@@ -6,6 +6,7 @@
 #define IFJ2023_SWIFT_INTER_CODE_H
 #include "ctype.h"
 #include <stdio.h>
+#include "stdbool.h"
 #include "../../model/grammar/rule/grammar_rule.h"
 
 void InterCodeInit();
@@ -16,6 +17,7 @@ void StoreDouble(int reg, double d);
 void ReadDouble(AddressCode *addressCode);
 void ReadString(AddressCode *addressCode);
 void ReadInt(AddressCode *addressCode);
+void StoreBool(int reg,bool b );
 void SumInterCode(AddressCode *addressCode);
 void SubInterCode(AddressCode *addressCode);
 void MulInterCode(AddressCode *addressCode);
@@ -34,6 +36,11 @@ void func_length(AddressCode *addressCode);
 void SubStringIntercode(AddressCode *addressCode);
 void ord(AddressCode *addressCode);
 void chr(AddressCode *addressCode);
+void OrInterCode(AddressCode *addressCode);
+void AndInterCode(AddressCode *addressCode);
+void WhileInitInterCode(AddressCode *addressCode);
+void CondWhileInterCode (AddressCode *addressCode);
+void BlockWhileInterCode (AddressCode *addressCode);
 
 
 //Write
