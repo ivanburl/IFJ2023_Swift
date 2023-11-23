@@ -5,9 +5,9 @@
 #ifndef IFJ2023_SWIFT_VECTOR_H
 #define IFJ2023_SWIFT_VECTOR_H
 
-#include "../../model/token/token.h"
 #include "vector_t.h"
 
-typedef vector(Token) TokenVector;
+vector_def(int, Int, int_);
+vector_def(double, Double, double_);
 
 #endif // IFJ2023_SWIFT_VECTOR_H

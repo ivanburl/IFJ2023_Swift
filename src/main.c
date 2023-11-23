@@ -14,7 +14,7 @@ void test() {
   scanner_configure_swift_2023(&scanner);
 
   TokenVector tokenVector;
-  vector_init(&tokenVector);
+  token_vector_init(&tokenVector);
   scanner_code_to_tokens(&scanner, test, &tokenVector);
   TokenType types[1000];
 

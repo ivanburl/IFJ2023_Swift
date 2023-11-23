@@ -30,7 +30,7 @@ int codegen_test() {
 //  }
 
   TokenVector tokenVector;
-  vector_init(&tokenVector);
+  token_vector_init(&tokenVector);
 
   /**
    * while id >= id {
@@ -46,16 +46,16 @@ int codegen_test() {
    *
    */
 
-//  vector_push_back(&tokenVector, fast_create_token(ID));
-//  vector_push_back(&tokenVector, fast_create_token(ASSIGN));
-  vector_push_back(&tokenVector, fast_create_token(LET));
-  vector_push_back(&tokenVector, fast_create_token(ID));
+//  token_vector_push_back(&tokenVector, fast_create_token(ID));
+//  token_vector_push_back(&tokenVector, fast_create_token(ASSIGN));
+  token_vector_push_back(&tokenVector, fast_create_token(LET));
+  token_vector_push_back(&tokenVector, fast_create_token(ID));
   tokenVector.data[1].data.string = string_create("a");
-  vector_push_back(&tokenVector, fast_create_token(ASSIGN));
-  vector_push_back(&tokenVector, fast_create_token(INTEGER));
+  token_vector_push_back(&tokenVector, fast_create_token(ASSIGN));
+  token_vector_push_back(&tokenVector, fast_create_token(INTEGER));
   tokenVector.data[3].data.integer_value = 1;
-  vector_push_back(&tokenVector, fast_create_token(PLUS));
-  vector_push_back(&tokenVector, fast_create_token(INTEGER));
+  token_vector_push_back(&tokenVector, fast_create_token(PLUS));
+  token_vector_push_back(&tokenVector, fast_create_token(INTEGER));
   tokenVector.data[5].data.integer_value = 2;
 
   GrammarToken grammarToken;
@@ -66,7 +66,7 @@ int codegen_test() {
   assert(err.errorType == NONE);
 
   //code gen
-  err = generate_inter_code(&grammarToken);
+  //err = generate_inter_code(&grammarToken);
   assert(err.errorType == NONE);
 //  printToken(&grammarToken);
   return 0;

@@ -7,6 +7,7 @@
 
 #include "../../../codegen/AddressTable/address_table.h"
 #include "../../error/error.h"
+#include "../../token/token.h"
 #include <stdbool.h>
 
 #define MAX_GRAMMAR_RULE_PRODUCTIONS_SIZE 128

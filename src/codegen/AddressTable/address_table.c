@@ -7,10 +7,9 @@
 #define FNV32_BASE ((unsigned int)0x811c9dc5)
 #define FNV32_PRIME ((unsigned int)0x01000193)
 
-unsigned int strhash(const char *str)
-{
+unsigned int strhash(const char *str) {
   unsigned int c, hash = FNV32_BASE;
-  while ((c = (unsigned char) *str++))
+  while ((c = (unsigned char)*str++))
     hash = (hash * FNV32_PRIME) ^ c;
   return hash;
 }
@@ -25,7 +24,6 @@ int cmp_fn(const VarAddress *entryA, const VarAddress *entryB) {
   return strcmp(entryA->key->data, entryB->key->data) ? 0 : 1;
 }
 
-
 int get_reg_fromTA(AddressTable *addressTable, String *var) {
   VarAddress *varAddress = hashmap_get(addressTable->hashMap, var);
   if (varAddress != NULL) {
@@ -34,9 +32,9 @@ int get_reg_fromTA(AddressTable *addressTable, String *var) {
   return -1;
 }
 
-//Theoretically pizdec
+// Theoretically pizdec
 int create_with_reg_fromTA(AddressTable *addressTable, String *var, int reg) {
-  //Create and put new value
+  // Create and put new value
   VarAddress *newEntry = malloc(sizeof(VarAddress));
   hashmap_entry_init(newEntry, strhash(var->data));
   newEntry->key = var;
@@ -54,16 +52,16 @@ int get_reg_new(AddressTable *addressTable) {
 //------------WHILE------------
 int init_cycle(AddressTable *addressTable) {
   int cur_while = addressTable->resCycles++;
-  vector_push_back(addressTable->curCycle, cur_while);
+  int_vector_push_back(addressTable->curCycle, cur_while);
   return cur_while;
 }
 
 int end_cycle(AddressTable *addressTable) {
   int cur_while = get_cur_cycle(addressTable);
-  vector_erase_back(addressTable->curCycle);
+  int_vector_pop(addressTable->curCycle);
   return cur_while;
 }
 
 int get_cur_cycle(AddressTable *addressTable) {
-  return vector_at(addressTable->curCycle, addressTable->curCycle->length-1);
+  return int_vector_at(addressTable->curCycle, addressTable->curCycle->length - 1);
 }
