@@ -45,17 +45,20 @@ int codegen_test() {
    *
    *
    */
+    vector_push_back(&tokenVector, fast_create_token(INTEGER));
+    tokenVector.data[0].data.integer_value = 1;
+    vector_push_back(&tokenVector, fast_create_token(PLUS));
+    vector_push_back(&tokenVector, fast_create_token(INTEGER));
+    tokenVector.data[2].data.integer_value = 2;
 
+//  vector_push_back(&tokenVector, fast_create_token(LET));
 //  vector_push_back(&tokenVector, fast_create_token(ID));
+//  tokenVector.data[1].data.string = string_create("a");
 //  vector_push_back(&tokenVector, fast_create_token(ASSIGN));
-  vector_push_back(&tokenVector, fast_create_token(LET));
-  vector_push_back(&tokenVector, fast_create_token(ID));
-  tokenVector.data[1].data.string = string_create("a");
-  vector_push_back(&tokenVector, fast_create_token(ASSIGN));
-  vector_push_back(&tokenVector, fast_create_token(INTEGER));
-  tokenVector.data[3].data.integer_value = 1;
-  vector_push_back(&tokenVector, fast_create_token(PLUS));
-  vector_push_back(&tokenVector, fast_create_token(INTEGER));
+//  vector_push_back(&tokenVector, fast_create_token(INTEGER));
+//  tokenVector.data[3].data.integer_value = 1;
+//  vector_push_back(&tokenVector, fast_create_token(PLUS));
+//  vector_push_back(&tokenVector, fast_create_token(INTEGER));
   tokenVector.data[5].data.integer_value = 2;
 
   GrammarToken grammarToken;
