@@ -15,10 +15,11 @@ void grammar_rule_init(GrammarRule *grammarRule) {
   }
 }
 
-GrammarRule grammar_rule_create(TokenType resultTokenType, AssemblerFn parseFn,
+GrammarRule grammar_rule_create(TokenType resultTokenType,
+                                SematicAnalysisTokenFn sematicAnalysisToken,
+                                AssemblerFn parseFn,
                                 const TokenType *tokenProductions,
                                 int productionsNumber) {
-  assert(tokenProductions);
   assert(productionsNumber >= 0 &&
          productionsNumber <= MAX_GRAMMAR_RULE_PRODUCTIONS_SIZE);
 
@@ -27,6 +28,7 @@ GrammarRule grammar_rule_create(TokenType resultTokenType, AssemblerFn parseFn,
 
   grammarRule.resultTokenType = resultTokenType;
   grammarRule.assemblerFn = parseFn;
+  grammarRule.sematicAnalysisToken = sematicAnalysisToken;
   grammarRule.productionsNumber = productionsNumber;
 
   for (int i = 0; i < productionsNumber; i++) {

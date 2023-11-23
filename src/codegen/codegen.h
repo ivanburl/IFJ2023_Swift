@@ -6,7 +6,7 @@
 #define IFJ2023_SWIFT_CODEGEN_H
 
 #include "inter_code/inter_code.h"
-#include "../model/grammar/grammar.h"s
+#include "../model/grammar/grammar.h"
 #include "AddressTAble/address_table.h"
 #include "../model/grammar/rule/grammar_rule.h"
 #include "../model/grammar/token/grammar_token.h"
