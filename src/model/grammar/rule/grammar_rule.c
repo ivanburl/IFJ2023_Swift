@@ -7,7 +7,9 @@
 void grammar_rule_init(GrammarRule *grammarRule) {
   assert(grammarRule);
   grammarRule->resultTokenType = UNDEFINED;
-  grammarRule->assemblerFn = NULL;
+  grammarRule->assemblerFnPreOrd = NULL;
+  grammarRule->assemblerFnPostOrd = NULL;
+  grammarRule->sematicAnalysisFn = NULL;
   grammarRule->productionsNumber = 0;
 
   for (int i = 0; i < MAX_GRAMMAR_RULE_PRODUCTIONS_SIZE; i++) {
@@ -16,10 +18,10 @@ void grammar_rule_init(GrammarRule *grammarRule) {
 }
 
 GrammarRule grammar_rule_create(TokenType resultTokenType,
-                                SematicAnalysisTokenFn sematicAnalysisToken,
-                                AssemblerFn parseFn,
-                                const TokenType *tokenProductions,
-                                int productionsNumber) {
+                                SematicAnalysisFn sematicAnalysisFn,
+                    AssemblerFn assemblerFnPostOrder,
+                    AssemblerFn assemblerFnPreOrder,
+                    const TokenType *tokenProductions, int productionsNumber) {
   assert(productionsNumber >= 0 &&
          productionsNumber <= MAX_GRAMMAR_RULE_PRODUCTIONS_SIZE);
 
@@ -27,8 +29,9 @@ GrammarRule grammar_rule_create(TokenType resultTokenType,
   grammar_rule_init(&grammarRule);
 
   grammarRule.resultTokenType = resultTokenType;
-  grammarRule.assemblerFn = parseFn;
-  grammarRule.sematicAnalysisToken = sematicAnalysisToken;
+  grammarRule.assemblerFnPostOrd = assemblerFnPostOrder;
+  grammarRule.assemblerFnPreOrd = assemblerFnPreOrder;
+  grammarRule.sematicAnalysisFn = sematicAnalysisFn;
   grammarRule.productionsNumber = productionsNumber;
 
   for (int i = 0; i < productionsNumber; i++) {
