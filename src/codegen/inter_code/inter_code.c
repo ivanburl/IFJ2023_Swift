@@ -21,6 +21,7 @@ void InitPrebuildFunc() {
   Int2Double();
   Double2Int();
   StrLength();
+  Write();
 }
 
 void InterCodeEnd() {
@@ -486,7 +487,11 @@ void FuncInitializeEscape(GrammarToken *grammarToken, AddressTable *addressTable
 //POSTORDSADSD
 //grammar_rule_create(F, NULL, NULL, NULL, (TokenType[]){ID, F_CALL}, 2),
 void FuncCall(GrammarToken *grammarToken, AddressTable *addressTable) {
-  printf("CALL %s\n",grammarToken->tokensHolder[0]->data.string.data);
+  if (grammarToken->tokensHolder[1]->data.grammarToken->tokensHolderSize == 0) {
+    AT_get(addressTable, &grammarToken->tokensHolder[0]->data.string);
+  } else {
+    printf("CALL %s\n",grammarToken->tokensHolder[0]->data.string.data);
+  }
 }
 
 void FuncArgAdd(GrammarToken *grammarToken, AddressTable *addressTable) {
@@ -564,6 +569,16 @@ void PostOrderForIf (GrammarToken *grammarToken, AddressTable *addressTable) {
   end_cycle(addressTable);
 }
 
+void VarIdInit(GrammarToken *grammarToken, AddressTable *addressTable){
+  int reg = AT_create(addressTable, &grammarToken->tokensHolder[1]->data.string);
+  printf("DEFVAR LF@r%d\n", reg);
+  printf("MOVE LF@r%d LF@r%d\n",reg, grammarToken->tokensHolder[3]->data.grammarToken->reg);
+  grammarToken->reg = get_reg_cur(addressTable);
+}
+
+void InitProcess(GrammarToken *grammarToken, AddressTable *addressTable) {
+  grammarToken->reg = grammarToken->tokensHolder[1]->data.grammarToken->reg;
+}
 //preorder function pro s ,which does init cycle
 //preorder function for if else x2
 //postorder function pro s, which ends cycle (?-and define lable for skip-?)

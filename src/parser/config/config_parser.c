@@ -56,10 +56,10 @@ Error ifj_2023_parser_config(Parser *parser) {
       grammar_rule_create(
           BLOCK, NULL, NULL, NULL,
           (TokenType[]){LEFT_CURL_BRACKET, STS, RIGHT_CURL_BRACKET}, 3),
-      grammar_rule_create(D, NULL, NULL, NULL,
+      grammar_rule_create(D, NULL, VarIdInit, NULL,
                           (TokenType[]){VAR, ID, TANN_NULL, INIT}, 4),
-      grammar_rule_create(D, NULL, NULL, NULL,
-                          (TokenType[]){LET, ID, TANN_NULL, INIT}, 4),
+      grammar_rule_create(D, NULL, VarIdInit, NULL,
+                          (TokenType[]){LET, ID, TANN_NULL, INIT}, 4),  //TODO: Create constant support
       grammar_rule_create(D, NULL, FuncInitializeEscape, FuncInitialize,
                           (TokenType[]){FUNC, ID, LEFT_BRACKET, PARAMS,
                                         RIGHT_BRACKET, ARROW, TYPE, BLOCK},
@@ -77,7 +77,7 @@ Error ifj_2023_parser_config(Parser *parser) {
       grammar_rule_create(TANN, NULL, NULL, NULL, (TokenType[]){COLON, TYPE}, 2),
       grammar_rule_create(TANN_NULL, NULL, NULL, NULL, (TokenType[]){TANN}, 1),
       grammar_rule_create(TANN_NULL, NULL, NULL, NULL, (TokenType[]){}, 0),
-      grammar_rule_create(INIT, NULL, NULL, NULL, (TokenType[]){ASSIGN, E}, 2),
+      grammar_rule_create(INIT, NULL, InitProcess, NULL, (TokenType[]){ASSIGN, E}, 2),
       grammar_rule_create(INIT, NULL, NULL, NULL, (TokenType[]){}, 0),
       grammar_rule_create(F, NULL, NULL, NULL,
                           (TokenType[]){LEFT_BRACKET, E, RIGHT_BRACKET}, 3),
