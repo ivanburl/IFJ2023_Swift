@@ -55,5 +55,7 @@ void ContinueInterCode (GrammarToken *grammarToken, AddressTable *addressTable);
 void BreakInterCode (GrammarToken *grammarToken, AddressTable *addressTable);
 void VarIdInit(GrammarToken *grammarToken, AddressTable *addressTable);
 void InitProcess(GrammarToken *grammarToken, AddressTable *addressTable);
+void StoreNil(GrammarToken *grammarToken, AddressTable *addressTable);
+void InitAssignInterCode(GrammarToken *grammarToken, AddressTable *addressTable);
 
 #endif // IFJ2023_SWIFT_INTER_CODE_H

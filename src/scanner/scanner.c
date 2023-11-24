@@ -78,7 +78,11 @@ Error scanner_code_to_tokens(Scanner *scanner, char *code,
   if (error.errorType != NONE) {
     return error;
   }
-  token_vector_push_back(tokenVector, token);
+
+  if (token.type != UNDEFINED && token.type != MULTI_COMMENT && token.type != COMMENT && token.type != BLANK) {
+    token_vector_push_back(tokenVector, token);
+  }
+
   free(tokenStr);
   tokenStr = NULL;
 

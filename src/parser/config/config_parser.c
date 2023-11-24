@@ -33,7 +33,7 @@ Error ifj_2023_parser_config(Parser *parser) {
   assert(parser->expressionParser && parser->llParser &&
          "Set the ll parser and precedence parser");
 
-  int llGrammarRulesCount = 56; // 52
+  int llGrammarRulesCount = 57; // 52
   GrammarRule llGrammarRules[] = {
       grammar_rule_create(STS, NULL, NULL, NULL, (TokenType[]){S, STS_TMP}, 2),
       grammar_rule_create(STS_TMP, NULL, NULL, NULL,
@@ -44,13 +44,13 @@ Error ifj_2023_parser_config(Parser *parser) {
       grammar_rule_create(S, NULL, BlockWhileInterCode, WhileInitInterCode, (TokenType[]){WHILE, COND, BLOCK}, 3),
       grammar_rule_create(S, NULL, PostOrderForIf, PreOrderForIf,
                           (TokenType[]){IF, COND, BLOCK, IF_ELSE}, 4),
-      grammar_rule_create(S, NULL, NULL, NULL, (TokenType[]){E}, 1),
+      grammar_rule_create(S, NULL, InitAssignInterCode, NULL, (TokenType[]){E, INIT}, 2),
       grammar_rule_create(S, NULL, NULL, NULL, (TokenType[]){D}, 1),
       grammar_rule_create(S, NULL, ReturnInterCode, NULL, (TokenType[]){RETURN, E}, 2),
       grammar_rule_create(S, NULL, ContinueInterCode, NULL, (TokenType[]){CONTINUE}, 1),
       grammar_rule_create(S, NULL, BreakInterCode, NULL, (TokenType[]){BREAK}, 1),
       grammar_rule_create(COND, NULL, CondInterCode, NULL, (TokenType[]){E}, 1),
-      grammar_rule_create(COND, NULL, NULL, NULL, (TokenType[]){LET, ID}, 2),   //TODO: Create definition for this 
+      grammar_rule_create(COND, NULL, NULL, NULL, (TokenType[]){LET, ID}, 2),   //TODO: Create definition for this
       grammar_rule_create(IF_ELSE, NULL, NULL, PreOrderForIfEslse, (TokenType[]){}, 0),
       grammar_rule_create(IF_ELSE, NULL, NULL, PreOrderForIfEslse, (TokenType[]){ELSE, BLOCK}, 2),
       grammar_rule_create(
@@ -86,10 +86,12 @@ Error ifj_2023_parser_config(Parser *parser) {
       grammar_rule_create(F, NULL, StoreString, NULL, (TokenType[]){STRING}, 1),
       grammar_rule_create(F, NULL, StoreDouble, NULL, (TokenType[]){DOUBLE}, 1),
       grammar_rule_create(F, NULL, StoreBool, NULL, (TokenType[]){BOOLEAN}, 1),
+      grammar_rule_create(F, NULL, StoreNil, NULL, (TokenType[]){NIL}, 1),
+
       grammar_rule_create(F, NULL, NotInterCode, NULL, (TokenType[]){HARD_UNWRAP, F}, 2),
       grammar_rule_create(F_CALL, NULL, FuncArgAdd, NULL,
                           (TokenType[]){LEFT_BRACKET, ARGS, RIGHT_BRACKET}, 3),
-      grammar_rule_create(F_CALL, NULL, FuncArgAdd, NULL, (TokenType[]){}, 0),
+      grammar_rule_create(F_CALL, NULL, NULL , NULL, (TokenType[]){}, 0),
       grammar_rule_create(F_CALL, NULL, HardUnwrapInterCode, NULL,
                           (TokenType[]){HARD_UNWRAP}, 1),
       grammar_rule_create(ARGS, NULL, NULL, NULL, (TokenType[]){ARG, ARGS_TMP}, 1),

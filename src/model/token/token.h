@@ -131,8 +131,8 @@ typedef enum token_enum {
   ARGS_TMP,
   /// function argument (calling function)
   ARG,
-  // function of arguments (calling)
-  ARG_TMP,
+  /// function of arguments (calling)
+  ARG_TMP
 } TokenType;
 
 struct grammar_token_t;

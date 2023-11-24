@@ -21,6 +21,13 @@ void address_table_init(AddressTable *addressTable) {
   addressTable->resCycles = 0;
   addressTable->resIf = 0;
 
+  addressTable->variables = malloc(sizeof (HashMapPointerVector));
+  assert(addressTable->variables);
+  addressTable->curCycle = malloc(sizeof (IntVector));
+  assert(addressTable->curCycle);
+  addressTable->functionsStack = malloc(sizeof (StringPointerVector));
+  assert(addressTable->functionsStack);
+
   //init vectors
   hashmap_vector_init(addressTable->variables);
   int_vector_init(addressTable->curCycle);
@@ -30,7 +37,7 @@ void address_table_init(AddressTable *addressTable) {
   create_hashmap_inVector(addressTable);
 }
 int cmp_fn(const VarAddress *entryA, const VarAddress *entryB) {
-  return strcmp(entryA->key->data, entryB->key->data) ? 0 : 1;
+  return strcmp(entryA->key->data, entryB->key->data);
 }
 
 void create_hashmap_inVector(AddressTable *addressTable) {
@@ -69,16 +76,20 @@ int AT_create_withReg(AddressTable *addressTable, String *var, int reg) {
   newEntry->value = reg;
 
   HashMap *cur = hashmap_vector_at(addressTable->variables, addressTable->variables->length-1);
-  newEntry = hashmap_put(cur, newEntry);
+  VarAddress* oldEntry = hashmap_put(cur, newEntry); //IT RETURNS  OLD ENTITY
 
-  return newEntry != NULL ? newEntry->value : -1;
+  //return newEntry != NULL ? newEntry->value : -1;
+  return oldEntry == NULL ? newEntry->value : -1;
 }
 
 int AT_get(AddressTable *addressTable, String *var) {
   size_t dimCount = addressTable->variables->length;
   HashMap *cur = hashmap_vector_at(addressTable->variables, dimCount-1);
+  VarAddress entryToFind;
+  hashmap_entry_init(&entryToFind, strhash(var->data));
+  entryToFind.key = var;
 
-  VarAddress *varAddress = hashmap_get(cur, var);
+  VarAddress *varAddress = hashmap_get(cur, &entryToFind);
   if (varAddress != NULL) {
     return varAddress->value;
   }
@@ -87,7 +98,7 @@ int AT_get(AddressTable *addressTable, String *var) {
     return -1;
 
   cur = hashmap_vector_at(addressTable->variables, 0);
-  hashmap_get(cur, var);
+  hashmap_get(cur, &entryToFind);
   if (varAddress != NULL) {
     return varAddress->value;
   }

@@ -6,6 +6,9 @@
 #include <stdio.h>
 
 int main() {
+  Error err;
+  err.errorType = NONE;
+
   Scanner scanner;
   scanner_init(&scanner);
   scanner_configure_swift_2023(&scanner);
@@ -23,14 +26,23 @@ int main() {
 
   TokenVector tokenVector;
   token_vector_init(&tokenVector);
-  scanner_code_to_tokens(&scanner, inputVector.data, &tokenVector);
+  err = scanner_code_to_tokens(&scanner, inputVector.data, &tokenVector);
+
+  if (err.errorType != NONE) {
+    error_report(err);
+    return err.errorCode;
+  }
 
   GrammarToken sts;
   grammar_token_init(&sts);
   int offset = 0;
-  parser_parse(&parser, &sts, &tokenVector, &offset, STS, LL_PARSER);
+  err = parser_parse(&parser, &sts, &tokenVector, &offset, STS, LL_PARSER);
+
+  if (err.errorType != NONE) {
+    error_report(err);
+    return err.errorCode;
+  }
 
   generate_inter_code(&sts);
-  //TODO free memory
   return 0;
 }

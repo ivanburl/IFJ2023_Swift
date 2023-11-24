@@ -13,7 +13,7 @@
 typedef struct address_table_t {
   // vars
 //  HashMap *hashMap;
-  HashMapPointerVector *variables;
+  HashMapPointerVector* variables;
   int resRegisters;
 
   //if
@@ -21,7 +21,7 @@ typedef struct address_table_t {
 
   // cycles
   int resCycles;
-  IntVector *curCycle;
+  IntVector* curCycle;
 
   // functions
   int args_added;
