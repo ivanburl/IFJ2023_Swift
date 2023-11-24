@@ -45,10 +45,10 @@ int codegen_test() {
    *
    *
    */
-    vector_push_back(&tokenVector, fast_create_token(INTEGER));
+    token_vector_push_back(&tokenVector, fast_create_token(INTEGER));
     tokenVector.data[0].data.integer_value = 1;
-    vector_push_back(&tokenVector, fast_create_token(PLUS));
-    vector_push_back(&tokenVector, fast_create_token(INTEGER));
+    token_vector_push_back(&tokenVector, fast_create_token(PLUS));
+    token_vector_push_back(&tokenVector, fast_create_token(INTEGER));
     tokenVector.data[2].data.integer_value = 2;
 
 //  vector_push_back(&tokenVector, fast_create_token(LET));

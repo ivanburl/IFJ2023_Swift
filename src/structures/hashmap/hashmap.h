@@ -6,6 +6,7 @@
 #define IFJ2023_SWIFT_HASHMAP_H
 
 #include <stddef.h>
+#include "../../structures/vector/vector_t.h"
 
 /// inspiration
 /// https://opensHashource.apple.com/source/Git/Git-98/src/git/hashmap.h.auto.html
@@ -44,6 +45,9 @@ typedef struct hashmap {
   /// when table should grow
   unsigned int growAt;
 } HashMap;
+
+typedef HashMap* HashMapPointer;
+vector_def(HashMapPointer, HashMapPointer, hashmap_);
 
 void hashmap_init(HashMap *map, hashmap_cmp_fn equals_function);
 

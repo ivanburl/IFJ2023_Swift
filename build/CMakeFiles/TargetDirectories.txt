@@ -1,0 +1,3 @@
+/mnt/c/Uni/2BIT/IFJ/IFJ2023_Swift/build/CMakeFiles/IFJ2023_Swift.dir
+/mnt/c/Uni/2BIT/IFJ/IFJ2023_Swift/build/CMakeFiles/edit_cache.dir
+/mnt/c/Uni/2BIT/IFJ/IFJ2023_Swift/build/CMakeFiles/rebuild_cache.dir

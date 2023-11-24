@@ -1,15 +1,10 @@
-////
-//// Created by thekr on 11/21/2023.
-////
-//
-//#include "inter_code.h"
-//
-
 #include "inter_code.h"
 
 void InterCodeInit() {
   printf(".IFJcode23\n");
   printf("DEFVAR GF@FuncReturn\n");
+  printf("DEFVAR GF@__ArgCount__\n");
+  printf("DEFVAR GF@__Arg__\n");
   printf("CREATEFRAME\n");
   printf("PUSHFRAME\n");
   InitPrebuildFunc();
@@ -18,8 +13,14 @@ void InterCodeInit() {
 
 void InitPrebuildFunc() {
   SubStringIntercode();
-  chr();
-
+  Chr();
+  Ord();
+  ReadString();
+  ReadInt();
+  ReadDouble();
+  Int2Double();
+  Double2Int();
+  StrLength();
 }
 
 void InterCodeEnd() {
@@ -27,13 +28,11 @@ void InterCodeEnd() {
   printf("POPFRAME\n");
 }
 //ARG, NULL, (TokenType[]){E, ARG_TMP
-void PushArg(GrammarToken *grammarToken, AddressTable *addressTable) {
-  printf("PUSHS LF@r%d\n", grammarToken->tokensHolder[0]->data.grammarToken->reg);
-}
 
 void GetF(GrammarToken *grammarToken, AddressTable *addressTable) {
   grammarToken->reg = grammarToken->tokensHolder[0]->data.grammarToken->reg;
 }
+
 //string - arg0
 //od - arg1
 //do - arg2
@@ -48,13 +47,13 @@ void SubStringIntercode() {
   printf("DEFVAR TF@arg0\n");
   printf("POPS TF@arg0\n");
   //i<0
-  printf("LT TF@tempBool FL@arg1 int@0\n");
+  printf("LT TF@tempBool TF@arg1 int@0\n");
   printf("JUMPIFEQ ReturnNil TF@tempBool bool@true\n");
   //j<0
-  printf("LT TF@tempBool FL@arg2 int@0\n");
+  printf("LT TF@tempBool TF@arg2 int@0\n");
   printf("JUMPIFEQ ReturnNil TF@tempBool bool@true\n");
   //i<j
-  printf("GT TF@tempBool FL@arg1 FL@arg2\n");
+  printf("GT TF@tempBool TF@arg1 TF@arg2\n");
   printf("JUMPIFEQ ReturnNil TF@tempBool bool@true\n");
   //strlen(s)
   printf("DEFVAR TF@TempInt\n");
@@ -62,12 +61,12 @@ void SubStringIntercode() {
   //i>=strlen(s)
   printf("DEFVAR TF@TempBool1\n");
   printf("DEFVAR TF@TempBool2\n");
-  printf("GT TF@tempBool1 FL@arg1 TF@TempInt\n");
-  printf("EQ TF@tempBool2 FL@arg1 TF@TempInt\n");
+  printf("GT TF@tempBool1 TF@arg1 TF@TempInt\n");
+  printf("EQ TF@tempBool2 TF@arg1 TF@TempInt\n");
   printf("OR TF@tempBool TF@tempBool1 TF@tempBool2\n");
   printf("JUMPIFEQ ReturnNil TF@tempBool bool@true\n");
   //j>strlen(s)
-  printf("GT TF@tempBool FL@arg2 TF@TempInt\n");
+  printf("GT TF@tempBool TF@arg2 TF@TempInt\n");
   printf("JUMPIFEQ ReturnNil TF@tempBool bool@true\n");
   //*-----*-----*-----*-----*-----*-----*-----*-----*-----*-----*-----*-----*//
   //temps creations
@@ -76,21 +75,21 @@ void SubStringIntercode() {
   printf("DEFVAR TF@tempBoolCycle2\n");
   // (1*) int inc = i
   printf("DEFVAR TF@Increment\n");
-  printf("MOVE TF@Increment FL@arg1\n");
+  printf("MOVE TF@Increment TF@arg1\n");
   //substring and curchar def
   printf("DEFVAR TF@SubString\n");
   printf("MOVE TF@SubString string@\n");
   printf("DEFVAR TF@CurChar\n");
   //for( (1*) ; inc<=j; (2*) )
   printf("LABEL For_Head\n");
-  printf("LT TF@tempBoolCycle1 TF@Increment FL@arg2\n");
-  printf("EQ TF@tempBoolCycle2 TF@Increment FL@arg2\n");
+  printf("LT TF@tempBoolCycle1 TF@Increment TF@arg2\n");
+  printf("EQ TF@tempBoolCycle2 TF@Increment TF@arg2\n");
   printf("OR TF@boolCycle TF@tempBoolCycle1 TF@tempBoolCycle2\n");
   printf("JUMPIFEQ For TF@boolCycle bool@true\n");
   //*-----*-----*-----*-----*-----*-----*-----*-----*-----*//
   //after For
   printf("MOVE GF@FuncReturn TF@SubString\n");
-  printf("JUMP SubStringIntercodeEnd\n");
+  printf("RETURN\n");
   //*-----*-----*-----*-----*-----*-----*-----*-----*-----*//
   printf("LABEL For\n");
   //code zone {
@@ -106,6 +105,7 @@ void SubStringIntercode() {
   printf("LABEL ReturnNil\n");
   printf("MOV GF@FuncReturn nil@nil\n");
 
+  printf("RETURN\n");
   printf("LABEL SubStringIntercodeEnd\n");
 }
 
@@ -116,47 +116,47 @@ void SubStringIntercode() {
 
 // func ord(_ 𝑐 : String) -> Int – Vrátí ordinální hodnotu (ASCII) prvního znaku
 // v řetězci 𝑐. Je-li řetězec prázdný, vrací funkce 0.
-void ord(){
-  printf("JUMP ordend");
-  printf("LABEL ord");
-  printf("DEFVAR LF@r%d\n");
-//чекаем пустую строку
-  printf("DEFVAR LF@len\n");
-  printf("STRLEN LF@len LF@r%d\n");
-  printf("JUMPIFEQ ordEmpty LF@len int@0\n");
-//первый символ значение получаем
-  printf("DEFVAR LF@fchar\n");
-  printf("GETCHAR LF@cfhar LF@r%d int@0\n");
-  printf("STRI2INT LF@r%d LF@fchar int@0\n");
+void Ord(){
   printf("JUMP ordEnd\n");
-//работаем с пустой строкой
-  printf("LABEL ordEmpty\n");
+  printf("LABEL ord\n");
+  printf("DEFVAR TF@str\n");
+  printf("DEFVAR TF@type\n");
+  printf("DEFVAR TF@strlen\n");
+  printf("POPS TF@str\n");
+  printf("TYPE TF@type TF@str\n");
+  printf("JUMPIFEQ Ifstring TF@type string@string\n");
+  printf("EXIT 4\n");
+  printf("LABEL Ifstring\n");
+  printf("STRLEN TF@strlen TF@str\n");
+  printf("JUMPIFEQ IfLinezero TF@strlen int@0\n");
+  printf("STRI2INT GF@FuncReturn TF@str int@0\n");
   printf("RETURN\n");
-  printf("MOVE LF@r%d int@0\n");
-
-  printf("LABEL ordEnd");
+  printf("LABEL IfLinezero\n");
+  //*----*----*----*----*----*----*----*----*//
+  printf("MOVE GF@FuncReturn nil@nil\n");
+  printf("RETURN\n");
+  //*----*----*----*----*----*----*----*----*//
+  printf("LABEL ordEnd\n");
 }
+
 
 // func chr(_ 𝑖 : Int) -> String – Vrátí jednoznakový řetězec se znakem, jehož
 // ASCII kód je zadán parametrem 𝑖. Hodnotu 𝑖 mimo interval[0; 255]řeší odpovídající instrukce IFJcode23.
-void chr(){
+void Chr(){
   printf("JUMP chrend");
   printf("LABEL chr");
-  printf("DEFVAR LF@r%d\n");
-  // чукаем лежит ли в интервале 0-255
-  printf("LT LF@Range int@0 LF@r%d\n");
-  printf("JUMPIFEQ chrRange LF@Range bool@true\n");
-  // ставим 0, если меньше 0
-  printf("MOVE LF@r%d int@0\n");
-  printf("JUMP chrend\n");
-  printf("LABEL chrRange\n");
-  printf("GT LF@chRange LF@r%d int@255\n");
-  printf("JUMPIFEQ chrRange LF@Range bool@true\n");
-  //ставим 255 если больше 255
-  printf("MOVE LF@r%d int@255\n");
-// конвертуем в символ
-  printf("INT2CHAR LF@r%d LF@r%d\n");
-  printf("RETURN");
+  printf("DEFVAR TF@number\n");
+  printf("DEFVAR TF@type\n");
+  printf("DEFVAR TF@strlen\n");
+  printf("MOVE TF@strlen string@a\n");
+  printf("POPS TF@number\n");
+  printf("TYPE TF@type TF@number\n");
+  printf("JUMPIFEQ FuncIsInt TF@type string@int\n");
+  printf("EXIT 4\n");
+  printf("LABEL FuncIsInt\n");
+  printf("INT2CHAR TF@strlen TF@number\n");
+  printf("MOVE GF@FuncReturn TF@strlen");
+  printf("RETURN\n");
   printf("LABEL chrend\n");
 }
 
@@ -166,7 +166,8 @@ void ReadString(){
   printf("JUMP readStringEnd\n");
   printf("LABEL readString\n");
   printf("READ GF@FuncReturn string\n");
-  printf("LABEL readStringEnd")
+  printf("RETURN\n");
+  printf("LABEL readStringEnd\n");
 }
 
 
@@ -175,7 +176,8 @@ void ReadInt(){
   printf("JUMP ReadIntEnd\n");
   printf("LABEL readInt\n");
   printf("READ GF@FuncREturn int\n");
-  printf ("LABEL ReadIntEnd");
+  printf("RETURN\n");
+  printf ("LABEL ReadIntEnd\n");
 }
 
 
@@ -185,7 +187,8 @@ void ReadDouble(){
   printf("JUMP readDoubleEnd\n");
   printf("LABEL readDouble\n");
   printf("READ GF@FuncRetur double\n");
-  printf("LABEL readDoubleEnd")
+  printf("RETURN\n");
+  printf("LABEL readDoubleEnd\n");
 
 }
 
@@ -193,27 +196,39 @@ void ReadDouble(){
 // func Int2Double(_ term ∶ Int) -> Double – Vrátí hodnotu celočíselného termu
 // term konvertovanou na desetinné číslo. Pro konverzi z celého čísla využijte odpovídající instrukci z IFJcode23.
 void Int2Double() {
-  printf("JUMP ReadIntEnd\n");
-  printf("LABEL readInt\n");
-  printf("INT2FLOAT LF@r%d LF@r%d\n");
+  printf("JUMP Int2DoubleEnd\n");
+  printf("LABEL Int2Double\n");
+  printf("DEFVAR TF@tempInt\n");
+  printf("POPS TF@tempInt\n");
+  printf("INT2FLOAT GF@FuncReturn TF@tempInt\n");
+  printf("RETURN\n");
+  printf("LABEL Int2DoubleEnd\n");
 }
 
 
 // func Double2Int(_ term ∶ Double) -> Int – Vrátí hodnotu desetinného termu
 // term konvertovanou na celé číslo, a to oříznutím desetinné části. Pro konverzi z desetinného čísla využijte odpovídající instrukci z IFJcode23.
-void Double2Int(GrammarToken *grammarToken, AddressTable *addressTable) {
-  int res = get_reg_new(addressTable);
-  printf("DEFVAR LF@r%d\n",res);
-  printf("FLOAT2INT LF@r%d LF@r%d\n", res, grammarToken->tokensHolder[0]->data.grammarToken->reg);
+void Double2Int() {
+  printf("JUMP Double2IntEnd\n");
+  printf("LABEL Double2Int\n");
+  printf("DEFVAR TF@tempDouble\n");
+  printf("POPS TF@tempDouble\n");
+  printf("FLOAT2INT GF@FuncReturn TF@tempDouble\n");
+  printf("RETURN\n");
+  printf("LABEL Double2IntEnd\n");
 }
 
 
 // func length(_ 𝑠 : String) -> Int – Vrátí délku (počet znaků) řetězce 𝑠. Např.
 // length("x\nz") vrací 3.
-void StrLength(GrammarToken *grammarToken, AddressTable *addressTable) {
-  int res = get_reg_new(addressTable);
-  printf("DEFVAR LF@r%d\n",res);
-  printf("STRLEN LF@r%d LF@r%d\n", res,grammarToken->tokensHolder[0]->data.grammarToken->reg);
+void StrLength() {
+  printf("JUMP lengthEnd\n");
+  printf("LABEL length\n");
+  printf("DEFVAR TF@tempString\n");
+  printf("POPS TF@tempString\n");
+  printf("STRLEN GF@FuncReturn TF@tempString\n");
+  printf("RETURN\n");
+  printf("LABEL lengthEnd\n");
 }
 
 
@@ -288,6 +303,13 @@ void AndInterCode(GrammarToken *grammarToken, AddressTable *addressTable) {
   grammarToken->reg = get_reg_cur(addressTable);
 }
 
+void NotInterCode(GrammarToken *grammarToken, AddressTable *addressTable){
+  int res = get_reg_new(addressTable);
+  printf("DEFVAR LF@r%d\n",res);
+  printf("NOT LF@r%d LF@r%d\n",res,grammarToken->tokensHolder[0]->data.grammarToken->reg);
+  grammarToken->reg = get_reg_cur(addressTable);
+}
+
 //{E, PLUS, E}
 // E -> {F}
 //GrammarToken -> {TOKEN, TOKEN, TOKEN, ...}
@@ -321,12 +343,14 @@ void MulInterCode(GrammarToken *grammarToken, AddressTable *addressTable) {
 
 void DivInterCode(GrammarToken *grammarToken, AddressTable *addressTable) {
   int res = get_reg_new(addressTable);
-  printf("DEFVAR TF@temp1\n");
-  printf("DEFVAR TF@temp2\n");
-  printf("INT2FLOAT TF@temp1 LF@r%d\n",grammarToken->tokensHolder[0]->data.grammarToken->reg);
-  printf("INT2FLOAT TF@temp2 LF@r%d\n",grammarToken->tokensHolder[2]->data.grammarToken->reg);
+  //printf("DEFVAR TF@temp1\n");
+  //printf("DEFVAR TF@temp2\n");
+  //printf("INT2FLOAT TF@temp1 LF@r%d\n",grammarToken->tokensHolder[0]->data.grammarToken->reg);
+  //printf("INT2FLOAT TF@temp2 LF@r%d\n",grammarToken->tokensHolder[2]->data.grammarToken->reg);
   printf("DEFVAR LF@r%d\n",res);
-  printf("DIV LF@r%d TF@temp1 TF@temp2\n",res);
+  printf("DIV LF@r%d LF@r%d LF@r%d\n",res,
+                                      grammarToken->tokensHolder[0]->data.grammarToken->reg,
+                                      grammarToken->tokensHolder[2]->data.grammarToken->reg);
   grammarToken->reg = get_reg_cur(addressTable);
 }
 
@@ -401,9 +425,7 @@ void LessEqualInterCode(GrammarToken *grammarToken, AddressTable *addressTable) 
   grammarToken->reg = get_reg_cur(addressTable);
 }
 
-//op1 - starting number
-//op2 - what it should be equal to if op1 is NULL
-//result - resulting number
+
 void SoftUnwrapInterCode(GrammarToken *grammarToken, AddressTable *addressTable) {
   int res = get_reg_new(addressTable);
   if (grammarToken->tokensHolder[0]->data.grammarToken->reg == -1) {
@@ -413,110 +435,135 @@ void SoftUnwrapInterCode(GrammarToken *grammarToken, AddressTable *addressTable)
   grammarToken->reg = get_reg_cur(addressTable);
 }
 
+void Write(){
+  printf("JUMP EscapeWrite\n");
+  printf("LABEL write\n");
+  printf("POP GF@__ArgCount__\n");
+  printf("JUMPIFEQ ReturnWrite GF@__ArgCount__ int@0\n");//if argCount == 0 jump label return
+  printf("LABEL ForWrite\n");
+  printf("SUB GF@__ArgCount__ GF@__ArgCount__ int@1\n");
+  printf("POP GF@__Arg__\n");
+  printf("WRITE GF@__Arg__\n");//write pop
+  printf("JUMPIFNEQ ForWrite GF@__ArgCount__ int@0\n");
+
+  //label retrurtenr
+  printf("LABEL ReturnWrite\n");
+  printf("RETURN\n");
+  printf("LABEL EscapeWrite\n");
+}
+
+void FuncInitialize(GrammarToken *grammarToken, AddressTable *addressTable) {
+  init_function(addressTable, &grammarToken->tokensHolder[1]->data.string);
+  printf("JUMP Escape%s\n",grammarToken->tokensHolder[1]->data.string.data);
+  printf("LABEL %s\n",grammarToken->tokensHolder[1]->data.string.data);
+  printf("CREATEFRAME\n");
+  printf("PUSHFRAME\n");
+  printf("DEFVAR TF@trash\n");
+  printf("POPS TF@trash\n");
+  if (grammarToken->tokensHolder[3]->data.grammarToken->tokensHolderSize != 0) {
+    GrammarToken *curToken = grammarToken->tokensHolder[3]->data.grammarToken; //PARAMS
+    int reg = AT_create(addressTable, &curToken->tokensHolder[0]->data.grammarToken->tokensHolder[1]->data.string);
+    printf("DEFVAR LF@r%d\n", reg); //ID NAME
+    printf("POPS LF@r%d\n", reg);
+    curToken = curToken->tokensHolder[1]->data.grammarToken;  //PARAMS_TMP
+
+    while (curToken->tokensHolderSize != 0) {
+      reg = AT_create(addressTable, &curToken->tokensHolder[1]->data.grammarToken->tokensHolder[1]->data.grammarToken->tokensHolder[1]->data.string);
+      printf("DEFVAR LF@r%d\n", reg);
+      printf("POPS LF@r%d\n", reg);
+      curToken = curToken->tokensHolder[1]->data.grammarToken;
+    }
+  }
+}
+
+void FuncInitializeEscape(GrammarToken *grammarToken, AddressTable *addressTable) {
+  printf("POPFRAME\n");
+  printf("RETURN\n");
+  printf("LABEL Escape%s\n",grammarToken->tokensHolder[1]->data.string.data);
+  end_function(addressTable);
+}
+
+//POSTORDSADSD
+//grammar_rule_create(F, NULL, NULL, NULL, (TokenType[]){ID, F_CALL}, 2),
+void FuncCall(GrammarToken *grammarToken, AddressTable *addressTable) {
+  printf("CALL %s\n",grammarToken->tokensHolder[0]->data.string.data);
+}
+
+void FuncArgAdd(GrammarToken *grammarToken, AddressTable *addressTable) {
+  printf("DEFVAR TF@arg\n");
+  printf("MOVE TF@arg int@%d\n  ", get_args(addressTable));
+  printf("PUSH TF@arg\n");
+}
+
+void PushArg(GrammarToken *grammarToken, AddressTable *addressTable) {
+  add_arg(addressTable);
+  printf("PUSH LF@r%d\n",grammarToken->tokensHolder[0]->data.grammarToken->reg);
+}
+
+
+
+
 //void HardUnwrapInterCode(GrammarToken *grammarToken, AddressTable *addressTable) {
 //  if (addressCode->op1 == -1) {
 //    printf("DEFVAR LF@r%d\n",addressCode->result);
 //    printf("MOVE LF@r%d LF@r%d\n",addressCode->result,addressCode->op2);
 //  }
 //}
-//
-////void HardUnwrapInterCode(AddressCode *addressCode) {
-////  if (addressCode->op1 == -1) {
-////    printf("EXIT 99\n");
-////  }
-//
-//void WhileInitInterCode(AddressCode *addressCode){
-//  printf("LABEL cycle%d\n", addressCode->result);
-//}
-//
-//void CondWhileInterCode (AddressCode *addressCode){
-//  printf("JUMPIFEQ BLOCK%d LF@r%d bool@true\n",addressCode->result,addressCode->op1);
-//  printf("JUMPIFEQ ESCAPE%d LF@r%d bool@false\n",addressCode->result,addressCode->op1);
-//  printf("LABEL BLOCK%d\n",addressCode->result);
-//}
-//
-//void geBlockWhileInterCode (AddressCode *addressCode){
-//  printf("JUMP cycle%d\n",addressCode->result);
-//  printf("LABEL ESCAPE%d\n",addressCode->result);
-//}
-//
-//void GenerateFunctionInterCode(AddressCode *addressCode) {
-//  printf("LABEL Fun%d\n",addressCode->op1);
-////обработка параметров
-////  printf("JUMP CodeBlock%d\n",addressCode->op1);
-////блок функции
-////  printf("LABEL ReturnFunc%d\n",addressCode->op1);
-//  printf("RETURN\n");
-//}
-//
-//void GenerateIfInterCode (AddressCode *addressCode) {
-//  printf("LABEL If%d\n",addressCode->op1);
-//  printf("JUMPIFEQ CodeBlock%d LF@r%d bool@true\n",addressCode->op1,addressCode->op2);
-//  printf("LABEL Else%d\n",addressCode->result);
-//  printf("JUMP CodeBlock%d\n",addressCode->result);
-//}
-//
-//void GenerateCodeBlock(int blockID,int argCount){
-//  for (int i = 0; i < argCount; i++) {
-//    printf("POPS TF@arg%d\n",argCount);
-//  }
-//  printf("LABEL CodeBlocklock%d\n", blockID);
-//  printf("DEFVAR LF@tempVar\n");
-//
-//  printf("JUMPIFEQ EndCodeBlock%d LF@tempVar bool@true\n", blockID);//короче тут хз еще тип если что то сиганет в конец
-//
-//  printf("LABEL EndCodeBlock%d\n", blockID);
-//}
-//
-//void IfGeneration(AddressCode *addressCode) {
-//
-//}
 
-/*
-void WhileInitInterCode(AddressCode *addressCode){
-  printf("LABEL cycle%d\n", addressCode->result);
+void HardUnwrapInterCode(GrammarToken *grammarToken, AddressTable *addressTable) {
+  //printf("DEFVAR LF@tempReg\n");
+  //printf("MOVE LF@tempReg TF@r%d\n", grammarToken->tokensHolder[0]->data.grammarToken->reg);
+  printf("JUMPIFEQ ExitIfZero LF@r%d nil@nil\n", grammarToken->tokensHolder[0]->data.grammarToken->reg);
+  printf("JUMP EscapeHardUnwrap");
+  printf("LABEL ExitIfZero\n");
+  printf("EXIT 57\n");
+  printf("LABEL EscapeHardUnwrap\n");
 }
 
-void CondWhileInterCode (AddressCode *addressCode){
-  printf("JUMPIFEQ BLOCK%d LF@r%d bool@true\n",addressCode->result,addressCode->op1);
-  printf("JUMPIFEQ ESCAPE%d LF@r%d bool@false\n",addressCode->result,addressCode->op1);
-  printf("LABEL BLOCK%d\n",addressCode->result);
+
+
+void WhileInitInterCode(GrammarToken *grammarToken, AddressTable *addressTable){
+  int num = init_cycle(addressTable);
+  printf("LABEL cycle%d\n",num);
 }
 
-void geBlockWhileInterCode (AddressCode *addressCode){
-  printf("JUMP cycle%d\n",addressCode->result);
-  printf("LABEL ESCAPE%d\n",addressCode->result);
+void CondInterCode (GrammarToken *grammarToken, AddressTable *addressTable){
+  printf("JUMPIFEQ BLOCK%d LF@r%d bool@true\n",get_cur_cycle(addressTable),grammarToken->tokensHolder[0]->data.grammarToken->reg);
+  printf("JUMPIFEQ ESCAPE%d LF@r%d bool@false\n",get_cur_cycle(addressTable),grammarToken->tokensHolder[0]->data.grammarToken->reg);
+  printf("LABEL BLOCK%d\n",get_cur_cycle(addressTable));
 }
 
-void GenerateFunctionInterCode(AddressCode *addressCode) {
-  printf("LABEL Fun%d\n",addressCode->op1);
-//обработка параметров
-//  printf("JUMP CodeBlock%d\n",addressCode->op1);
-//блок функции
-//  printf("LABEL ReturnFunc%d\n",addressCode->op1);
-  printf("RETURN\n");
+void BlockWhileInterCode (GrammarToken *grammarToken, AddressTable *addressTable){
+  printf("JUMP cycle%d\n",get_cur_cycle(addressTable));
+  printf("LABEL ESCAPE%d\n",get_cur_cycle(addressTable));
 }
 
-void GenerateIfInterCode (AddressCode *addressCode) {
-  printf("LABEL If%d\n",addressCode->op1);
-  printf("JUMPIFEQ CodeBlock%d LF@r%d bool@true\n",addressCode->op1,addressCode->op2);
-  printf("LABEL Else%d\n",addressCode->result);
-  printf("JUMP CodeBlock%d\n",addressCode->result);
+void BreakInterCode (GrammarToken *grammarToken, AddressTable *addressTable){
+  printf("JUMP ESCAPE%d\n",get_cur_cycle(addressTable));
 }
 
-void GenerateCodeBlock(int blockID,int argCount){
-  for (int i = 0; i < argCount; i++) {
-    printf("POPS TF@arg%d\n",argCount);
-  }
-  printf("LABEL CodeBlocklock%d\n", blockID);
-  printf("DEFVAR LF@tempVar\n");
-
-  printf("JUMPIFEQ EndCodeBlock%d LF@tempVar bool@true\n", blockID);//короче тут хз еще тип если что то сиганет в конец
-
-  printf("LABEL EndCodeBlock%d\n", blockID);
+void ContinueInterCode (GrammarToken *grammarToken, AddressTable *addressTable){
+  printf("JUMP cycle%d\n",get_cur_cycle(addressTable));
 }
 
-void IfGeneration(AddressCode *addressCode) {
-
+void ReturnInterCode (GrammarToken *grammarToken, AddressTable *addressTable){
+  printf("MOVE GF@ReturnFunc LF@r%d",grammarToken->tokensHolder[1]->data.grammarToken->reg);
 }
-*/
+
+void PreOrderForIf (GrammarToken *grammarToken, AddressTable *addressTable) {
+  init_cycle(addressTable);
+}
+
+void PreOrderForIfEslse (GrammarToken *grammarToken, AddressTable *addressTable) {
+  printf("JUMP EXITIF%d\n",get_cur_cycle(addressTable));
+  printf("LABEL ESCAPE%d\n",get_cur_cycle(addressTable));
+}
+
+void PostOrderForIf (GrammarToken *grammarToken, AddressTable *addressTable) {
+  printf("LABEL EXITIF%d\n",get_cur_cycle(addressTable));
+  end_cycle(addressTable);
+}
+
+//preorder function pro s ,which does init cycle
+//preorder function for if else x2
+//postorder function pro s, which ends cycle (?-and define lable for skip-?)

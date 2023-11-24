@@ -13,7 +13,6 @@ Error generate_inter_code(GrammarToken *grToken) {
   return error_create(NONE, "none");
 }
 
-//Yes, recursive, and what (nam pizda)
 void post_order_process(GrammarToken *grToken, AddressTable *addressTable) {
   if (grToken == NULL)
     return;

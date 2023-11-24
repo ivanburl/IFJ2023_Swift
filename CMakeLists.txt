@@ -1,7 +1,7 @@
-cmake_minimum_required(VERSION 3.0)
+cmake_minimum_required(VERSION 2.0)
 project(IFJ2023_Swift C)
 
-add_compile_options(-g)
+add_compile_options(-g -O3)
 set(CMAKE_C_STANDARD 17)
 
 add_executable(IFJ2023_Swift src/main.c

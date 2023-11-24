@@ -14,47 +14,53 @@ Error scanner_code_to_tokens(Scanner *scanner, char *code,
   assert(scanner && code && tokenVector);
   size_t code_len = strlen(code);
 
-  char tokenStr[1024];//TODO the size of array is small for majority of operations
-  int left = 0 , right = 0;
-  int tokenStrPointer = 0;
-  tokenStr[0] = 0;
+  char *tokenStr = NULL;
+  int tokenStrLeftPointer = 0;
+  int tokenStrRightPointer = 0;
 
   TokenType lastTokenTypeRecorded = UNDEFINED;
   int endTokenStrPointer = 0;
 
-  for (size_t i = 0; i < code_len; i++) {
+  for (int i = 0; i < code_len; i++) {
     char feed = code[i];
-    // scanner_move_forward(scanner, feed);
     scanner_move_forward(scanner, feed);
 
     if (scanner->automata.currentState == scanner->automata.startState) {
-      // assert(lastTokenTypeRecorded == UNDEFINED); // TODO normal error report
       if (lastTokenTypeRecorded == UNDEFINED) {
         return error_create(SCANNER_ERROR, "undefined token bro...");
       }
 
-      tokenStr[endTokenStrPointer] = 0;
+      tokenStr =
+          calloc((tokenStrRightPointer - tokenStrLeftPointer + 128), sizeof(char));
+      strncpy(tokenStr, code + tokenStrLeftPointer,
+              endTokenStrPointer - tokenStrLeftPointer + 1);
+
       Token token;
       Error error = token_create(lastTokenTypeRecorded, tokenStr, &token);
       if (error.errorType != NONE) {
         return error;
       }
-      token_vector_push_back(tokenVector, token);
+      if (token.type != UNDEFINED && token.type != MULTI_COMMENT && token.type != COMMENT && token.type != BLANK) {
+        token_vector_push_back(tokenVector, token);
+      }
 
-      tokenStr[0] = 0;
-      tokenStrPointer = 0;
+      free(tokenStr);
+      tokenStr = NULL;
+
+      tokenStrLeftPointer = i;
+      tokenStrRightPointer = tokenStrLeftPointer;
+      endTokenStrPointer = tokenStrLeftPointer;
 
       lastTokenTypeRecorded = UNDEFINED;
-      endTokenStrPointer = 0;
 
       scanner_move_forward(scanner, feed);
     }
 
-    tokenStr[tokenStrPointer++] = feed;
+    tokenStrRightPointer++;
 
     if (scanner_get_currentTokenType(scanner) != UNDEFINED) {
       lastTokenTypeRecorded = scanner_get_currentTokenType(scanner);
-      endTokenStrPointer = tokenStrPointer;
+      endTokenStrPointer = tokenStrRightPointer - 1;
     }
   }
 
@@ -62,13 +68,19 @@ Error scanner_code_to_tokens(Scanner *scanner, char *code,
     return error_create(UNDEFINED_TOKEN, "undefined token...");
   }
 
-  tokenStr[endTokenStrPointer] = 0;
+  tokenStr =
+      calloc((tokenStrRightPointer - tokenStrLeftPointer + 128), sizeof(char));
+  strncpy(tokenStr, code + tokenStrLeftPointer,
+          endTokenStrPointer - tokenStrLeftPointer + 1);
+
   Token token;
   Error error = token_create(lastTokenTypeRecorded, tokenStr, &token);
   if (error.errorType != NONE) {
     return error;
   }
   token_vector_push_back(tokenVector, token);
+  free(tokenStr);
+  tokenStr = NULL;
 
   return error_create(NONE, "finished successfully");
 }

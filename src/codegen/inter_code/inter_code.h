@@ -1,57 +1,3 @@
-////
-//// Created by thekr on 11/21/2023.
-////
-//
-//#ifndef IFJ2023_SWIFT_INTER_CODE_H
-//#define IFJ2023_SWIFT_INTER_CODE_H
-//#include "../../model/grammar/rule/grammar_rule.h"
-//#include "../../model/grammar/token/grammar_token.h"
-//#include "ctype.h"
-//#include "stdbool.h"
-//#include <stdio.h>
-//
-//void InterCodeInit();
-//void InterCodeEnd();
-//void StoreString(int reg, String *str);
-//void StoreInt(int reg, long long i);
-//void StoreDouble(int reg, double d);
-//void ReadDouble(GrammarToken *grammarToken, AddressTable *addressTable);
-//void ReadString(AddressCode *addressCode);
-//void ReadInt(AddressCode *addressCode);
-//void StoreBool(int reg,bool b );
-//void SumInterCode(AddressCode *addressCode);
-//void SubInterCode(AddressCode *addressCode);
-//void MulInterCode(AddressCode *addressCode);
-//void DivInterCode(AddressCode *addressCode);
-//void EqualInterCode(AddressCode *addressCode);
-//void NotEqualInterCode(AddressCode *addressCode);
-//void GreaterInterCode(AddressCode *addressCode);
-//void LessInterCode(AddressCode *addressCode);
-//void GreaterEqualInterCode(AddressCode *addressCode);
-//void LessEqualInterCode(AddressCode *addressCode);
-//void SoftUnwrapInterCode(AddressCode *addressCode);
-//void HardUnwrapInterCode(AddressCode *addressCode);
-//void Int2Double(AddressCode *addressCode);
-//void Double2Int(AddressCode *addressCode);
-//void func_length(AddressCode *addressCode);
-//void SubStringIntercode(AddressCode *addressCode);
-//void ord(AddressCode *addressCode);
-//void chr(AddressCode *addressCode);
-//void OrInterCode(AddressCode *addressCode);
-//void AndInterCode(AddressCode *addressCode);
-//void WhileInitInterCode(AddressCode *addressCode);
-//void CondWhileInterCode (AddressCode *addressCode);
-//void BlockWhileInterCode (AddressCode *addressCode);
-//
-//
-////Write
-////(not , a, , b ) … b := not(a)
-////(goto, , , L1) … goto L1
-////(goto, a, , L1) … if a = true then goto L1
-////(lab , L1, , )… label L1:
-//
-//#endif // IFJ2023_SWIFT_INTER_CODE_H
-
 #ifndef IFJ2023_SWIFT_INTER_CODE_H
 #define IFJ2023_SWIFT_INTER_CODE_H
 #include "../../model/grammar/rule/grammar_rule.h"
@@ -62,6 +8,7 @@
 
 void InterCodeInit();
 void InterCodeEnd();
+void InitPrebuildFunc();
 void StoreString(GrammarToken *grammarToken, AddressTable *addressTable);
 void StoreInt(GrammarToken *grammarToken, AddressTable *addressTable);
 void StoreDouble(GrammarToken *grammarToken, AddressTable *addressTable);
@@ -80,25 +27,31 @@ void LessInterCode(GrammarToken *grammarToken, AddressTable *addressTable);
 void GreaterEqualInterCode(GrammarToken *grammarToken, AddressTable *addressTable);
 void LessEqualInterCode(GrammarToken *grammarToken, AddressTable *addressTable);
 void SoftUnwrapInterCode(GrammarToken *grammarToken, AddressTable *addressTable);
-//void HardUnwrapInterCode(GrammarToken *grammarToken, AddressTable *addressTable);
+void HardUnwrapInterCode(GrammarToken *grammarToken, AddressTable *addressTable);
 void OrInterCode(GrammarToken *grammarToken, AddressTable *addressTable);
 void AndInterCode(GrammarToken *grammarToken, AddressTable *addressTable);
-void Int2Double(GrammarToken *grammarToken, AddressTable *addressTable);
-void Double2Int(GrammarToken *grammarToken, AddressTable *addressTable);
-void StrLength(GrammarToken *grammarToken, AddressTable *addressTable);
+void NotInterCode(GrammarToken *grammarToken, AddressTable *addressTable);
+void Int2Double();
+void Double2Int();
+void StrLength();
 void SubStringIntercode();
-void ord(GrammarToken *grammarToken, AddressTable *addressTable);
-void chr(GrammarToken *grammarToken, AddressTable *addressTable);
+void Ord();
+void Chr();
+void Write();
 void WhileInitInterCode(GrammarToken *grammarToken, AddressTable *addressTable);
-void CondWhileInterCode (GrammarToken *grammarToken, AddressTable *addressTable);
+void CondInterCode (GrammarToken *grammarToken, AddressTable *addressTable);
 void BlockWhileInterCode (GrammarToken *grammarToken, AddressTable *addressTable);
 void GetF(GrammarToken *grammarToken, AddressTable *addressTable);
-
-
-//Write
-//(not , a, , b ) … b := not(a)
-//(goto, , , L1) … goto L1
-//(goto, a, , L1) … if a = true then goto L1
-//(lab , L1, , )… label L1:
+void PushArg(GrammarToken *grammarToken, AddressTable *addressTable);
+void FuncInitialize(GrammarToken *grammarToken, AddressTable *addressTable);
+void FuncInitializeEscape(GrammarToken *grammarToken, AddressTable *addressTable);
+void FuncCall(GrammarToken *grammarToken, AddressTable *addressTable);
+void FuncArgAdd(GrammarToken *grammarToken, AddressTable *addressTable);
+void PreOrderForIf (GrammarToken *grammarToken, AddressTable *addressTable);
+void PostOrderForIf (GrammarToken *grammarToken, AddressTable *addressTable);
+void PreOrderForIfEslse (GrammarToken *grammarToken, AddressTable *addressTable);
+void ReturnInterCode (GrammarToken *grammarToken, AddressTable *addressTable);
+void ContinueInterCode (GrammarToken *grammarToken, AddressTable *addressTable);
+void BreakInterCode (GrammarToken *grammarToken, AddressTable *addressTable);
 
 #endif // IFJ2023_SWIFT_INTER_CODE_H

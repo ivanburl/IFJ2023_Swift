@@ -9,15 +9,23 @@
 #include "../../structures/string/string.h"
 #include "../../structures/vector/vector.h"
 
-// TODO: ADDRESS_TABLE supports only global variables
+
 typedef struct address_table_t {
   // vars
-  HashMap *hashMap;
+//  HashMap *hashMap;
+  HashMapPointerVector *variables;
   int resRegisters;
+
+  //if
+  int resIf;
 
   // cycles
   int resCycles;
   IntVector *curCycle;
+
+  // functions
+  int args_added;
+  StringPointerVector *functionsStack;
 } AddressTable;
 
 typedef struct var_address_t {
@@ -29,6 +37,9 @@ typedef struct var_address_t {
 unsigned int strhash(const char *str);
 void address_table_init(AddressTable *addressTable);
 int cmp_fn(const VarAddress *entryA, const VarAddress *entryB);
+
+void create_hashmap_inVector(AddressTable *addressTable);
+void delete_hashmap_inVector(AddressTable *addressTable);
 
 //------------VARIABLES------------
 //get new register for use
@@ -49,5 +60,13 @@ int AT_get(AddressTable *addressTable, String *var);
 int get_cur_cycle(AddressTable *addressTable);
 int init_cycle(AddressTable *addressTable);
 int end_cycle(AddressTable *addressTable);
+
+//------------FUNCTION------------
+String *get_cur_function(AddressTable *addressTable);
+void init_function(AddressTable *addressTable, String *funcName);
+void end_function(AddressTable *addressTable);
+
+void add_arg(AddressTable *addressTable);
+int get_args(AddressTable *addressTable);
 
 #endif // IFJ2023_SWIFT_ADDRESS_TABLE_H
