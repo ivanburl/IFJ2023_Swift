@@ -7,6 +7,7 @@ void configure_if(Scanner *scanner) {
   automata_set_edge(&(scanner->automata), 37, 'f', 38);
   automata_set_edge_by_regex(&(scanner->automata), 38, "[a-zA-Z0-9_]+", 12);
   automata_set_stateReturnValue(&(scanner->automata), 38, IF);
+  automata_set_stateReturnValue(&(scanner->automata), 37, ID);
 }
 void configure_else(Scanner *scanner) {
   automata_set_edge(&(scanner->automata), 0, 'e', 39);
@@ -18,4 +19,7 @@ void configure_else(Scanner *scanner) {
   automata_set_edge(&(scanner->automata), 41, 'e', 42);
   automata_set_edge_by_regex(&(scanner->automata), 42, "[a-zA-Z0-9_]+", 12);
   automata_set_stateReturnValue(&(scanner->automata), 42, ELSE);
+  automata_set_stateReturnValue(&(scanner->automata), 39, ID);
+  automata_set_stateReturnValue(&(scanner->automata), 40, ID);
+  automata_set_stateReturnValue(&(scanner->automata), 41, ID);
 }

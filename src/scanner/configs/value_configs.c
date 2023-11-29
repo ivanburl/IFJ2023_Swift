@@ -65,6 +65,8 @@ void configure_nil(Scanner *scanner) {
   automata_set_edge(&(scanner->automata), 10, 'l', 11);
   automata_set_edge_by_regex(&(scanner->automata), 11, "[a-zA-Z0-9_]+", 12);
   automata_set_stateReturnValue(&(scanner->automata), 11, NIL);
+  automata_set_stateReturnValue(&(scanner->automata), 9, ID);
+  automata_set_stateReturnValue(&(scanner->automata), 10, ID);
 }
 void configure_multi_string(Scanner *scanner) {
   automata_set_edge_by_regex(&(scanner->automata), 75, "[^\"]", 75);
@@ -103,5 +105,14 @@ void configure_boolean(Scanner *scanner) {
   automata_set_edge(&(scanner->automata), 111, 's', 112);
   automata_set_edge_by_regex(&(scanner->automata), 112, "[a-zA-Z0-9_]+", 12);
   automata_set_edge(&(scanner->automata), 112, 'e', 108);
+
+  //TODO: without this, code still works fine, check later
+  automata_set_stateReturnValue(&(scanner->automata), 105 , ID);
+  automata_set_stateReturnValue(&(scanner->automata), 106 , ID);
+  automata_set_stateReturnValue(&(scanner->automata), 107 , ID);
+
+  automata_set_stateReturnValue(&(scanner->automata), 110 , ID);
+  automata_set_stateReturnValue(&(scanner->automata), 111 , ID);
+  automata_set_stateReturnValue(&(scanner->automata), 112 , ID);
 }
 

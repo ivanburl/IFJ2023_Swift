@@ -13,4 +13,8 @@ void configure_while(Scanner *scanner) {
   automata_set_edge(&(scanner->automata), 52, 'e', 53);
   automata_set_edge_by_regex(&(scanner->automata), 53, "[a-zA-Z0-9_]+", 12);
   automata_set_stateReturnValue(&(scanner->automata), 53, WHILE);
+  automata_set_stateReturnValue(&(scanner->automata), 49, ID);
+  automata_set_stateReturnValue(&(scanner->automata), 50, ID);
+  automata_set_stateReturnValue(&(scanner->automata), 51, ID);
+  automata_set_stateReturnValue(&(scanner->automata), 52, ID);
 }

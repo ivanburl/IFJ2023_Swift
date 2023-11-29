@@ -15,6 +15,11 @@ void configure_string_type(Scanner *scanner) {
   automata_set_edge(&(scanner->automata), 18, 'g', 19);
   automata_set_edge_by_regex(&(scanner->automata), 19, "[a-zA-Z0-9_]+", 12);
   automata_set_stateReturnValue(&(scanner->automata), 19, STRING_TYPE);
+  automata_set_stateReturnValue(&(scanner->automata), 14, ID);
+  automata_set_stateReturnValue(&(scanner->automata), 15, ID);
+  automata_set_stateReturnValue(&(scanner->automata), 16, ID);
+  automata_set_stateReturnValue(&(scanner->automata), 17, ID);
+  automata_set_stateReturnValue(&(scanner->automata), 18, ID);
 }
 
 void configure_int_type(Scanner *scanner) {
@@ -26,6 +31,8 @@ void configure_int_type(Scanner *scanner) {
   automata_set_edge(&(scanner->automata), 21, 't', 22);
   automata_set_edge_by_regex(&(scanner->automata), 22, "[a-zA-Z0-9_]+", 12);
   automata_set_stateReturnValue(&(scanner->automata), 22, INT_TYPE);
+  automata_set_stateReturnValue(&(scanner->automata), 20, ID);
+  automata_set_stateReturnValue(&(scanner->automata), 21, ID);
 }
 
 void configure_double_type(Scanner *scanner) {
@@ -42,6 +49,11 @@ void configure_double_type(Scanner *scanner) {
   automata_set_edge(&(scanner->automata), 27, 'e', 28);
   automata_set_edge_by_regex(&(scanner->automata), 28, "[a-zA-Z0-9_]+", 12);
   automata_set_stateReturnValue(&(scanner->automata), 28, DOUBLE_TYPE);
+  automata_set_stateReturnValue(&(scanner->automata), 23, ID);
+  automata_set_stateReturnValue(&(scanner->automata), 24, ID);
+  automata_set_stateReturnValue(&(scanner->automata), 25, ID);
+  automata_set_stateReturnValue(&(scanner->automata), 26, ID);
+  automata_set_stateReturnValue(&(scanner->automata), 27, ID);
 }
 
 void configure_boolean_type(Scanner *scanner) {
@@ -54,6 +66,9 @@ void configure_boolean_type(Scanner *scanner) {
   automata_set_edge(&(scanner->automata), 31, 'l', 32);
   automata_set_edge_by_regex(&(scanner->automata), 32, "[a-zA-Z0-9_]+", 12);
   automata_set_stateReturnValue(&(scanner->automata), 32, BOOLEAN_TYPE);
+  automata_set_stateReturnValue(&(scanner->automata), 29, ID);
+  automata_set_stateReturnValue(&(scanner->automata), 30, ID);
+  automata_set_stateReturnValue(&(scanner->automata), 31, ID);
 }
 
 void configure_nullable(Scanner *scanner) {
