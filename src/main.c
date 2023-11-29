@@ -23,13 +23,20 @@ int main() {
   while((c = getchar()) != EOF) {
     char_vector_push_back(&inputVector, (char) c);
   }
-//  char* code = "let w = 10\n"
-//               "let f = 1\n"
-//               "let x = w + f";
+//  char* code = "let w = 10;\n"
+//               "let f = 2;\n"
+//               "let x = w + f;";
 
   TokenVector tokenVector;
   token_vector_init(&tokenVector);
   err = scanner_code_to_tokens(&scanner, inputVector.data, &tokenVector);
+
+  TokenType types1[1000];
+
+  for (int i = 0; i < tokenVector.length; i++) {
+    types1[i] = tokenVector.data[i].type;
+  }
+  printf("%d\n", types1[0]);
 
   if (err.errorType != NONE) {
     error_report(err);

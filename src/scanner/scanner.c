@@ -40,7 +40,7 @@ Error scanner_code_to_tokens(Scanner *scanner, char *code,
       if (error.errorType != NONE) {
         return error;
       }
-      if (token.type != UNDEFINED && token.type != MULTI_COMMENT && token.type != COMMENT && token.type != BLANK) {
+      if (token.type != UNDEFINED && token.type != MULTI_COMMENT && token.type != COMMENT && token.type != BLANK && token.type != SEMICOLON) {
         token_vector_push_back(tokenVector, token);
       }
 
@@ -79,7 +79,7 @@ Error scanner_code_to_tokens(Scanner *scanner, char *code,
     return error;
   }
 
-  if (token.type != UNDEFINED && token.type != MULTI_COMMENT && token.type != COMMENT && token.type != BLANK) {
+  if (token.type != UNDEFINED && token.type != MULTI_COMMENT && token.type != COMMENT && token.type != BLANK && token.type != SEMICOLON) {
     token_vector_push_back(tokenVector, token);
   }
 
