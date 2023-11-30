@@ -16,6 +16,8 @@ void grammar_token_init(GrammarToken *grammarToken) {
   for (int i = 0; i < MAX_GRAMMAR_TOKEN_TOKENS_HOLDER_SIZE; i++) {
     grammarToken->tokensHolder[i] = NULL;
   }
+  grammarToken->returnType = UNDEFINED;
+  grammarToken->isCastableType = false;
 }
 
 void grammar_token_add(GrammarToken *grammarToken, Token *token) {

@@ -20,6 +20,9 @@ typedef struct grammar_token_t {
   int tokensHolderSize;
   Token* tokensHolder[MAX_GRAMMAR_TOKEN_TOKENS_HOLDER_SIZE];
   int reg;
+
+  TokenType returnType;
+  bool isCastableType;
   bool isGlobal;
 } GrammarToken;
 
