@@ -130,7 +130,7 @@ void Ord() {
   printf("TYPE LF@type LF@str\n");
   printf("JUMPIFEQ Ifstring LF@type string@string\n");
   printf("EXIT int@4\n");
-  printf("LABEL Ifstring\n",n);
+  printf("LABEL Ifstring\n");
   printf("STRLEN LF@strlen LF@str\n");
   printf("JUMPIFEQ IfLinezero LF@strlen int@0\n");
   printf("STRI2INT LF@strlen_line LF@str int@0\n");
@@ -375,14 +375,14 @@ void NotInterCode(GrammarToken *grammarToken, AddressTable *addressTable) {
 // TOKEN -> GrammarToken
 void SumInterCode(GrammarToken *grammarToken, AddressTable *addressTable) {
     int res = get_reg_new(addressTable);
-    if (grammarToken->tokensHolder[0]->data.integer_value == INTEGER &&
-        grammarToken->tokensHolder[2]->data.integer_value == INTEGER) {
+    if (grammarToken->tokensHolder[0]->type == INTEGER &&
+        grammarToken->tokensHolder[2]->type == INTEGER) {
       printf("DEFVAR LF@r%d\n", res);
       printf("ADD LF@r%d LF@r%d LF@r%d\n", res,
              grammarToken->tokensHolder[0]->data.grammarToken->reg,
              grammarToken->tokensHolder[2]->data.grammarToken->reg);
-    } else if (grammarToken->tokensHolder[0]->data.string.data == STRING &&
-               grammarToken->tokensHolder[2]->data.string.data == STRING) {
+    } else if (grammarToken->tokensHolder[0]->type == STRING &&
+               grammarToken->tokensHolder[2]->type == STRING) {
       printf("DEFVAR LF@r%d\n", res);
       printf("CONCAT LF@r%d LF@r%d LF@r%d\n", res,
              grammarToken->tokensHolder[0]->data.grammarToken->reg,
