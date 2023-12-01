@@ -259,3 +259,14 @@ Error process_unicode(char **sequence, char *output) {
 
   return error_create(NONE, "none");
 }
+/// Compare two tokens, could accept nulls as arguments
+/// \param a - first token
+/// \param b - second token
+/// \return =0 - token equals, !=0 - token are not equal
+int token_cmp(Token *a, Token *b) {
+  if (a == b) return 0;
+  if (a == NULL) return -1;
+  if (b == NULL) return 1;
+  if ()
+  return 0;
+}

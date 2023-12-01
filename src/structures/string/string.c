@@ -3,6 +3,7 @@
 //
 
 #include "string.h"
+#include "limits.h"
 
 String string_create(char *cstr) {
 
@@ -19,6 +20,13 @@ String string_create(char *cstr) {
   strcpy(string.data, cstr);
 
   return string;
+}
+
+int string_cmp(String *a, String* b) {
+  if (a == b) return 0;
+  if (a == NULL) return INT_MIN;
+  if (b == NULL) return INT_MAX;
+  return strcmp(a->data, b->data);
 }
 
 void string_free(String *str) {

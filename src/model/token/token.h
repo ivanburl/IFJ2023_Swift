@@ -161,6 +161,12 @@ void token_init(Token *token);
 /// \attention return token is not parsed one
 Error token_create(TokenType type, char *str, Token *outToken);
 
+/// Compares two token (is not expected to be used for order purposes)
+/// \param a - first token
+/// \param b - second token
+/// \return 0 - tokens are equal, otherwise not equal
+int token_cmp(Token* a, Token* b);
+
 /// Creates non terminal token from other tokensHolder
 /// \param type - type of token
 /// \param grammarToken - caught tokensHolder
@@ -169,6 +175,8 @@ Token token_grammar_token_create(TokenType type,
                                  struct grammar_token_t *grammarToken);
 
 void token_free(Token *token);
+
+
 
 void delete_quotes(char **str);
 Error preprocess_literal_multiString(char *literal);

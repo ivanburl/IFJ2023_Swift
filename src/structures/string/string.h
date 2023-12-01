@@ -20,6 +20,7 @@ typedef String* StringPointer;
 vector_def(StringPointer, StringPointer, string_pointer_);
 
 String string_create(char *cstr);
+int string_cmp(String *a, String* b);
 void string_free(String *str);
 
 #endif // IFJ2023_SWIFT_STRING_H
