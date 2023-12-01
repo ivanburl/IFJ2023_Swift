@@ -267,6 +267,32 @@ int token_cmp(Token *a, Token *b) {
   if (a == b) return 0;
   if (a == NULL) return -1;
   if (b == NULL) return 1;
-  if ()
-  return 0;
+  int cmp_type = (int)(a->type) - (int)(b->type);
+  if (cmp_type != 0) return cmp_type;
+  if (a->type >= NON_TERMINAL_UNDEFINED) {
+    return grammar_token_cmp(a->data.grammarToken, b->data.grammarToken);
+  } else {
+    int cmp_tmp;
+
+    switch (a->type) {
+    case BOOLEAN:
+    case INTEGER:
+      cmp_tmp = a->data.integer_value > b->data.integer_value ? 1 :
+          a->data.integer_value < b->data.integer_value ? -1 : 0;
+      break;
+    case DOUBLE:
+      cmp_tmp = a->data.double_value > b->data.double_value ? 1 :
+                a->data.double_value < b->data.double_value ? -1 : 0;
+      break;
+    case ID:
+    case STRING:
+    case MULTI_STRING:
+      cmp_tmp = string_cmp(&a->data.string, &b->data.string);
+      break;
+    default:
+      cmp_tmp = 0;
+      break;
+    }
+    return cmp_tmp;
+  }
 }

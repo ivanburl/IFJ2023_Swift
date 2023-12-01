@@ -6,7 +6,37 @@
 #include "../../utils/logger.h"
 #include "limits.h"
 
-//int grammar_token_cmp(GrammarToken *a, GrammarToken *b);
+void symtable_key_init(SymtableKey *key) {
+  key->name = NULL;
+  key->inputArguments = NULL;
+}
+
+void symtable_value_init(SymtableValue* value) {
+  value->returnType = UNDEFINED;
+  value->isConstant = false;
+  value->isInitialised = false;
+}
+
+void symtable_entry_init(SymtableEntry *symtableEntry) {
+  assert(symtableEntry);
+  hashmap_entry_init(&symtableEntry->entry, 0);
+  symtable_key_init(&symtableEntry->key);
+  symtable_value_init(&symtableEntry->value);
+}
+
+Error symtable_entry_create(SymtableEntry **entry, SymtableKey *key,
+                            SymtableValue *value) {
+  *entry = malloc(sizeof(SymtableEntry));
+  if (*entry == NULL) return error_create(FATAL, "Out of memory!");
+
+  symtable_entry_init(*entry);
+  hashmap_entry_init(&((*entry)->entry), symtable_key_hash(key));
+  (*entry)->key = *key;
+  (*entry)->value = *value;
+
+  return error_create(NONE, NULL);
+}
+
 int cmp_symtable_entry(SymtableEntry *entryA, SymtableEntry *entryB) {
   if (entryA == entryB)
     return 0;
@@ -16,26 +46,11 @@ int cmp_symtable_entry(SymtableEntry *entryA, SymtableEntry *entryB) {
     return INT_MAX;
 
   int str_cmp = string_cmp(entryA->key.name, entryB->key.name);
-  if (str_cmp == 0) {
-    return grammar_token_cmp(entryA->key.inputArguments,
-                             entryB->key.inputArguments);
-  } else {
+  if (str_cmp != 0) {
     return str_cmp;
   }
-}
-
-//int grammar_token_cmp(GrammarToken *a, GrammarToken *b) {
-//  int tk_size_cmp = a->tokensHolderSize - b->tokensHolderSize;
-//  if (tk_size_cmp != 0)
-//    return tk_size_cmp;
-//
-//  for (int i = 0; i < a->tokensHolderSize; i++) {
-//    Token *tokenA = a->tokensHolder[i];
-//    Token *tokenB = b->tokensHolder[i];
-//    int cmp = token_cmp(tokenA, tokenB);
-//    if (cmp !=0) return cmp;
-//  }
-//  return 0;
+  return grammar_token_cmp(entryA->key.inputArguments,
+                           entryB->key.inputArguments);
 }
 
 #define FNV32_BASE ((unsigned int)0x811c9dc5)
@@ -93,6 +108,28 @@ void symtable_pop_frame(SymTabel *symTabel) {
   }
 }
 
-SymtableEntry *symtable_declare(SymTabel *symTable, Token *token) {
-  return NULL;
+/// add declaration to last stack frame of our symtable
+/// \param symTable - symbolic table
+/// \param entry - entry must be created using symtable_entry_create function
+/// \param override - whether to override previous declaration (symbol)
+/// \return
+Error symtable_add(SymTabel *symTable, SymtableEntry *entry, bool override) {
+  assert(symTable && entry);
+  SymtableEntry *previous = hashmap_put(symTable, entry);
+  if (previous != NULL && !override)
+    return error_create(FATAL, "redefinition or override is not allowed");//TODO add better eeror
+  return error_create(NONE, NULL);
+}
+SymtableEntry *symtable_get(SymTabel *symTable, SymtableKey *key) {
+  assert(symTable && key);
+  SymtableEntry searchEntry;
+  symtable_entry_init(&searchEntry);
+  searchEntry.key = *key;
+  hashmap_entry_init(&searchEntry.entry, symtable_key_hash(&searchEntry.key));
+  return (SymtableEntry*) hashmap_get(symTable, &searchEntry);
+}
+
+Error symtable_free(SymTabel *symTabel) {
+  hashmap_free(symTabel);
+  return error_create(NONE, NULL);
 }

@@ -59,7 +59,7 @@ void hashmap_free(HashMap *map);
 
 void hashmap_entry_init(void *entry, unsigned int hash);
 
-/// Find entry by NON-NULL key
+/// Find entry by NON-NULL entry (key = should be your hash map entry)
 /// \return found ? found : NULL
 void *hashmap_get(const HashMap *map, const void *key);
 

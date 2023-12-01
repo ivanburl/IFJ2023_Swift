@@ -38,3 +38,17 @@ void grammar_token_free(GrammarToken *grammarToken) {
   grammarToken->grammarRuleId = -1;
   grammarToken->grammarRule = NULL;
 }
+
+int grammar_token_cmp(GrammarToken *a, GrammarToken *b) {
+  int tk_size_cmp = a->tokensHolderSize - b->tokensHolderSize;
+  if (tk_size_cmp != 0)
+    return tk_size_cmp;
+
+  for (int i = 0; i < a->tokensHolderSize; i++) {
+    Token *tokenA = a->tokensHolder[i];
+    Token *tokenB = b->tokensHolder[i];
+    int cmp = token_cmp(tokenA, tokenB);
+    if (cmp !=0) return cmp;
+  }
+  return 0;
+}
