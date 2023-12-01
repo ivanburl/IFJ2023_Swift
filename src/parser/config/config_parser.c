@@ -44,7 +44,7 @@ Error ifj_2023_parser_config(Parser *parser) {
       grammar_rule_create(S, NULL, BlockWhileInterCode, WhileInitInterCode, (TokenType[]){WHILE, COND, BLOCK}, 3),
       grammar_rule_create(S, NULL, PostOrderForIf, PreOrderForIf,
                           (TokenType[]){IF, COND, BLOCK, IF_ELSE}, 4),
-      grammar_rule_create(S, NULL, InitAssignInterCode, NULL, (TokenType[]){E, INIT}, 2),
+      grammar_rule_create(S, NULL, NULL, NULL, (TokenType[]){E}, 1),
       grammar_rule_create(S, NULL, NULL, NULL, (TokenType[]){D}, 1),
       grammar_rule_create(S, NULL, ReturnInterCode, NULL, (TokenType[]){RETURN, E}, 2),
       grammar_rule_create(S, NULL, ContinueInterCode, NULL, (TokenType[]){CONTINUE}, 1),
@@ -116,9 +116,6 @@ Error ifj_2023_parser_config(Parser *parser) {
       grammar_rule_create(TYPE, NULL, NULL, NULL, (TokenType[]){BOOLEAN_NULLABLE_TYPE}, 1),
 
       grammar_rule_create(E, NULL, GetF, NULL, (TokenType[]){F}, 1),
-
-      // TODO BOOLEAN
-      // TODO BOOLEAN NULLABLE
   };
 
   grammar_configure(parser->llParser->llGrammar, llGrammarRules,

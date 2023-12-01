@@ -7,20 +7,20 @@ void InterCodeInit() {
   printf("DEFVAR GF@__Arg__\n");
   printf("CREATEFRAME\n");
   printf("PUSHFRAME\n");
-  // InitPrebuildFunc();
+  InitPrebuildFunc();
   // InsertPrebuildFUNCS
 }
 
 void InitPrebuildFunc() {
-  SubStringIntercode();
-  Chr();
-  Ord();
-  ReadString();
-  ReadInt();
-  ReadDouble();
-  Int2Double();
-  Double2Int();
-  StrLength();
+ // SubStringIntercode();
+ // Chr();
+ // Ord();
+ // ReadString();
+ // ReadInt();
+ // ReadDouble();
+ // Int2Double();
+ // Double2Int();
+ // StrLength();
   Write();
 }
 
@@ -718,17 +718,18 @@ void InitProcess(GrammarToken *grammarToken, AddressTable *addressTable) {
 void InitAssignInterCode(GrammarToken *grammarToken, AddressTable *addressTable) {
   GrammarToken* eToken =  grammarToken->tokensHolder[0]->data.grammarToken;
   if (eToken->grammarRule->resultTokenType != E) exit(9);
-  GrammarToken* fToken = eToken->tokensHolder[0]->data.grammarToken;
-  if (fToken->grammarRule->resultTokenType != F) exit(9);
-  Token *idToken = fToken->tokensHolder[0];
-  if (idToken->type != ID && fToken->tokensHolderSize != 1) exit(9);
+    GrammarToken *fToken = eToken->tokensHolder[0]->data.grammarToken;
+    if (fToken->grammarRule->resultTokenType != F)
+      exit(9);
+    Token *idToken = fToken->tokensHolder[0];
+    if (idToken->type != ID && fToken->tokensHolderSize != 1)
+      exit(9);
 
-  int reg =
-      AT_get(addressTable, &(idToken->data.string));
-  if (reg == -1)
-    exit(5);
-  printf("MOVE LF@r%d LF@r%d\n", reg,
-         grammarToken->tokensHolder[1]->data.grammarToken->reg);
+    int reg = AT_get(addressTable, &(idToken->data.string));
+    if (reg == -1)
+      exit(5);
+    printf("MOVE LF@r%d LF@r%d\n", reg,
+           grammarToken->tokensHolder[1]->data.grammarToken->reg);
 }
 // preorder function pro s ,which does init cycle
 // preorder function for if else x2
