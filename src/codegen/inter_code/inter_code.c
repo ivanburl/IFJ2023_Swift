@@ -548,12 +548,24 @@ void Write() {
   printf("POPS GF@__Arg__\n");
   printf("WRITE GF@__Arg__\n"); // write pop
   printf("JUMPIFNEQ ForWrite GF@__ArgCount__ int@0\n");
+  printf("POPFRAME\n");
 
   // label return
   printf("LABEL ReturnWrite\n");
   printf("RETURN\n");
   printf("LABEL EscapeWrite\n");
 }
+//void Write(int argCount){
+//  for(int n = argCount, n>0, n--)
+//  {
+//    printf("DEFVAR LF@WritePR\n", n);
+//    printf("POPS LF@WritePR\n", n);
+//  }
+//  for(int n = 0, n<argCount, n++) {
+//    printf("WRITE LF@WritePR\n", n);
+//  }
+//  printf("POPFRAME\n");
+//}
 
 void FuncInitialize(GrammarToken *grammarToken, AddressTable *addressTable) {
   init_function(addressTable, &grammarToken->tokensHolder[1]->data.string);
