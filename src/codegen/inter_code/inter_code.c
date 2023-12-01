@@ -153,8 +153,8 @@ void Ord() {
 void Chr() {
 //  const int n_initial = 0;
 //  static int n = n_initial;
-  printf("JUMP chrend");
-  printf("LABEL chr");
+  printf("JUMP chrend\n");
+  printf("LABEL chr\n");
   printf("CREATEFRAME\n");
   printf("PUSHFRAME\n");
   printf("DEFVAR LF@number\n");
@@ -168,7 +168,7 @@ void Chr() {
   printf("LABEL FuncIsInt\n");
   printf("INT2CHAR LF@strlen LF@number\n");
   printf("POPFRAME\n");
-  printf("MOVE GF@FuncReturn TF@strlen");
+  printf("MOVE GF@FuncReturn TF@strlen\n");
 //  n++;
   printf("RETURN\n");
   printf("LABEL chrend\n");
@@ -538,16 +538,18 @@ void SoftUnwrapInterCode(GrammarToken *grammarToken,
 void Write() {
   printf("JUMP EscapeWrite\n");
   printf("LABEL write\n");
-  printf("POP GF@__ArgCount__\n");
+  printf("CREATEFRAME\n");
+  printf("PUSHFRAME\n");
+  printf("POPS GF@__ArgCount__\n");
   printf("JUMPIFEQ ReturnWrite GF@__ArgCount__ int@0\n"); // if argCount == 0
                                                           // jump label return
   printf("LABEL ForWrite\n");
   printf("SUB GF@__ArgCount__ GF@__ArgCount__ int@1\n");
-  printf("POP GF@__Arg__\n");
+  printf("POPS GF@__Arg__\n");
   printf("WRITE GF@__Arg__\n"); // write pop
   printf("JUMPIFNEQ ForWrite GF@__ArgCount__ int@0\n");
 
-  // label retrurtenr
+  // label return
   printf("LABEL ReturnWrite\n");
   printf("RETURN\n");
   printf("LABEL EscapeWrite\n");
@@ -559,8 +561,8 @@ void FuncInitialize(GrammarToken *grammarToken, AddressTable *addressTable) {
   printf("LABEL %s\n", grammarToken->tokensHolder[1]->data.string.data);
   printf("CREATEFRAME\n");
   printf("PUSHFRAME\n");
-  printf("DEFVAR TF@trash\n");
-  printf("POPS TF@trash\n");
+  printf("DEFVAR LF@trash\n");
+  printf("POPS LF@trash\n");
   if (grammarToken->tokensHolder[3]->data.grammarToken->tokensHolderSize != 0) {
     GrammarToken *curToken =
         grammarToken->tokensHolder[3]->data.grammarToken; // PARAMS
@@ -607,14 +609,13 @@ void FuncCall(GrammarToken *grammarToken, AddressTable *addressTable) {
 }
 
 void FuncArgAdd(GrammarToken *grammarToken, AddressTable *addressTable) {
-  printf("DEFVAR TF@arg\n");
-  printf("MOVE TF@arg int@%d\n", get_args(addressTable));
-  printf("PUSH TF@arg\n");
+  printf("MOVE GF@__ArgCount__ int@%d\n", get_args(addressTable));
+  printf("PUSHS GF@__ArgCount__\n");
 }
 
 void PushArg(GrammarToken *grammarToken, AddressTable *addressTable) {
   add_arg(addressTable);
-  printf("PUSH LF@r%d\n",
+  printf("PUSHS LF@r%d\n",
          grammarToken->tokensHolder[0]->data.grammarToken->reg);
 }
 
@@ -633,7 +634,7 @@ void HardUnwrapInterCode(GrammarToken *grammarToken,
   // grammarToken->tokensHolder[0]->data.grammarToken->reg);
   printf("JUMPIFEQ ExitIfZero LF@r%d nil@nil\n",
          grammarToken->tokensHolder[0]->data.grammarToken->reg);
-  printf("JUMP EscapeHardUnwrap");
+  printf("JUMP EscapeHardUnwrap\n");
   printf("LABEL ExitIfZero\n");
   printf("EXIT int@57\n");
   printf("LABEL EscapeHardUnwrap\n");
@@ -668,7 +669,7 @@ void ContinueInterCode(GrammarToken *grammarToken, AddressTable *addressTable) {
 }
 
 void ReturnInterCode(GrammarToken *grammarToken, AddressTable *addressTable) {
-  printf("MOVE GF@ReturnFunc LF@r%d",
+  printf("MOVE GF@ReturnFunc LF@r%d\n",
          grammarToken->tokensHolder[1]->data.grammarToken->reg);
 }
 
