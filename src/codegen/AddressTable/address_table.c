@@ -3,6 +3,7 @@
 //
 
 #include "address_table.h"
+#include "../../utils/logger.h"
 
 #define FNV32_BASE ((unsigned int)0x811c9dc5)
 #define FNV32_PRIME ((unsigned int)0x01000193)
@@ -62,14 +63,16 @@ int get_reg_cur(AddressTable *addressTable) {
   return addressTable->resRegisters-1;
 }
 
-int AT_create(AddressTable *addressTable, String *var) {
+int AT_create(AddressTable *addressTable, String *var, bool *isGlobal) {
   int reg = get_reg_new(addressTable);
-  reg = AT_create_withReg(addressTable, var, reg);
+  reg = AT_create_withReg(addressTable, var, reg, isGlobal);
   return reg;
 }
 
-int AT_create_withReg(AddressTable *addressTable, String *var, int reg) {
-  //Create and put new value
+int AT_create_withReg(AddressTable *addressTable, String *var, int reg, bool *isGlobal) {
+  (*isGlobal) = addressTable->variables->length == 1 ? true : false;
+  //LOG_ERROR("Create var with name %s and register %d and global = %d", var->data, reg, *isGlobal);
+      //Create and put new value
   VarAddress *newEntry = malloc(sizeof(VarAddress));
   hashmap_entry_init(newEntry, strhash(var->data));
   newEntry->key = var;
@@ -82,7 +85,7 @@ int AT_create_withReg(AddressTable *addressTable, String *var, int reg) {
   return oldEntry == NULL ? newEntry->value : -1;
 }
 
-int AT_get(AddressTable *addressTable, String *var) {
+int AT_get(AddressTable *addressTable, String *var, bool* isGlobal) {
   size_t dimCount = addressTable->variables->length;
   HashMap *cur = hashmap_vector_at(addressTable->variables, dimCount-1);
   VarAddress entryToFind;
@@ -91,6 +94,7 @@ int AT_get(AddressTable *addressTable, String *var) {
 
   VarAddress *varAddress = hashmap_get(cur, &entryToFind);
   if (varAddress != NULL) {
+    *isGlobal = (addressTable->variables->length == 1);
     return varAddress->value;
   }
 
@@ -100,6 +104,7 @@ int AT_get(AddressTable *addressTable, String *var) {
   cur = hashmap_vector_at(addressTable->variables, 0);
   hashmap_get(cur, &entryToFind);
   if (varAddress != NULL) {
+    *isGlobal = true;
     return varAddress->value;
   }
 

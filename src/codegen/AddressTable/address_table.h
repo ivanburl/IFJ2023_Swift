@@ -8,6 +8,7 @@
 #include "../../structures/hashmap/hashmap.h"
 #include "../../structures/string/string.h"
 #include "../../structures/vector/vector.h"
+#include <stdbool.h>
 
 
 typedef struct address_table_t {
@@ -48,13 +49,13 @@ int get_reg_new(AddressTable *addressTable);
 int get_reg_cur(AddressTable *addressTable);
 
 //create new ID (returns new register)
-int AT_create(AddressTable *addressTable, String *var);
+int AT_create(AddressTable *addressTable, String *var, bool *isGlobal);
 //create new ID with existing register
-int AT_create_withReg(AddressTable *addressTable, String *var, int reg);
+int AT_create_withReg(AddressTable *addressTable, String *var, int reg, bool *isGlobal);
 //Put new register to ID (returns 1 if successful otherwise returns 0)
 int AT_put(AddressTable *addressTable, String *var, int reg);
 //get ID from table (Returns -1 if not found)
-int AT_get(AddressTable *addressTable, String *var);
+int AT_get(AddressTable *addressTable, String *var, bool* isGlobal);
 
 //------------WHILE------------
 int get_cur_cycle(AddressTable *addressTable);

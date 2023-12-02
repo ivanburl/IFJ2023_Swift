@@ -94,7 +94,7 @@ Error ifj_2023_parser_config(Parser *parser) {
       grammar_rule_create(F_CALL, NULL, NULL , NULL, (TokenType[]){}, 0),
       grammar_rule_create(F_CALL, NULL, HardUnwrapInterCode, NULL,
                           (TokenType[]){HARD_UNWRAP}, 1),
-      grammar_rule_create(ARGS, NULL, NULL, NULL, (TokenType[]){ARG, ARGS_TMP}, 1),
+      grammar_rule_create(ARGS, NULL, NULL, NULL, (TokenType[]){ARG, ARGS_TMP}, 2),
       grammar_rule_create(ARGS_TMP, NULL, NULL, NULL, (TokenType[]){}, 0),
       grammar_rule_create(ARGS_TMP, NULL, NULL, NULL,
                           (TokenType[]){COMMA, ARG, ARGS_TMP}, 3),

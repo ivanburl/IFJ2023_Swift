@@ -49,15 +49,15 @@ void configure_underscore(Scanner *scanner) {
   automata_set_stateReturnValue(&(scanner->automata), 92, UNDERSCORE);
 }
 void configure_comment(Scanner *scanner) {
-  automata_set_edge(&(scanner->automata), 0, '/', 93);
-  automata_set_edge(&(scanner->automata), 93, '/', 94);
+  //automata_set_edge(&(scanner->automata), 0, '/', 93);
+  automata_set_edge(&(scanner->automata), 62, '/', 94);
   automata_set_edge_by_regex(&(scanner->automata), 94, "[^\n]", 94);
   //automata_set_edge(&(scanner->automata), 94, '\n', 96);
   //automata_set_edge(&(scanner->automata), 94, '\0', 96);
   automata_set_stateReturnValue(&(scanner->automata), 94, COMMENT);
 }
 void configure_multi_comment(Scanner *scanner) {
-  automata_set_edge(&(scanner->automata), 93, '*', 97);
+  automata_set_edge(&(scanner->automata), 62, '*', 97);
   automata_set_edge_by_regex(&(scanner->automata), 97, ".", 97);
   automata_set_edge(&(scanner->automata), 97, '*', 98);
   automata_set_edge_by_regex(&(scanner->automata), 98, ".", 97);
