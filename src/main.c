@@ -36,10 +36,10 @@ int main() {
 //               "}\n"
 //               "write(\"End of while\");";
 
-  char *code = "let a = 20\n"
-               "a = a - 1\n"
-               "write(result, \"\\n\")\n"
-                  "";
+//  char *code = "var a = ord(\"abc\")\n"
+//               "a = a + 1\n"
+//               "write(a, \"\\n\")\n"
+//               "\n";
 
   //TODO multiple args in fucntion does not work
   //TODO "var a = 10; a = 20;"

@@ -45,6 +45,8 @@ void GetF(GrammarToken *grammarToken, AddressTable *addressTable) {
 void SubStringIntercode() {
   printf("JUMP SubstringIntercodeEnd\n");
   printf("LABEL Substring\n");
+  printf("CREATEFRAME");
+  printf("PUSHFRAME");
   printf("DEFVAR TF@tempBool\n");
   printf("DEFVAR TF@arg2\n");
   printf("POPS TF@arg2\n");
@@ -110,7 +112,6 @@ void SubStringIntercode() {
   //*-----*-----*-----*-----*-----*-----*-----*-----*-----*-----*-----*-----*//
   printf("LABEL ReturnNil\n");
   printf("MOV GF@FuncReturn nil@nil\n");
-
   printf("RETURN\n");
   printf("LABEL SubStringIntercodeEnd\n");
 }
@@ -363,8 +364,10 @@ void OrInterCode(GrammarToken *grammarToken, AddressTable *addressTable) {
 void AndInterCode(GrammarToken *grammarToken, AddressTable *addressTable) {
   int res = get_reg_new(addressTable);
   printf("DEFVAR LF@r%d\n", res);
-  printf("AND LF@r%d LF@r%d LF@r%d\n", res,
+  printf("AND LF@r%d %s@r%d %s@r%d\n", res,
+         registerPrefixGen(grammarToken->tokensHolder[0]->data.grammarToken->isGlobal),
          grammarToken->tokensHolder[0]->data.grammarToken->reg,
+         registerPrefixGen(grammarToken->tokensHolder[2]->data.grammarToken->isGlobal),
          grammarToken->tokensHolder[2]->data.grammarToken->reg);
   grammarToken->reg = get_reg_cur(addressTable);
 }
@@ -372,7 +375,8 @@ void AndInterCode(GrammarToken *grammarToken, AddressTable *addressTable) {
 void NotInterCode(GrammarToken *grammarToken, AddressTable *addressTable) {
   int res = get_reg_new(addressTable);
   printf("DEFVAR LF@r%d\n", res);
-  printf("NOT LF@r%d LF@r%d\n", res,
+  printf("NOT LF@r%d %s@r%d\n", res,
+         registerPrefixGen(grammarToken->tokensHolder[0]->data.grammarToken->isGlobal),
          grammarToken->tokensHolder[0]->data.grammarToken->reg);
   grammarToken->reg = get_reg_cur(addressTable);
 }
@@ -401,8 +405,10 @@ void SumInterCode(GrammarToken *grammarToken, AddressTable *addressTable) {
 void SubInterCode(GrammarToken *grammarToken, AddressTable *addressTable) {
   int res = get_reg_new(addressTable);
   printf("DEFVAR LF@r%d\n", res);
-  printf("SUB LF@r%d LF@r%d LF@r%d\n", res,
+  printf("SUB LF@r%d %s@r%d %s@r%d\n", res,
+         registerPrefixGen(grammarToken->tokensHolder[0]->data.grammarToken->isGlobal),
          grammarToken->tokensHolder[0]->data.grammarToken->reg,
+         registerPrefixGen(grammarToken->tokensHolder[2]->data.grammarToken->isGlobal),
          grammarToken->tokensHolder[2]->data.grammarToken->reg);
   grammarToken->reg = get_reg_cur(addressTable);
 }
@@ -410,8 +416,10 @@ void SubInterCode(GrammarToken *grammarToken, AddressTable *addressTable) {
 void MulInterCode(GrammarToken *grammarToken, AddressTable *addressTable) {
   int res = get_reg_new(addressTable);
   printf("DEFVAR LF@r%d\n", res);
-  printf("MUL LF@r%d LF@r%d LF@r%d\n", res,
+  printf("MUL LF@r%d %s@r%d %s@r%d\n", res,
+         registerPrefixGen(grammarToken->tokensHolder[0]->data.grammarToken->isGlobal),
          grammarToken->tokensHolder[0]->data.grammarToken->reg,
+         registerPrefixGen(grammarToken->tokensHolder[2]->data.grammarToken->isGlobal),
          grammarToken->tokensHolder[2]->data.grammarToken->reg);
   grammarToken->reg = get_reg_cur(addressTable);
 }
@@ -450,8 +458,10 @@ void EqualInterCode(GrammarToken *grammarToken, AddressTable *addressTable) {
   //  printf("CREATEFRAME\n");
   //  printf("PUSHFRAME\n");
   printf("DEFVAR LF@r%d\n", res);
-  printf("EQ LF@r%d LF@r%d LF@r%d\n", res,
+  printf("EQ LF@r%d %s@r%d %s@r%d\n", res,
+         registerPrefixGen(grammarToken->tokensHolder[0]->data.grammarToken->isGlobal),
          grammarToken->tokensHolder[0]->data.grammarToken->reg,
+         registerPrefixGen(grammarToken->tokensHolder[2]->data.grammarToken->isGlobal),
          grammarToken->tokensHolder[2]->data.grammarToken->reg);
   //  printf("POPFRAME\n");
   grammarToken->reg = get_reg_cur(addressTable);
@@ -462,8 +472,10 @@ void NotEqualInterCode(GrammarToken *grammarToken, AddressTable *addressTable) {
   //  printf("CREATEFRAME\n");
   //  printf("PUSHFRAME\n");
   printf("DEFVAR LF@r%d\n", res);
-  printf("JUMPIFNEQ NotEqual LF@r%d LF@r%d\n",
+  printf("JUMPIFNEQ NotEqual %s@r%d %s@r%d\n",
+         registerPrefixGen(grammarToken->tokensHolder[0]->data.grammarToken->isGlobal),
          grammarToken->tokensHolder[0]->data.grammarToken->reg,
+         registerPrefixGen(grammarToken->tokensHolder[2]->data.grammarToken->isGlobal),
          grammarToken->tokensHolder[2]->data.grammarToken->reg);
   printf("MOVE LF@r%d bool@false\n", res);
   //  printf("POPFRAME\n");
@@ -481,10 +493,12 @@ void GreaterInterCode(GrammarToken *grammarToken, AddressTable *addressTable) {
   //  printf("CREATEFRAME\n");
   //  printf("PUSHFRAME\n");
   printf("DEFVAR LF@r%d\n", res);
-  printf("GT LF@r%d LF@r%d LF@r%d\n", res,
+  printf("GT LF@r%d %s@r%d %s@r%d\n", res,
+         registerPrefixGen(grammarToken->tokensHolder[0]->data.grammarToken->isGlobal),
          grammarToken->tokensHolder[0]->data.grammarToken->reg,
+         registerPrefixGen(grammarToken->tokensHolder[2]->data.grammarToken->isGlobal),
          grammarToken->tokensHolder[2]->data.grammarToken->reg);
-  printf("POPFRAME\n");
+  //printf("POPFRAME\n");
   grammarToken->reg = get_reg_cur(addressTable);
 }
 
@@ -493,8 +507,10 @@ void LessInterCode(GrammarToken *grammarToken, AddressTable *addressTable) {
   //  printf("CREATEFRAME\n");
   //  printf("PUSHFRAME\n");
   printf("DEFVAR LF@r%d\n", res);
-  printf("LT LF@r%d LF@r%d LF@r%d\n", res,
+  printf("LT LF@r%d %s@r%d %s@r%d\n", res,
+         registerPrefixGen(grammarToken->tokensHolder[0]->data.grammarToken->isGlobal),
          grammarToken->tokensHolder[0]->data.grammarToken->reg,
+         registerPrefixGen(grammarToken->tokensHolder[2]->data.grammarToken->isGlobal),
          grammarToken->tokensHolder[2]->data.grammarToken->reg);
   //  printf("POPFRAME\n");
   grammarToken->reg = get_reg_cur(addressTable);
@@ -503,15 +519,18 @@ void LessInterCode(GrammarToken *grammarToken, AddressTable *addressTable) {
 void GreaterEqualInterCode(GrammarToken *grammarToken,
                            AddressTable *addressTable) {
   int res = get_reg_new(addressTable);
-  printf("CREATEFRAME\n");
-  printf("PUSHFRAME\n");
-  printf("DEFVAR TF@tempBool0\n");
-  printf("GT LF@tempBool0 LF@r%d LF@r%d\n",
+//  printf("CREATEFRAME\n");
+//  printf("PUSHFRAME\n");
+  printf("DEFVAR LF@tempBool0\n");
+  printf("GT LF@tempBool0 %s@r%d %s@r%d\n",
+         registerPrefixGen(grammarToken->tokensHolder[0]->data.grammarToken->isGlobal),
          grammarToken->tokensHolder[0]->data.grammarToken->reg,
+         registerPrefixGen(grammarToken->tokensHolder[2]->data.grammarToken->isGlobal),
          grammarToken->tokensHolder[2]->data.grammarToken->reg);
   printf("DEFVAR LF@tempBool1\n");
   printf("EQ TF@tempBool1 LF@r%d LF@r%d\n",
          grammarToken->tokensHolder[0]->data.grammarToken->reg,
+         registerPrefixGen(grammarToken->tokensHolder[2]->data.grammarToken->isGlobal),
          grammarToken->tokensHolder[2]->data.grammarToken->reg);
   printf("DEFVAR LF@r%d\n", res);
   printf("OR LF@r%d TF@tempBool0 TF@tempBool1\n", res);
@@ -522,15 +541,19 @@ void GreaterEqualInterCode(GrammarToken *grammarToken,
 void LessEqualInterCode(GrammarToken *grammarToken,
                         AddressTable *addressTable) {
   int res = get_reg_new(addressTable);
-  printf("CREATEFRAME\n");
-  printf("PUSHFRAME\n");
+  //printf("CREATEFRAME\n");
+  //printf("PUSHFRAME\n");
   printf("DEFVAR LF@tempBool0\n");
-  printf("LT LF@tempBool0 LF@r%d LF@r%d\n",
+  printf("LT LF@tempBool0 %s@r%d %s@r%d\n",
+         registerPrefixGen(grammarToken->tokensHolder[0]->data.grammarToken->isGlobal),
          grammarToken->tokensHolder[0]->data.grammarToken->reg,
+         registerPrefixGen(grammarToken->tokensHolder[2]->data.grammarToken->isGlobal),
          grammarToken->tokensHolder[2]->data.grammarToken->reg);
-  printf("DEFVAR TF@tempBool1\n");
-  printf("EQ TF@tempBool1 LF@r%d LF@r%d\n",
+  printf("DEFVAR LF@tempBool1\n");
+  printf("EQ TF@tempBool1 %s@r%d %s@r%d\n",
+         registerPrefixGen(grammarToken->tokensHolder[0]->data.grammarToken->isGlobal),
          grammarToken->tokensHolder[0]->data.grammarToken->reg,
+         registerPrefixGen(grammarToken->tokensHolder[2]->data.grammarToken->isGlobal),
          grammarToken->tokensHolder[2]->data.grammarToken->reg);
   printf("DEFVAR LF@r%d\n", res);
   printf("OR LF@r%d LF@tempBool0 LF@tempBool1\n", res);
@@ -543,7 +566,8 @@ void SoftUnwrapInterCode(GrammarToken *grammarToken,
   int res = get_reg_new(addressTable);
   if (grammarToken->tokensHolder[0]->data.grammarToken->reg == -1) {
     printf("DEFVAR LF@r%d\n", res);
-    printf("MOVE LF@r%d LF@r%d\n", res,
+    printf("MOVE LF@r%d %s@r%d\n", res,
+           registerPrefixGen(grammarToken->tokensHolder[2]->data.grammarToken->isGlobal),
            grammarToken->tokensHolder[2]->data.grammarToken->reg);
   }
   grammarToken->reg = get_reg_cur(addressTable);
@@ -666,7 +690,8 @@ void HardUnwrapInterCode(GrammarToken *grammarToken,
   // printf("DEFVAR LF@tempReg\n");
   // printf("MOVE LF@tempReg TF@r%d\n",
   // grammarToken->tokensHolder[0]->data.grammarToken->reg);
-  printf("JUMPIFEQ ExitIfZero LF@r%d nil@nil\n",
+  printf("JUMPIFEQ ExitIfZero %s@r%d nil@nil\n",
+         registerPrefixGen(grammarToken->tokensHolder[0]->data.grammarToken->isGlobal),
          grammarToken->tokensHolder[0]->data.grammarToken->reg);
   printf("JUMP EscapeHardUnwrap\n");
   printf("LABEL ExitIfZero\n");
@@ -681,9 +706,12 @@ void WhileInitInterCode(GrammarToken *grammarToken,
 }
 
 void CondInterCode(GrammarToken *grammarToken, AddressTable *addressTable) {
-  printf("JUMPIFEQ BLOCK%d LF@r%d bool@true\n", get_cur_cycle(addressTable),
+  printf("JUMPIFEQ BLOCK%d %s@r%d bool@true\n",
+         get_cur_cycle(addressTable),
+         registerPrefixGen(grammarToken->tokensHolder[0]->data.grammarToken->isGlobal),
          grammarToken->tokensHolder[0]->data.grammarToken->reg);
-  printf("JUMPIFEQ ESCAPE%d LF@r%d bool@false\n", get_cur_cycle(addressTable),
+  printf("JUMPIFEQ ESCAPE%d %s@r%d bool@false\n", get_cur_cycle(addressTable),
+         registerPrefixGen(grammarToken->tokensHolder[0]->data.grammarToken->isGlobal),
          grammarToken->tokensHolder[0]->data.grammarToken->reg);
   printf("LABEL BLOCK%d\n", get_cur_cycle(addressTable));
 }
@@ -703,7 +731,8 @@ void ContinueInterCode(GrammarToken *grammarToken, AddressTable *addressTable) {
 }
 
 void ReturnInterCode(GrammarToken *grammarToken, AddressTable *addressTable) {
-  printf("MOVE GF@ReturnFunc LF@r%d\n",
+  printf("MOVE GF@ReturnFunc %s@r%d\n",
+         registerPrefixGen(grammarToken->tokensHolder[1]->data.grammarToken->isGlobal),
          grammarToken->tokensHolder[1]->data.grammarToken->reg);
 }
 
@@ -750,8 +779,12 @@ void InitProcess(GrammarToken *grammarToken, AddressTable *addressTable) {
 }
 
 void IdAssignInterCode(GrammarToken *grammarToken, AddressTable *addressTable) {
-  int reg = AT_get(addressTable, &(grammarToken->tokensHolder[0]->data.string));
-  printf("MOVE LF@r%d LF@r%d\n", reg,
+  bool isGlobal = false;
+  int reg = AT_get(addressTable, &(grammarToken->tokensHolder[0]->data.string), &isGlobal);
+  printf("MOVE %s@r%d %s@r%d\n",
+         registerPrefixGen(isGlobal),
+         reg,
+         registerPrefixGen(grammarToken->tokensHolder[1]->data.grammarToken->isGlobal),
          grammarToken->tokensHolder[1]->data.grammarToken->reg);
 }
 // preorder function pro s ,which does init cycle
