@@ -123,8 +123,6 @@ void SubStringIntercode() {
 // func ord(_ 𝑐 : String) -> Int – Vrátí ordinální hodnotu (ASCII) prvního znaku
 // v řetězci 𝑐. Je-li řetězec prázdný, vrací funkce 0.
 void Ord() {
-//  const int n_initial = 0;
-//  static int n = n_initial;
   printf("JUMP ordEnd\n");
   printf("LABEL ord\n");
   printf("CREATEFRAME\n");
@@ -134,13 +132,8 @@ void Ord() {
   printf("POPS LF@$ARG_LEN\n");
 
   printf("DEFVAR LF@str\n");
-  //printf("DEFVAR LF@type\n");
   printf("DEFVAR LF@strlen\n");
   printf("POPS LF@str\n");
-  //printf("TYPE LF@type LF@str\n");
-  //printf("JUMPIFEQ Ifstring LF@type string@string\n");
-  //printf("EXIT int@4\n");
-  //printf("LABEL Ifstring\n");
   printf("STRLEN LF@strlen LF@str\n");
   printf("JUMPIFEQ IfLinezero LF@strlen int@0\n");
   printf("STRI2INT LF@strlen LF@str int@0\n");
@@ -151,7 +144,6 @@ void Ord() {
   //*----*----*----*----*----*----*----*----*//
   printf("POPFRAME\n");
   printf("MOVE GF@FuncReturn nil@nil\n");
-  //  n++;
   printf("RETURN\n");
   //*----*----*----*----*----*----*----*----*//
   printf("LABEL ordEnd\n");
@@ -161,25 +153,20 @@ void Ord() {
 // ASCII kód je zadán parametrem 𝑖. Hodnotu 𝑖 mimo interval[0; 255]řeší
 // odpovídající instrukce IFJcode23.
 void Chr() {
-  //  const int n_initial = 0;
-  //  static int n = n_initial;
+
   printf("JUMP chrend\n");
   printf("LABEL chr\n");
   printf("CREATEFRAME\n");
   printf("PUSHFRAME\n");
+  printf("DEFVAR LF@$ARG_LEN\n");
+  printf("POPS LF@$ARG_LEN\n");
   printf("DEFVAR LF@number\n");
-  //printf("DEFVAR LF@type\n");
   printf("DEFVAR LF@strlen\n");
   printf("MOVE LF@strlen string@a\n");
   printf("POPS LF@number\n");
-  //printf("TYPE LF@type LF@number\n");
-  //printf("JUMPIFEQ FuncIsInt LF@type string@int\n");
-  //printf("EXIT int@4\n");
-  //printf("LABEL FuncIsInt\n");
   printf("INT2CHAR LF@strlen LF@number\n");
   printf("POPFRAME\n");
   printf("MOVE GF@FuncReturn TF@strlen\n");
-  //  n++;
   printf("RETURN\n");
   printf("LABEL chrend\n");
 }
@@ -190,7 +177,11 @@ void ReadString() {
   printf("LABEL readString\n");
   printf("CREATEFRAME\n");
   printf("PUSHFRAME\n");
-  printf("DEFVAR LF@ReadString\n");
+
+    printf("DEFVAR LF@$ARG_LEN\n");
+    printf("POPS LF@$ARG_LEN\n");
+
+    printf("DEFVAR LF@ReadString\n");
   printf("READ LF@ReadString string\n");
   printf("POPFRAME\n");
   printf("MOVE GF@FuncReturn TF@ReadString\n");
@@ -231,8 +222,6 @@ void ReadDouble() {
 // term konvertovanou na desetinné číslo. Pro konverzi z celého čísla využijte
 // odpovídající instrukci z IFJcode23.
 void Int2Double() {
-  //  const int n_initial = 0;
-  //  static int n = n_initial;
   printf("JUMP Int2DoubleEnd\n");
   printf("LABEL Int2Double\n");
   printf("CREATEFRAME\n");
@@ -242,7 +231,6 @@ void Int2Double() {
   printf("INT2FLOAT LF@IntToFloat LF@tempInt\n");
   printf("POPFRAME\n");
   printf("MOVE GF@FuncReturn TF@IntToFloat\n");
-  //  n++;
   printf("RETURN\n");
   printf("LABEL Int2DoubleEnd\n");
 }
@@ -355,10 +343,11 @@ void StoreString(GrammarToken *grammarToken, AddressTable *addressTable) {
 void OrInterCode(GrammarToken *grammarToken, AddressTable *addressTable) {
   int res = get_reg_new(addressTable);
   printf("DEFVAR LF@r%d\n", res);
-  printf("OR LF@r%d LF@r%d LF@r%d\n", res,
+  printf("OR LF@r%d %s@r%d %s@r%d\n", res,
+         registerPrefixGen(grammarToken->tokensHolder[0]->data.grammarToken->isGlobal),
          grammarToken->tokensHolder[0]->data.grammarToken->reg,
+         registerPrefixGen(grammarToken->tokensHolder[2]->data.grammarToken->isGlobal),
          grammarToken->tokensHolder[2]->data.grammarToken->reg);
-  grammarToken->reg = get_reg_cur(addressTable);
 }
 
 void AndInterCode(GrammarToken *grammarToken, AddressTable *addressTable) {
@@ -535,13 +524,14 @@ void GreaterEqualInterCode(GrammarToken *grammarToken,
          registerPrefixGen(grammarToken->tokensHolder[2]->data.grammarToken->isGlobal),
          grammarToken->tokensHolder[2]->data.grammarToken->reg);
   printf("DEFVAR LF@tempBool1\n");
-  printf("EQ TF@tempBool1 LF@r%d LF@r%d\n",
+  printf("EQ LF@tempBool1 %s@r%d %s@r%d\n",
+         registerPrefixGen(grammarToken->tokensHolder[0]->data.grammarToken->isGlobal),
          grammarToken->tokensHolder[0]->data.grammarToken->reg,
          registerPrefixGen(grammarToken->tokensHolder[2]->data.grammarToken->isGlobal),
          grammarToken->tokensHolder[2]->data.grammarToken->reg);
   printf("DEFVAR LF@r%d\n", res);
-  printf("OR LF@r%d TF@tempBool0 TF@tempBool1\n", res);
-  printf("POPFRAME\n");
+  printf("OR LF@r%d LF@tempBool0 LF@tempBool1\n", res);
+//  printf("POPFRAME\n");
   grammarToken->reg = get_reg_cur(addressTable);
 }
 
@@ -564,7 +554,7 @@ void LessEqualInterCode(GrammarToken *grammarToken,
          grammarToken->tokensHolder[2]->data.grammarToken->reg);
   printf("DEFVAR LF@r%d\n", res);
   printf("OR LF@r%d LF@tempBool0 LF@tempBool1\n", res);
-  printf("POPFRAME\n");
+  //printf("POPFRAME\n");
   grammarToken->reg = get_reg_cur(addressTable);
 }
 
