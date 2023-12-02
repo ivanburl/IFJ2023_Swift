@@ -13,6 +13,17 @@ Error generate_inter_code(GrammarToken *grToken) {
   return error_create(NONE, "none");
 }
 
+Error generate_registers_inter_code(GrammarToken* grammarToken, char* prefix, int* gen) {
+    printf("DEFVAR %s%d", prefix, *gen);
+    *gen = *gen + 1;
+    for (int i = 0;i<=grammarToken->tokensHolderSize;i++) {
+        if (grammarToken->tokensHolder[i]->type>NON_TERMINAL_UNDEFINED) {
+            //if (grammarToken->gra)
+            //generate_registers_inter_code()
+        }
+    }
+}
+
 void post_order_process(GrammarToken *grToken, AddressTable *addressTable) {
   if (grToken == NULL)
     return;

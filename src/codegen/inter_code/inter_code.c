@@ -23,7 +23,7 @@ void InterCodeInit() {
 void InitPrebuildFunc() {
  // SubStringIntercode();
  // Chr();
-  Ord();
+  //Ord();
  // ReadString();
  // ReadInt();
  // ReadDouble();
@@ -645,10 +645,10 @@ void FuncInitialize(GrammarToken *grammarToken, AddressTable *addressTable) {
   init_function(addressTable, &grammarToken->tokensHolder[1]->data.string);
   printf("JUMP Escape%s\n", grammarToken->tokensHolder[1]->data.string.data);
   printf("LABEL %s\n", grammarToken->tokensHolder[1]->data.string.data);
-  printf("CREATEFRAME\n");
-  printf("PUSHFRAME\n");
-  printf("DEFVAR LF@trash\n");
-  printf("POPS LF@trash\n");
+//  printf("CREATEFRAME\n");
+//  printf("PUSHFRAME\n");
+//  printf("DEFVAR LF@trash\n");
+//  printf("POPS LF@trash\n");
   if (grammarToken->tokensHolder[3]->data.grammarToken->tokensHolderSize != 0) {
     GrammarToken *curToken =
         grammarToken->tokensHolder[3]->data.grammarToken; // PARAMS
@@ -849,8 +849,10 @@ void StsCreateFrame(GrammarToken *grammarToken, AddressTable *addressTable) {
 }
 
 void StsPopFrame(GrammarToken *grammarToken, AddressTable *addressTable) {
+  //end_function(addressTable);
   printf("POPFRAME\n");
 }
+
 // preorder function pro s ,which does init cycle
 // preorder function for if else x2
 // postorder function pro s, which ends cycle (?-and define lable for skip-?)
