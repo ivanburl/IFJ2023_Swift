@@ -13,8 +13,6 @@ void token_init(Token *token) {
 }
 
 Error token_create(TokenType type, char *str, Token *outToken) {
-  assert(str);
-
   Token token;
   token.type = type;
 

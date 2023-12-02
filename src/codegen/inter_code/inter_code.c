@@ -12,15 +12,15 @@ void InterCodeInit() {
 }
 
 void InitPrebuildFunc() {
- // SubStringIntercode();
- // Chr();
- // Ord();
- // ReadString();
- // ReadInt();
- // ReadDouble();
- // Int2Double();
- // Double2Int();
- // StrLength();
+  // SubStringIntercode();
+  // Chr();
+  // Ord();
+  // ReadString();
+  // ReadInt();
+  // ReadDouble();
+  // Int2Double();
+  // Double2Int();
+  // StrLength();
   Write();
 }
 
@@ -117,8 +117,8 @@ void SubStringIntercode() {
 // func ord(_ 𝑐 : String) -> Int – Vrátí ordinální hodnotu (ASCII) prvního znaku
 // v řetězci 𝑐. Je-li řetězec prázdný, vrací funkce 0.
 void Ord() {
-//  const int n_initial = 0;
-//  static int n = n_initial;
+  //  const int n_initial = 0;
+  //  static int n = n_initial;
   printf("JUMP ordEnd\n");
   printf("LABEL ord\n");
   printf("CREATEFRAME\n");
@@ -141,7 +141,7 @@ void Ord() {
   //*----*----*----*----*----*----*----*----*//
   printf("POPFRAME\n");
   printf("MOVE GF@FuncReturn nil@nil\n");
-//  n++;
+  //  n++;
   printf("RETURN\n");
   //*----*----*----*----*----*----*----*----*//
   printf("LABEL ordEnd\n");
@@ -151,8 +151,8 @@ void Ord() {
 // ASCII kód je zadán parametrem 𝑖. Hodnotu 𝑖 mimo interval[0; 255]řeší
 // odpovídající instrukce IFJcode23.
 void Chr() {
-//  const int n_initial = 0;
-//  static int n = n_initial;
+  //  const int n_initial = 0;
+  //  static int n = n_initial;
   printf("JUMP chrend\n");
   printf("LABEL chr\n");
   printf("CREATEFRAME\n");
@@ -169,7 +169,7 @@ void Chr() {
   printf("INT2CHAR LF@strlen LF@number\n");
   printf("POPFRAME\n");
   printf("MOVE GF@FuncReturn TF@strlen\n");
-//  n++;
+  //  n++;
   printf("RETURN\n");
   printf("LABEL chrend\n");
 }
@@ -202,7 +202,6 @@ void ReadInt() {
   printf("LABEL ReadIntEnd\n");
 }
 
-
 // call ReadDouble
 // func readDouble() -> Double?
 void ReadDouble() {
@@ -222,8 +221,8 @@ void ReadDouble() {
 // term konvertovanou na desetinné číslo. Pro konverzi z celého čísla využijte
 // odpovídající instrukci z IFJcode23.
 void Int2Double() {
-//  const int n_initial = 0;
-//  static int n = n_initial;
+  //  const int n_initial = 0;
+  //  static int n = n_initial;
   printf("JUMP Int2DoubleEnd\n");
   printf("LABEL Int2Double\n");
   printf("CREATEFRAME\n");
@@ -233,7 +232,7 @@ void Int2Double() {
   printf("INT2FLOAT LF@IntToFloat LF@tempInt\n");
   printf("POPFRAME\n");
   printf("MOVE GF@FuncReturn TF@IntToFloat\n");
-//  n++;
+  //  n++;
   printf("RETURN\n");
   printf("LABEL Int2DoubleEnd\n");
 }
@@ -374,26 +373,24 @@ void NotInterCode(GrammarToken *grammarToken, AddressTable *addressTable) {
 // GrammarToken -> {TOKEN, TOKEN, TOKEN, ...}
 // TOKEN -> GrammarToken
 void SumInterCode(GrammarToken *grammarToken, AddressTable *addressTable) {
-    int res = get_reg_new(addressTable);
-    if (grammarToken->tokensHolder[0]->type == INTEGER &&
-        grammarToken->tokensHolder[2]->type == INTEGER) {
-      printf("DEFVAR LF@r%d\n", res);
-      printf("ADD LF@r%d LF@r%d LF@r%d\n", res,
-             grammarToken->tokensHolder[0]->data.grammarToken->reg,
-             grammarToken->tokensHolder[2]->data.grammarToken->reg);
-    } else if (grammarToken->tokensHolder[0]->type == STRING &&
-               grammarToken->tokensHolder[2]->type == STRING) {
-      printf("DEFVAR LF@r%d\n", res);
-      printf("CONCAT LF@r%d LF@r%d LF@r%d\n", res,
-             grammarToken->tokensHolder[0]->data.grammarToken->reg,
-             grammarToken->tokensHolder[2]->data.grammarToken->reg);
-    } else {
-      printf("EXIT int@7\n");
-    }
-    grammarToken->reg = get_reg_cur(addressTable);
+  int res = get_reg_new(addressTable);
+  if (grammarToken->tokensHolder[0]->type == INTEGER &&
+      grammarToken->tokensHolder[2]->type == INTEGER) {
+    printf("DEFVAR LF@r%d\n", res);
+    printf("ADD LF@r%d LF@r%d LF@r%d\n", res,
+           grammarToken->tokensHolder[0]->data.grammarToken->reg,
+           grammarToken->tokensHolder[2]->data.grammarToken->reg);
+  } else if (grammarToken->tokensHolder[0]->type == STRING &&
+             grammarToken->tokensHolder[2]->type == STRING) {
+    printf("DEFVAR LF@r%d\n", res);
+    printf("CONCAT LF@r%d LF@r%d LF@r%d\n", res,
+           grammarToken->tokensHolder[0]->data.grammarToken->reg,
+           grammarToken->tokensHolder[2]->data.grammarToken->reg);
+  } else {
+    printf("EXIT int@7\n");
   }
-
-
+  grammarToken->reg = get_reg_cur(addressTable);
+}
 
 void SubInterCode(GrammarToken *grammarToken, AddressTable *addressTable) {
   int res = get_reg_new(addressTable);
@@ -421,51 +418,51 @@ void DivInterCode(GrammarToken *grammarToken, AddressTable *addressTable) {
   // LF@r%d\n",grammarToken->tokensHolder[0]->data.grammarToken->reg);
   // printf("INT2FLOAT TF@temp2
   // LF@r%d\n",grammarToken->tokensHolder[2]->data.grammarToken->reg);
-//  printf("CREATEFRAME\n");
-//  printf("PUSHFRAME\n");
+  //  printf("CREATEFRAME\n");
+  //  printf("PUSHFRAME\n");
   printf("DEFVAR LF@r%d\n", res);
   printf("DIV LF@r%d LF@r%d LF@r%d\n", res,
          grammarToken->tokensHolder[0]->data.grammarToken->reg,
          grammarToken->tokensHolder[2]->data.grammarToken->reg);
-//  printf("POPFRAME\n");
+  //  printf("POPFRAME\n");
   grammarToken->reg = get_reg_cur(addressTable);
 }
 
 void EqualInterCode(GrammarToken *grammarToken, AddressTable *addressTable) {
   int res = get_reg_new(addressTable);
-//  printf("CREATEFRAME\n");
-//  printf("PUSHFRAME\n");
+  //  printf("CREATEFRAME\n");
+  //  printf("PUSHFRAME\n");
   printf("DEFVAR LF@r%d\n", res);
   printf("EQ LF@r%d LF@r%d LF@r%d\n", res,
          grammarToken->tokensHolder[0]->data.grammarToken->reg,
          grammarToken->tokensHolder[2]->data.grammarToken->reg);
-//  printf("POPFRAME\n");
+  //  printf("POPFRAME\n");
   grammarToken->reg = get_reg_cur(addressTable);
 }
 
 void NotEqualInterCode(GrammarToken *grammarToken, AddressTable *addressTable) {
   int res = get_reg_new(addressTable);
-//  printf("CREATEFRAME\n");
-//  printf("PUSHFRAME\n");
+  //  printf("CREATEFRAME\n");
+  //  printf("PUSHFRAME\n");
   printf("DEFVAR LF@r%d\n", res);
   printf("JUMPIFNEQ NotEqual LF@r%d LF@r%d\n",
          grammarToken->tokensHolder[0]->data.grammarToken->reg,
          grammarToken->tokensHolder[2]->data.grammarToken->reg);
   printf("MOVE LF@r%d bool@false\n", res);
-//  printf("POPFRAME\n");
+  //  printf("POPFRAME\n");
   printf("JUMP NotEqualInterCodeEnd\n");
 
   printf("LABEL NotEqual\n");
   printf("MOVE LF@r%d bool@true\n", res);
-//  printf("POPFRAME\n");
+  //  printf("POPFRAME\n");
   printf("LABEL NotEqualInterCodeEnd\n");
   grammarToken->reg = get_reg_cur(addressTable);
 }
 
 void GreaterInterCode(GrammarToken *grammarToken, AddressTable *addressTable) {
   int res = get_reg_new(addressTable);
-//  printf("CREATEFRAME\n");
-//  printf("PUSHFRAME\n");
+  //  printf("CREATEFRAME\n");
+  //  printf("PUSHFRAME\n");
   printf("DEFVAR LF@r%d\n", res);
   printf("GT LF@r%d LF@r%d LF@r%d\n", res,
          grammarToken->tokensHolder[0]->data.grammarToken->reg,
@@ -476,13 +473,13 @@ void GreaterInterCode(GrammarToken *grammarToken, AddressTable *addressTable) {
 
 void LessInterCode(GrammarToken *grammarToken, AddressTable *addressTable) {
   int res = get_reg_new(addressTable);
-//  printf("CREATEFRAME\n");
-//  printf("PUSHFRAME\n");
+  //  printf("CREATEFRAME\n");
+  //  printf("PUSHFRAME\n");
   printf("DEFVAR LF@r%d\n", res);
   printf("LT LF@r%d LF@r%d LF@r%d\n", res,
          grammarToken->tokensHolder[0]->data.grammarToken->reg,
          grammarToken->tokensHolder[2]->data.grammarToken->reg);
-//  printf("POPFRAME\n");
+  //  printf("POPFRAME\n");
   grammarToken->reg = get_reg_cur(addressTable);
 }
 
@@ -555,17 +552,17 @@ void Write() {
   printf("RETURN\n");
   printf("LABEL EscapeWrite\n");
 }
-//void Write(int argCount){
-//  for(int n = argCount, n>0, n--)
-//  {
-//    printf("DEFVAR LF@WritePR\n", n);
-//    printf("POPS LF@WritePR\n", n);
-//  }
-//  for(int n = 0, n<argCount, n++) {
-//    printf("WRITE LF@WritePR\n", n);
-//  }
-//  printf("POPFRAME\n");
-//}
+// void Write(int argCount){
+//   for(int n = argCount, n>0, n--)
+//   {
+//     printf("DEFVAR LF@WritePR\n", n);
+//     printf("POPS LF@WritePR\n", n);
+//   }
+//   for(int n = 0, n<argCount, n++) {
+//     printf("WRITE LF@WritePR\n", n);
+//   }
+//   printf("POPFRAME\n");
+// }
 
 void FuncInitialize(GrammarToken *grammarToken, AddressTable *addressTable) {
   init_function(addressTable, &grammarToken->tokensHolder[1]->data.string);
@@ -623,6 +620,12 @@ void FuncCall(GrammarToken *grammarToken, AddressTable *addressTable) {
 void FuncArgAdd(GrammarToken *grammarToken, AddressTable *addressTable) {
   printf("MOVE GF@__ArgCount__ int@%d\n", get_args(addressTable));
   printf("PUSHS GF@__ArgCount__\n");
+}
+
+void PushArgLabeled(GrammarToken *grammarToken, AddressTable *addressTable) {
+  add_arg(addressTable);
+  printf("PUSHS LF@r%d\n",
+         grammarToken->tokensHolder[1]->data.grammarToken->reg);
 }
 
 void PushArg(GrammarToken *grammarToken, AddressTable *addressTable) {
@@ -702,7 +705,7 @@ void PostOrderForIf(GrammarToken *grammarToken, AddressTable *addressTable) {
 
 void VarIdInit(GrammarToken *grammarToken, AddressTable *addressTable) {
   int reg =
-      AT_create(addressTable, &grammarToken->tokensHolder[1]->data.string);
+      AT_create(addressTable, &grammarToken->tokensHolder[0]->data.string);
   if (reg == -1)
     exit(3);
   printf("DEFVAR LF@r%d\n", reg);
@@ -711,25 +714,25 @@ void VarIdInit(GrammarToken *grammarToken, AddressTable *addressTable) {
   grammarToken->reg = get_reg_cur(addressTable);
 }
 
+void VarTypedIdInit(GrammarToken *grammarToken, AddressTable *addressTable) {
+  int reg =
+      AT_create(addressTable, &grammarToken->tokensHolder[0]->data.string);
+  if (reg == -1)
+    exit(3);
+  printf("DEFVAR LF@r%d\n", reg);
+  printf("MOVE LF@r%d LF@r%d\n", reg,
+         grammarToken->tokensHolder[1]->data.grammarToken->reg);
+  grammarToken->reg = get_reg_cur(addressTable);
+}
+
 void InitProcess(GrammarToken *grammarToken, AddressTable *addressTable) {
   grammarToken->reg = grammarToken->tokensHolder[1]->data.grammarToken->reg;
 }
 
-void InitAssignInterCode(GrammarToken *grammarToken, AddressTable *addressTable) {
-  GrammarToken* eToken =  grammarToken->tokensHolder[0]->data.grammarToken;
-  if (eToken->grammarRule->resultTokenType != E) exit(9);
-    GrammarToken *fToken = eToken->tokensHolder[0]->data.grammarToken;
-    if (fToken->grammarRule->resultTokenType != F)
-      exit(9);
-    Token *idToken = fToken->tokensHolder[0];
-    if (idToken->type != ID && fToken->tokensHolderSize != 1)
-      exit(9);
-
-    int reg = AT_get(addressTable, &(idToken->data.string));
-    if (reg == -1)
-      exit(5);
-    printf("MOVE LF@r%d LF@r%d\n", reg,
-           grammarToken->tokensHolder[1]->data.grammarToken->reg);
+void IdAssignInterCode(GrammarToken *grammarToken, AddressTable *addressTable) {
+  int reg = AT_get(addressTable, &(grammarToken->tokensHolder[0]->data.string));
+  printf("MOVE LF@r%d LF@r%d\n", reg,
+         grammarToken->tokensHolder[1]->data.grammarToken->reg);
 }
 // preorder function pro s ,which does init cycle
 // preorder function for if else x2

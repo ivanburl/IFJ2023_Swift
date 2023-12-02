@@ -43,6 +43,7 @@ void WhileInitInterCode(GrammarToken *grammarToken, AddressTable *addressTable);
 void CondInterCode (GrammarToken *grammarToken, AddressTable *addressTable);
 void BlockWhileInterCode (GrammarToken *grammarToken, AddressTable *addressTable);
 void GetF(GrammarToken *grammarToken, AddressTable *addressTable);
+void PushArgLabeled(GrammarToken *grammarToken, AddressTable *addressTable);
 void PushArg(GrammarToken *grammarToken, AddressTable *addressTable);
 void FuncInitialize(GrammarToken *grammarToken, AddressTable *addressTable);
 void FuncInitializeEscape(GrammarToken *grammarToken, AddressTable *addressTable);
@@ -55,8 +56,9 @@ void ReturnInterCode (GrammarToken *grammarToken, AddressTable *addressTable);
 void ContinueInterCode (GrammarToken *grammarToken, AddressTable *addressTable);
 void BreakInterCode (GrammarToken *grammarToken, AddressTable *addressTable);
 void VarIdInit(GrammarToken *grammarToken, AddressTable *addressTable);
+void VarTypedIdInit(GrammarToken *grammarToken, AddressTable *addressTable);
 void InitProcess(GrammarToken *grammarToken, AddressTable *addressTable);
 void StoreNil(GrammarToken *grammarToken, AddressTable *addressTable);
-void InitAssignInterCode(GrammarToken *grammarToken, AddressTable *addressTable);
+void IdAssignInterCode(GrammarToken *grammarToken, AddressTable *addressTable);
 
 #endif // IFJ2023_SWIFT_INTER_CODE_H
