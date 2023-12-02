@@ -14,8 +14,6 @@ void InterCodeInit() {
     printf("DEFVAR GF@__Arg__\n");
     printf("MOVE GF@__Arg__ nil@nil\n");
 
-  printf("CREATEFRAME\n");
-  printf("PUSHFRAME\n");
   InitPrebuildFunc();
   // InsertPrebuildFUNCS
 }
@@ -35,7 +33,6 @@ void InitPrebuildFunc() {
 
 void InterCodeEnd() {
   printf("LABEL ProgramEnd\n");
-  printf("POPFRAME\n");
 }
 // ARG, NULL, (TokenType[]){E, ARG_TMP
 
@@ -757,15 +754,20 @@ void WhileInitInterCode(GrammarToken *grammarToken,
                         AddressTable *addressTable) {
   int num = init_cycle(addressTable);
   printf("LABEL cycle%d\n", num);
+    printf("CREATEFRAME\n"
+           "PUSHFRAME\n");
 }
 
 void CondInterCode(GrammarToken *grammarToken, AddressTable *addressTable) {
+    //printf("POPFRAME\n");
   printf("JUMPIFEQ BLOCK%d %s@r%d bool@true\n",
          get_cur_cycle(addressTable),
-         registerPrefixGen(grammarToken->tokensHolder[0]->data.grammarToken->isGlobal),
+//         registerPrefixGen(grammarToken->tokensHolder[0]->data.grammarToken->isGlobal),
+            "LF",
          grammarToken->tokensHolder[0]->data.grammarToken->reg);
   printf("JUMPIFEQ ESCAPE%d %s@r%d bool@false\n", get_cur_cycle(addressTable),
-         registerPrefixGen(grammarToken->tokensHolder[0]->data.grammarToken->isGlobal),
+//         registerPrefixGen(grammarToken->tokensHolder[0]->data.grammarToken->isGlobal),
+            "LF",
          grammarToken->tokensHolder[0]->data.grammarToken->reg);
   printf("LABEL BLOCK%d\n", get_cur_cycle(addressTable));
 }
@@ -774,6 +776,7 @@ void BlockWhileInterCode(GrammarToken *grammarToken,
                          AddressTable *addressTable) {
   printf("JUMP cycle%d\n", get_cur_cycle(addressTable));
   printf("LABEL ESCAPE%d\n", get_cur_cycle(addressTable));
+    end_cycle(addressTable);
 }
 
 void BreakInterCode(GrammarToken *grammarToken, AddressTable *addressTable) {
@@ -846,6 +849,11 @@ void IdAssignInterCode(GrammarToken *grammarToken, AddressTable *addressTable) {
 void StsCreateFrame(GrammarToken *grammarToken, AddressTable *addressTable) {
   printf("CREATEFRAME\n");
   printf("PUSHFRAME\n");
+//  char str[100];
+//  int res = get_reg_new(addressTable);
+//  sprintf(str, "$WHILE%d$", res);
+//  String string = string_create(str);
+//  init_function(addressTable, &string);
 }
 
 void StsPopFrame(GrammarToken *grammarToken, AddressTable *addressTable) {
