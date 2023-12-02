@@ -50,73 +50,75 @@ void GetF(GrammarToken *grammarToken, AddressTable *addressTable) {
 void SubStringIntercode() {
   printf("JUMP SubstringIntercodeEnd\n");
   printf("LABEL Substring\n");
-  printf("CREATEFRAME");
-  printf("PUSHFRAME");
-  printf("DEFVAR TF@tempBool\n");
-  printf("DEFVAR TF@arg2\n");
-  printf("POPS TF@arg2\n");
-  printf("DEFVAR TF@arg1\n");
-  printf("POPS TF@arg1\n");
-  printf("DEFVAR TF@arg0\n");
-  printf("POPS TF@arg0\n");
+  printf("CREATEFRAME\n");
+  printf("PUSHFRAME\n");
+  printf("DEFVAR LF@tempBool\n");
+  printf("DEFVAR LF@arg2\n");
+  printf("POPS LF@arg2\n");
+  printf("DEFVAR LF@arg1\n");
+  printf("POPS LF@arg1\n");
+  printf("DEFVAR LF@arg0\n");
+  printf("POPS LF@arg0\n");
   // i<0
-  printf("LT TF@tempBool TF@arg1 int@0\n");
-  printf("JUMPIFEQ ReturnNil TF@tempBool bool@true\n");
+  printf("LT LF@tempBool LF@arg1 int@0\n");
+  printf("JUMPIFEQ ReturnNil LF@tempBool bool@true\n");
   // j<0
-  printf("LT TF@tempBool TF@arg2 int@0\n");
-  printf("JUMPIFEQ ReturnNil TF@tempBool bool@true\n");
+  printf("LT LF@tempBool LF@arg2 int@0\n");
+  printf("JUMPIFEQ ReturnNil LF@tempBool bool@true\n");
   // i<j
-  printf("GT TF@tempBool TF@arg1 TF@arg2\n");
-  printf("JUMPIFEQ ReturnNil TF@tempBool bool@true\n");
+  printf("GT LF@tempBool LF@arg1 LF@arg2\n");
+  printf("JUMPIFEQ ReturnNil LF@tempBool bool@true\n");
   // strlen(s)
-  printf("DEFVAR TF@TempInt\n");
-  printf("STRLEN TF@TempInt GF@FuncReturn\n");
+  printf("DEFVAR LF@TempInt\n");
+  printf("STRLEN LF@TempInt GF@FuncReturn\n");
   // i>=strlen(s)
-  printf("DEFVAR TF@TempBool1\n");
-  printf("DEFVAR TF@TempBool2\n");
-  printf("GT TF@tempBool1 TF@arg1 TF@TempInt\n");
-  printf("EQ TF@tempBool2 TF@arg1 TF@TempInt\n");
-  printf("OR TF@tempBool TF@tempBool1 TF@tempBool2\n");
-  printf("JUMPIFEQ ReturnNil TF@tempBool bool@true\n");
+  printf("DEFVAR LF@TempBool1\n");
+  printf("DEFVAR LF@TempBool2\n");
+  printf("GT LF@tempBool1 LF@arg1 LF@TempInt\n");
+  printf("EQ LF@tempBool2 LF@arg1 LF@TempInt\n");
+  printf("OR LF@tempBool LF@tempBool1 LF@tempBool2\n");
+  printf("JUMPIFEQ ReturnNil LF@tempBool bool@true\n");
   // j>strlen(s)
-  printf("GT TF@tempBool TF@arg2 TF@TempInt\n");
-  printf("JUMPIFEQ ReturnNil TF@tempBool bool@true\n");
+  printf("GT LF@tempBool LF@arg2 LF@TempInt\n");
+  printf("JUMPIFEQ ReturnNil LF@tempBool bool@true\n");
   //*-----*-----*-----*-----*-----*-----*-----*-----*-----*-----*-----*-----*//
   // temps creations
-  printf("DEFVAR TF@boolCycle\n");
-  printf("DEFVAR TF@tempBoolCycle1\n");
-  printf("DEFVAR TF@tempBoolCycle2\n");
+  printf("DEFVAR LF@boolCycle\n");
+  printf("DEFVAR LF@tempBoolCycle1\n");
+  printf("DEFVAR LF@tempBoolCycle2\n");
   // (1*) int inc = i
-  printf("DEFVAR TF@Increment\n");
-  printf("MOVE TF@Increment TF@arg1\n");
+  printf("DEFVAR LF@Increment\n");
+  printf("MOVE LF@Increment LF@arg1\n");
   // substring and curchar def
-  printf("DEFVAR TF@SubString\n");
-  printf("MOVE TF@SubString string@\n");
-  printf("DEFVAR TF@CurChar\n");
+  printf("DEFVAR LF@SubString\n");
+  printf("MOVE LF@SubString string@\n");
+  printf("DEFVAR LF@CurChar\n");
   // for( (1*) ; inc<=j; (2*) )
   printf("LABEL For_Head\n");
-  printf("LT TF@tempBoolCycle1 TF@Increment TF@arg2\n");
-  printf("EQ TF@tempBoolCycle2 TF@Increment TF@arg2\n");
-  printf("OR TF@boolCycle TF@tempBoolCycle1 TF@tempBoolCycle2\n");
-  printf("JUMPIFEQ For TF@boolCycle bool@true\n");
+  printf("LT LF@tempBoolCycle1 LF@Increment LF@arg2\n");
+  printf("EQ LF@tempBoolCycle2 LF@Increment LF@arg2\n");
+  printf("OR LF@boolCycle LF@tempBoolCycle1 LF@tempBoolCycle2\n");
+  printf("JUMPIFEQ For LF@boolCycle bool@true\n");
   //*-----*-----*-----*-----*-----*-----*-----*-----*-----*//
   // after For
-  printf("MOVE GF@FuncReturn TF@SubString\n");
+  printf("MOVE GF@FuncReturn LF@SubString\n");
+  printf("POPFRAME\n");
   printf("RETURN\n");
   //*-----*-----*-----*-----*-----*-----*-----*-----*-----*//
   printf("LABEL For\n");
   // code zone {
   // char c = arg0[inc];
-  printf("GETCHAR TF@CurChar LF@arg0 TF@Increment\n");
+  printf("GETCHAR LF@CurChar LF@arg0 LF@Increment\n");
   // string += c;
-  printf("CONCAT TF@SubString TF@SubString TF@CurChar\n");
+  printf("CONCAT LF@SubString LF@SubString LF@CurChar\n");
   // (2*)inc++
-  printf("ADD TF@Increment TF@Increment int@1\n");
+  printf("ADD LF@Increment LF@Increment int@1\n");
   // end of code zone }
   printf("JUMP For_Head\n");
   //*-----*-----*-----*-----*-----*-----*-----*-----*-----*-----*-----*-----*//
   printf("LABEL ReturnNil\n");
-  printf("MOV GF@FuncReturn nil@nil\n");
+  printf("MOVE GF@FuncReturn nil@nil\n");
+  printf("POPFRAME\n");
   printf("RETURN\n");
   printf("LABEL SubStringIntercodeEnd\n");
 }
@@ -283,10 +285,11 @@ void StrLength() {
   printf("DEFVAR LF@$ARG_LEN\n");
   printf("POPS LF@$ARG_LEN\n");
   printf("DEFVAR LF@tempString\n");
+  printf("DEFVAR LF@StringLegnth\n");
   printf("POPS LF@tempString\n");
   printf("STRLEN LF@StringLegnth LF@tempString\n");
+  printf("MOVE GF@FuncReturn  LF@StringLegnth\n");
   printf("POPFRAME\n");
-  printf("MOVE GF@FuncReturn TF@StringLegnth\n");
   printf("RETURN\n");
   printf("LABEL lengthEnd\n");
 }
