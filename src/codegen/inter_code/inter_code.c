@@ -389,17 +389,24 @@ void SumInterCode(GrammarToken *grammarToken, AddressTable *addressTable) {
     int res = get_reg_new(addressTable);
     if (grammarToken->returnType == STRING) {
     printf("DEFVAR LF@r%d\n", res);
-    printf("CONCAT LF@r%d LF@r%d LF@r%d\n", res,
-           grammarToken->tokensHolder[0]->data.grammarToken->reg,
-           grammarToken->tokensHolder[2]->data.grammarToken->reg);
+    printf("CONCAT LF@r%d %s@r%d %s@r%d\n",
+               res,
+               registerPrefixGen(grammarToken->tokensHolder[0]->data.grammarToken->isGlobal),
+               grammarToken->tokensHolder[0]->data.grammarToken->reg,
+               registerPrefixGen(grammarToken->tokensHolder[2]->data.grammarToken->isGlobal),
+               grammarToken->tokensHolder[2]->data.grammarToken->reg);
     }
     else {
       printf("DEFVAR LF@r%d\n", res);
-      printf("ADD LF@r%d LF@r%d LF@r%d\n", res,
+      printf("ADD LF@r%d %s@r%d %s@r%d\n",
+             res,
+             registerPrefixGen(grammarToken->tokensHolder[0]->data.grammarToken->isGlobal),
            grammarToken->tokensHolder[0]->data.grammarToken->reg,
+             registerPrefixGen(grammarToken->tokensHolder[2]->data.grammarToken->isGlobal),
            grammarToken->tokensHolder[2]->data.grammarToken->reg);
     }
     grammarToken->reg = get_reg_cur(addressTable);
+    grammarToken->isGlobal = false;
   }
 
 void SubInterCode(GrammarToken *grammarToken, AddressTable *addressTable) {
@@ -677,6 +684,13 @@ void PushArg(GrammarToken *grammarToken, AddressTable *addressTable) {
          grammarToken->tokensHolder[0]->data.grammarToken->reg);
 }
 
+void PushArgLabeled(GrammarToken *grammarToken, AddressTable *addressTable) {
+  add_arg(addressTable);
+  printf("PUSHS %s@r%d\n",
+         registerPrefixGen(grammarToken->tokensHolder[1]->data.grammarToken->isGlobal),
+         grammarToken->tokensHolder[1]->data.grammarToken->reg);
+}
+
 // void HardUnwrapInterCode(GrammarToken *grammarToken, AddressTable
 // *addressTable) {
 //   if (addressCode->op1 == -1) {
@@ -753,23 +767,24 @@ void PostOrderForIf(GrammarToken *grammarToken, AddressTable *addressTable) {
 
 void VarIdInit(GrammarToken *grammarToken, AddressTable *addressTable) {
   int reg =
-      AT_create(addressTable, &grammarToken->tokensHolder[1]->data.string, &grammarToken->isGlobal);
+      AT_create(addressTable, &grammarToken->tokensHolder[0]->data.string, &grammarToken->isGlobal);
   if (reg == -1)
     exit(3);
   printf("DEFVAR %s@r%d\n", registerPrefixGen(grammarToken->isGlobal), reg);
   printf("MOVE %s@r%d LF@r%d\n", registerPrefixGen(grammarToken->isGlobal),
          reg, //GF@FuncReturn
-         grammarToken->tokensHolder[3]->data.grammarToken->reg);
+         grammarToken->tokensHolder[1]->data.grammarToken->reg);
   grammarToken->reg = get_reg_cur(addressTable);
 }
 
 void VarTypedIdInit(GrammarToken *grammarToken, AddressTable *addressTable) {
   int reg =
-      AT_create(addressTable, &grammarToken->tokensHolder[0]->data.string);
+      AT_create(addressTable, &grammarToken->tokensHolder[0]->data.string, &grammarToken->isGlobal);
   if (reg == -1)
     exit(3);
-  printf("DEFVAR LF@r%d\n", reg);
-  printf("MOVE LF@r%d LF@r%d\n", reg,
+  printf("DEFVAR %s@r%d\n", registerPrefixGen(grammarToken->isGlobal), reg);
+  printf("MOVE %s@r%d LF@r%d\n", registerPrefixGen(grammarToken->isGlobal),
+         reg, //GF@FuncReturn
          grammarToken->tokensHolder[1]->data.grammarToken->reg);
   grammarToken->reg = get_reg_cur(addressTable);
 }

@@ -29,12 +29,12 @@ int main() {
 //               "write(\"Ended with \")\n"
 //               "\n";
 
-//  char *code = "var a = 5;\n"
-//               "while (a > 0) {\n"
-//               "  write(\"hui\\n\");\n"
-//               "  a = a - 1;\n"
-//               "}\n"
-//               "write(\"End of while\");";
+  char *code = "var a = 5;\n"
+               "while (a > 0) {\n"
+               "  write(\"hui\\n\");\n"
+               "  a = a - 1;\n"
+               "}\n"
+               "write(\"End of while\");";
 
 //  char *code = "var a = ord(\"abc\")\n"
 //               "a = a + 1\n"
