@@ -21,7 +21,7 @@ void InterCodeInit() {
 }
 
 void InitPrebuildFunc() {
- // SubStringIntercode();
+ SubStringIntercode();
  // Chr();
   //Ord();
  // ReadString();
