@@ -7,10 +7,11 @@ char* registerPrefixGen(bool isGlobal) {
 void InterCodeInit() {
   printf(".IFJcode23\n");
   printf("DEFVAR GF@FuncReturn\n");
+  printf("MOVE GF@FuncReturn nil@nil\n");
   printf("DEFVAR GF@__ArgCount__\n");
+  printf("MOVE GF@__ArgCount__ nil@nil\n");
   printf("DEFVAR GF@__Arg__\n");
-  printf("CREATEFRAME\n");
-  printf("PUSHFRAME\n");
+  printf("MOVE GF@__Arg__ nil@nil\n");
   InitPrebuildFunc();
   // InsertPrebuildFUNCS
 }
@@ -275,6 +276,7 @@ void StoreInt(GrammarToken *grammarToken, AddressTable *addressTable) {
   printf("MOVE LF@r%d int@%lld\n", get_reg_cur(addressTable),
          grammarToken->tokensHolder[0]->data.integer_value);
   grammarToken->reg = get_reg_cur(addressTable);
+  grammarToken->isGlobal = false;
 }
 
 void StoreDouble(GrammarToken *grammarToken, AddressTable *addressTable) {
@@ -282,6 +284,12 @@ void StoreDouble(GrammarToken *grammarToken, AddressTable *addressTable) {
   printf("MOVE LF@r%d float@%a\n", get_reg_cur(addressTable),
          grammarToken->tokensHolder[0]->data.double_value);
   grammarToken->reg = get_reg_cur(addressTable);
+  grammarToken->isGlobal = false;
+}
+
+void StoreBrackets(GrammarToken *grammarToken, AddressTable *addressTable) {
+    grammarToken->reg = grammarToken->tokensHolder[1]->data.grammarToken->reg;
+    grammarToken->isGlobal = grammarToken->tokensHolder[1]->data.grammarToken->isGlobal;
 }
 
 void StoreBool(GrammarToken *grammarToken, AddressTable *addressTable) {
@@ -292,11 +300,14 @@ void StoreBool(GrammarToken *grammarToken, AddressTable *addressTable) {
     printf("MOVE LF@r%d bool@false\n", get_reg_cur(addressTable));
   }
   grammarToken->reg = get_reg_cur(addressTable);
+  grammarToken->isGlobal = false;
 }
 
 void StoreNil(GrammarToken *grammarToken, AddressTable *addressTable) {
   printf("DEFVAR LF@r%d\n", get_reg_new(addressTable));
   printf("MOVE LF@r%d nil@nil\n", get_reg_cur(addressTable));
+  grammarToken->reg = get_reg_cur(addressTable);
+  grammarToken->isGlobal = false;
 }
 
 // typedef struct string {
@@ -791,6 +802,15 @@ void IdAssignInterCode(GrammarToken *grammarToken, AddressTable *addressTable) {
          reg,
          registerPrefixGen(grammarToken->tokensHolder[1]->data.grammarToken->isGlobal),
          grammarToken->tokensHolder[1]->data.grammarToken->reg);
+}
+
+void StsCreateFrame(GrammarToken *grammarToken, AddressTable *addressTable) {
+  printf("CREATEFRAME\n");
+  printf("PUSHFRAME\n");
+}
+
+void StsPopFrame(GrammarToken *grammarToken, AddressTable *addressTable) {
+  printf("POPFRAME\n");
 }
 // preorder function pro s ,which does init cycle
 // preorder function for if else x2
