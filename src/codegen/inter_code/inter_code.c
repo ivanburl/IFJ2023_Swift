@@ -48,44 +48,46 @@ void GetF(GrammarToken *grammarToken, AddressTable *addressTable) {
 // od - arg1
 // do - arg2
 void SubStringIntercode() {
-  printf("JUMP SubstringIntercodeEnd\n");
-  printf("LABEL Substring\n");
+  printf("JUMP substringIntercodeEnd\n");
+  printf("LABEL substring\n");
   printf("CREATEFRAME\n");
   printf("PUSHFRAME\n");
-  printf("DEFVAR LF@tempBool\n");
-  printf("DEFVAR LF@arg2\n");
-  printf("POPS LF@arg2\n");
-  printf("DEFVAR LF@arg1\n");
-  printf("POPS LF@arg1\n");
+  printf("DEFVAR LF@trash\n");
+  printf("POPS LF@trash\n");
+  printf("DEFVAR LF@TempBool\n");
   printf("DEFVAR LF@arg0\n");
   printf("POPS LF@arg0\n");
+  printf("DEFVAR LF@arg1\n");
+  printf("POPS LF@arg1\n");
+  printf("DEFVAR LF@arg2\n");
+  printf("POPS LF@arg2\n");
   // i<0
-  printf("LT LF@tempBool LF@arg1 int@0\n");
-  printf("JUMPIFEQ ReturnNil LF@tempBool bool@true\n");
+  printf("LT LF@TempBool LF@arg1 int@0\n");
+  printf("JUMPIFEQ ReturnNil LF@TempBool bool@true\n");
   // j<0
-  printf("LT LF@tempBool LF@arg2 int@0\n");
-  printf("JUMPIFEQ ReturnNil LF@tempBool bool@true\n");
+  printf("LT LF@TempBool LF@arg2 int@0\n");
+  printf("JUMPIFEQ ReturnNil LF@TempBool bool@true\n");
   // i<j
-  printf("GT LF@tempBool LF@arg1 LF@arg2\n");
-  printf("JUMPIFEQ ReturnNil LF@tempBool bool@true\n");
+  printf("GT LF@TempBool LF@arg1 LF@arg2\n");
+  printf("JUMPIFEQ ReturnNil LF@TempBool bool@true\n");
   // strlen(s)
   printf("DEFVAR LF@TempInt\n");
-  printf("STRLEN LF@TempInt GF@FuncReturn\n");
+  printf("STRLEN LF@TempInt LF@arg0\n");
   // i>=strlen(s)
   printf("DEFVAR LF@TempBool1\n");
   printf("DEFVAR LF@TempBool2\n");
-  printf("GT LF@tempBool1 LF@arg1 LF@TempInt\n");
-  printf("EQ LF@tempBool2 LF@arg1 LF@TempInt\n");
-  printf("OR LF@tempBool LF@tempBool1 LF@tempBool2\n");
-  printf("JUMPIFEQ ReturnNil LF@tempBool bool@true\n");
+  printf("GT LF@TempBool1 LF@arg1 LF@TempInt\n");
+  printf("EQ LF@TempBool2 LF@arg1 LF@TempInt\n");
+  printf("OR LF@TempBool LF@TempBool1 LF@TempBool2\n");
+  printf("JUMPIFEQ ReturnNil LF@TempBool bool@true\n");
   // j>strlen(s)
-  printf("GT LF@tempBool LF@arg2 LF@TempInt\n");
-  printf("JUMPIFEQ ReturnNil LF@tempBool bool@true\n");
+  printf("GT LF@TempBool LF@arg2 LF@TempInt\n");
+  printf("JUMPIFEQ ReturnNil LF@TempBool bool@true\n");
   //*-----*-----*-----*-----*-----*-----*-----*-----*-----*-----*-----*-----*//
   // temps creations
   printf("DEFVAR LF@boolCycle\n");
-  printf("DEFVAR LF@tempBoolCycle1\n");
-  printf("DEFVAR LF@tempBoolCycle2\n");
+  printf("DEFVAR LF@TempBoolCycle1\n");
+  printf("DEFVAR LF@TempBoolCycle2\n");
   // (1*) int inc = i
   printf("DEFVAR LF@Increment\n");
   printf("MOVE LF@Increment LF@arg1\n");
@@ -95,9 +97,9 @@ void SubStringIntercode() {
   printf("DEFVAR LF@CurChar\n");
   // for( (1*) ; inc<=j; (2*) )
   printf("LABEL For_Head\n");
-  printf("LT LF@tempBoolCycle1 LF@Increment LF@arg2\n");
-  printf("EQ LF@tempBoolCycle2 LF@Increment LF@arg2\n");
-  printf("OR LF@boolCycle LF@tempBoolCycle1 LF@tempBoolCycle2\n");
+  printf("LT LF@TempBoolCycle1 LF@Increment LF@arg2\n");
+  printf("EQ LF@TempBoolCycle2 LF@Increment LF@arg2\n");
+  printf("OR LF@boolCycle LF@TempBoolCycle1 LF@TempBoolCycle2\n");
   printf("JUMPIFEQ For LF@boolCycle bool@true\n");
   //*-----*-----*-----*-----*-----*-----*-----*-----*-----*//
   // after For
@@ -120,7 +122,7 @@ void SubStringIntercode() {
   printf("MOVE GF@FuncReturn nil@nil\n");
   printf("POPFRAME\n");
   printf("RETURN\n");
-  printf("LABEL SubStringIntercodeEnd\n");
+  printf("LABEL substringIntercodeEnd\n");
 }
 
 // void InsertPrebuildFUNCS

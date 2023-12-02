@@ -56,12 +56,24 @@ int main() {
 ////             "let letter = 1; \n"
 //             "a(1)\n";
 
-  char *code = "var a = 5\n"
-               "while (a < 0) {\n"
-               "  write(a)\n"
-               "  a = a - 1\n"
-               "}";
-
+//  char *code = "var a = 5\n"
+//               "while (a > 0) {\n"
+//               "  var b = 10\n"
+//               "  while (b > 0) {\n"
+//               "    write(b)\n"
+//               "    b = b - 1\n"
+//               "  }\n"
+//               "  a = a - 1\n"
+//               "}";
+//char *code = "func a(_ a: Int) { write (\"hui\", a)\n } \n"
+//             "a(10)\n"
+//             "\n";
+//char *code = "let input = 65\n"
+//             "let result = chr(input)\n"
+//             "write (result)\n";
+char *code = "let input = \"fuckyou\"\n"
+             "let result = substring(input,0,3)\n"
+             "write (result)\n";
   //TODO multiple args in fucntion does not work
   //TODO "var a = 10; a = 20;"
   //TODO "write + write"

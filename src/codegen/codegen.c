@@ -17,11 +17,12 @@ void post_order_process(GrammarToken *grToken, AddressTable *addressTable) {
   if (grToken == NULL)
     return;
 
+  if (grToken->grammarRule->assemblerFnPreOrd != NULL)
+        grToken->grammarRule->assemblerFnPreOrd(grToken, addressTable);
+
   for (int i = 0; i < grToken->tokensHolderSize; i++) {
     Token *token = grToken->tokensHolder[i];
 
-    if (grToken->grammarRule->assemblerFnPreOrd != NULL)
-      grToken->grammarRule->assemblerFnPreOrd(grToken, addressTable);
 
     //compute all non terminals
     if (token->type > NON_TERMINAL_UNDEFINED) {
