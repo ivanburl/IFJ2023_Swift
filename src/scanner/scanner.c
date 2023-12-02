@@ -30,8 +30,8 @@ Error scanner_code_to_tokens(Scanner *scanner, char *code,
         return error_create(SCANNER_ERROR, "undefined token bro...");
       }
 
-      tokenStr =
-          calloc((tokenStrRightPointer - tokenStrLeftPointer + 128), sizeof(char));
+      tokenStr = calloc((tokenStrRightPointer - tokenStrLeftPointer + 128),
+                        sizeof(char));
       strncpy(tokenStr, code + tokenStrLeftPointer,
               endTokenStrPointer - tokenStrLeftPointer + 1);
 
@@ -40,9 +40,37 @@ Error scanner_code_to_tokens(Scanner *scanner, char *code,
       if (error.errorType != NONE) {
         return error;
       }
-      if (token.type != UNDEFINED && token.type != MULTI_COMMENT && token.type != COMMENT && token.type != BLANK && token.type != SEMICOLON) {
+
+      if (token.type != UNDEFINED && token.type != MULTI_COMMENT &&
+          token.type != COMMENT && token.type != BLANK &&
+          token.type != SEMICOLON) {
         token_vector_push_back(tokenVector, token);
+
+        /// TOKEN MERGER (really shit code in design perspective)
+        if (token.type == COLON || token.type == ASSIGN) {
+          int index = ((int)(tokenVector->length)) - 2;
+          while (index > 0 &&
+                 token_vector_at(tokenVector, index).type == DELIMITER)
+            index--;
+          if (index > 0 && token_vector_at(tokenVector, index).type == ID) {
+            // start merging
+            Token mergeToken;
+            token_init(&mergeToken);
+            token_create(token.type == COLON ? ID_AND_COLON : ID_AND_ASSIGN,
+                         NULL,
+                         &mergeToken);
+            mergeToken.data.string = token_vector_at(tokenVector,index).data.string;
+
+            while(tokenVector->length > index)
+              token_vector_pop(tokenVector);
+
+            token_vector_push_back(tokenVector, mergeToken);
+          }
+        }
+        /// END OF TOKEN MERGER
       }
+
+
 
       free(tokenStr);
       tokenStr = NULL;
@@ -79,8 +107,31 @@ Error scanner_code_to_tokens(Scanner *scanner, char *code,
     return error;
   }
 
-  if (token.type != UNDEFINED && token.type != MULTI_COMMENT && token.type != COMMENT && token.type != BLANK && token.type != SEMICOLON) {
+  if (token.type != UNDEFINED && token.type != MULTI_COMMENT &&
+      token.type != COMMENT && token.type != BLANK && token.type != SEMICOLON) {
     token_vector_push_back(tokenVector, token);
+    /// TOKEN MERGER (really shit code in design perspective)
+    if (token.type == COLON || token.type == ASSIGN) {
+      int index = ((int)(tokenVector->length)) - 2;
+      while (index > 0 &&
+             token_vector_at(tokenVector, index).type == DELIMITER)
+        index--;
+      if (index > 0 && token_vector_at(tokenVector, index).type == ID) {
+        // start merging
+        Token mergeToken;
+        token_init(&mergeToken);
+        token_create(token.type == COLON ? ID_AND_COLON : ID_AND_ASSIGN,
+                     NULL,
+                     &mergeToken);
+        mergeToken.data.string = token_vector_at(tokenVector,index).data.string;
+
+        while(tokenVector->length > index)
+          token_vector_pop(tokenVector);
+
+        token_vector_push_back(tokenVector, mergeToken);
+      }
+    }
+    /// END OF TOKEN MERGER
   }
 
   free(tokenStr);

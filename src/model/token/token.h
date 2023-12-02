@@ -82,8 +82,10 @@ typedef enum token_enum {
   LOGICAL_AND = 51,
   LOGICAL_OR = 52,
 
+  ID_AND_ASSIGN=53, // exactly id=
+  ID_AND_COLON=54,// exactly id:
   /// used only for PSA algo
-  DOLLAR = 53,
+  DOLLAR=55,
 
   /// NON_TERMINALS (should be constructed by parser)
   /// tokeType < NON_TERMINAL -> terminal, tokeType > NON_TERMINAL -
@@ -108,6 +110,7 @@ typedef enum token_enum {
   IF_ELSE,
   /// declaration
   D,
+  ID_INIT,
   /// parameter for the function (declaration)
   PARAM,
   /// specific case for declaration functions (_ || id)
@@ -118,11 +121,7 @@ typedef enum token_enum {
   PARAMS_TMP,
   /// annotation of the type (Example = id : Integer), could not be null
   TANN,
-  /// annotation of the type (could be nullable)
-  TANN_NULL,
   TYPE,
-  /// initialisation of the variable, constant
-  INIT,
   /// call of function inside expression
   F_CALL,
   /// collection of arguments (calling function)
@@ -131,8 +130,7 @@ typedef enum token_enum {
   ARGS_TMP,
   /// function argument (calling function)
   ARG,
-  /// function of arguments (calling)
-  ARG_TMP
+  FUNC_RETURN
 } TokenType;
 
 struct grammar_token_t;
