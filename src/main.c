@@ -39,17 +39,28 @@ int main() {
 //               "\n"
 //               "\n"
 
-  char *code = "var a = 5;\n"
-               "while (a > 0) {\n"
-               "  write(\"hui\\n\");\n"
-               "  a = a - 1;\n"
-               "}\n"
-               "write(\"End of while\");";
+//  char *code = "let ac = 1 + 2.0\n"
+//               "let bc = 4 * 3.0\n"
+//               "let cc = 20 - 1.0\n"
+//               "let acc = 1.0 + 2\n"
+//               "let bcc = 4.0 * 3\n"
+//               "let ccc = 20.0 - 1\n"
+//               "\n"
+//               "write(ac, \"\\n\", bc, \"\\n\", cc, \"\\n\")\n"
+//               "write(acc, \"\\n\", bcc, \"\\n\", ccc, \"\\n\")";
 
-//  char *code = "var a = ord(\"abc\")\n"
-//               "a = a + 1\n"
-//               "write(a, \"\\n\")\n"
-//               "\n";
+//char *code = "func a(_ l) {\n"
+//             "  write(l, \"\\n\")\n"
+//             "}\n"
+//             "\n"
+////             "let letter = 1; \n"
+//             "a(1)\n";
+
+  char *code = "var a = 5\n"
+               "while (a < 0) {\n"
+               "  write(a)\n"
+               "  a = a - 1\n"
+               "}";
 
   //TODO multiple args in fucntion does not work
   //TODO "var a = 10; a = 20;"

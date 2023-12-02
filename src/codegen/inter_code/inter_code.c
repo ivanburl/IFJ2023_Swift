@@ -6,9 +6,14 @@ char* registerPrefixGen(bool isGlobal) {
 
 void InterCodeInit() {
   printf(".IFJcode23\n");
-  printf("DEFVAR GF@FuncReturn\n");
-  printf("DEFVAR GF@__ArgCount__\n");
-  printf("DEFVAR GF@__Arg__\n");
+
+    printf("DEFVAR GF@FuncReturn\n");
+    printf("MOVE GF@FuncReturn nil@nil\n");
+    printf("DEFVAR GF@__ArgCount__\n");
+    printf("MOVE GF@__ArgCount__ nil@nil\n");
+    printf("DEFVAR GF@__Arg__\n");
+    printf("MOVE GF@__Arg__ nil@nil\n");
+
   printf("CREATEFRAME\n");
   printf("PUSHFRAME\n");
   InitPrebuildFunc();
@@ -376,7 +381,7 @@ void NotInterCode(GrammarToken *grammarToken, AddressTable *addressTable) {
 // TOKEN -> GrammarToken
 void SumInterCode(GrammarToken *grammarToken, AddressTable *addressTable) {
     int res = get_reg_new(addressTable);
-    if (grammarToken->returnType == STRING) {
+    if (grammarToken->returnType == STRING) { //TODO: ID(contains string) + string doesnt work
     printf("DEFVAR LF@r%d\n", res);
     printf("CONCAT LF@r%d %s@r%d %s@r%d\n",
                res,

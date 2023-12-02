@@ -33,7 +33,7 @@ Error ifj_2023_parser_config(Parser *parser) {
   assert(parser->expressionParser && parser->llParser &&
          "Set the ll parser and precedence parser");
 
-  int llGrammarRulesCount = 57;
+  int llGrammarRulesCount = 58;
   GrammarRule llGrammarRules[] = {
       grammar_rule_create(STS, NULL, NULL, NULL, (TokenType[]){S, STS_TMP}, 2),
       grammar_rule_create(STS_TMP, NULL, NULL, NULL,
@@ -104,6 +104,7 @@ Error ifj_2023_parser_config(Parser *parser) {
       grammar_rule_create(F_CALL, NULL, HardUnwrapInterCode, NULL,
                           (TokenType[]){HARD_UNWRAP}, 1),
       grammar_rule_create(ARGS, NULL, NULL, NULL, (TokenType[]){ARG, ARGS_TMP}, 2),
+      grammar_rule_create(ARGS, NULL, NULL, NULL, (TokenType[]){}, 0),
       grammar_rule_create(ARGS_TMP, NULL, NULL, NULL, (TokenType[]){}, 0),
       grammar_rule_create(ARGS_TMP, NULL, NULL, NULL,
                           (TokenType[]){COMMA, ARG, ARGS_TMP}, 3),
