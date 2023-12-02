@@ -24,10 +24,20 @@ int main() {
 //    char_vector_push_back(&inputVector, (char) c);
 //  }
 
-//  char* code = "let a = 10\n"
-//               "while a != 10 { }\n"
-//               "write(\"Ended with \")\n"
-//               "\n";
+//  char *code = "var str1 = \"Toto je nejaky text v programu jazyka IFJ23\"\n"
+//               "let str2 = str1 + \", ktery jeste trochu obohatime\"\n"
+//               "write(str1, \"\\n\", str2, \"\\n\")\n"
+//               "let i = length(str1)\n"
+//               "write(\"Pozice retezce \\\"text\\\" v str2: \", i, \"\\n\")\n"
+//               "write(\"Zadejte serazenou posloupnost vsech malych pismen a-h, \")\n"
+//               "\n"
+//               "let newInput = readString()\n"
+//               "if let newInput {\n"
+//               "    str1 = newInput\n"
+//               "    while (str1 != \"abcdefgh\") {}\n"
+//               "\n"
+//               "\n"
+//               "\n"
 
   char *code = "var a = 5;\n"
                "while (a > 0) {\n"
