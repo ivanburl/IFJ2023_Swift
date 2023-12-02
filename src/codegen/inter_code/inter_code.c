@@ -142,13 +142,13 @@ void Ord() {
   printf("STRLEN LF@strlen LF@str\n");
   printf("JUMPIFEQ IfLinezero LF@strlen int@0\n");
   printf("STRI2INT LF@strlen LF@str int@0\n");
+  printf("MOVE GF@FuncReturn LF@strlen\n");
   printf("POPFRAME\n");
-  printf("MOVE GF@FuncReturn TF@strlen\n");
   printf("RETURN\n");
   printf("LABEL IfLinezero\n");
   //*----*----*----*----*----*----*----*----*//
+  printf("MOVE GF@FuncReturn int@0\n");
   printf("POPFRAME\n");
-  printf("MOVE GF@FuncReturn nil@nil\n");
   printf("RETURN\n");
   //*----*----*----*----*----*----*----*----*//
   printf("LABEL ordEnd\n");
@@ -163,15 +163,17 @@ void Chr() {
   printf("LABEL chr\n");
   printf("CREATEFRAME\n");
   printf("PUSHFRAME\n");
+
   printf("DEFVAR LF@$ARG_LEN\n");
   printf("POPS LF@$ARG_LEN\n");
+
   printf("DEFVAR LF@number\n");
   printf("DEFVAR LF@strlen\n");
   printf("MOVE LF@strlen string@a\n");
   printf("POPS LF@number\n");
   printf("INT2CHAR LF@strlen LF@number\n");
+  printf("MOVE GF@FuncReturn LF@strlen\n");
   printf("POPFRAME\n");
-  printf("MOVE GF@FuncReturn TF@strlen\n");
   printf("RETURN\n");
   printf("LABEL chrend\n");
 }
@@ -188,8 +190,8 @@ void ReadString() {
 
     printf("DEFVAR LF@ReadString\n");
   printf("READ LF@ReadString string\n");
+  printf("MOVE GF@FuncReturn LF@ReadString\n");
   printf("POPFRAME\n");
-  printf("MOVE GF@FuncReturn TF@ReadString\n");
   printf("RETURN\n");
   printf("LABEL readStringEnd\n");
 }
@@ -200,10 +202,14 @@ void ReadInt() {
   printf("LABEL readInt\n");
   printf("CREATEFRAME\n");
   printf("PUSHFRAME\n");
+
+  printf("DEFVAR LF@$ARG_LEN\n");
+  printf("POPS LF@$ARG_LEN\n");
+
   printf("DEFVAR LF@ReadInt\n");
   printf("READ LF@ReadInt int\n");
+  printf("MOVE GF@FuncReturn LF@ReadInt\n");
   printf("POPFRAME\n");
-  printf("MOVE GF@FuncReturn TF@ReadInt\n");
   printf("RETURN\n");
   printf("LABEL ReadIntEnd\n");
 }
@@ -215,10 +221,14 @@ void ReadDouble() {
   printf("LABEL readDouble\n");
   printf("CREATEFRAME\n");
   printf("PUSHFRAME\n");
+
+  printf("DEFVAR LF@$ARG_LEN\n");
+  printf("POPS LF@$ARG_LEN\n");
+
   printf("DEFVAR LF@ReadFloat\n");
   printf("READ LF@ReadFloat float\n");
+  printf("MOVE GF@FuncReturn LF@ReadFloat\n");
   printf("POPFRAME\n");
-  printf("MOVE GF@FuncReturn TF@ReadFloat\n");
   printf("RETURN\n");
   printf("LABEL readDoubleEnd\n");
 }
@@ -231,11 +241,15 @@ void Int2Double() {
   printf("LABEL Int2Double\n");
   printf("CREATEFRAME\n");
   printf("PUSHFRAME\n");
+
+  printf("DEFVAR LF@$ARG_LEN\n");
+  printf("POPS LF@$ARG_LEN\n");
+
   printf("DEFVAR LF@tempInt\n");
   printf("POPS LF@tempInt\n");
   printf("INT2FLOAT LF@IntToFloat LF@tempInt\n");
+  printf("MOVE GF@FuncReturn LF@IntToFloat\n");
   printf("POPFRAME\n");
-  printf("MOVE GF@FuncReturn TF@IntToFloat\n");
   printf("RETURN\n");
   printf("LABEL Int2DoubleEnd\n");
 }
@@ -248,11 +262,13 @@ void Double2Int() {
   printf("LABEL Double2Int\n");
   printf("CREATEFRAME\n");
   printf("PUSHFRAME\n");
+  printf("DEFVAR LF@$ARG_LEN\n");
+  printf("POPS LF@$ARG_LEN\n");
   printf("DEFVAR LF@tempDouble\n");
   printf("POPS LF@tempDouble\n");
   printf("FLOAT2INT LF@FloatToInt LF@tempDouble\n");
+  printf("MOVE GF@FuncReturn LF@IFloatToInt\n");
   printf("POPFRAME\n");
-  printf("MOVE GF@FuncReturn TF@IFloatToInt\n");
   printf("RETURN\n");
   printf("LABEL Double2IntEnd\n");
 }
@@ -264,6 +280,8 @@ void StrLength() {
   printf("LABEL length\n");
   printf("CREATEFRAME\n");
   printf("PUSHFRAME\n");
+  printf("DEFVAR LF@$ARG_LEN\n");
+  printf("POPS LF@$ARG_LEN\n");
   printf("DEFVAR LF@tempString\n");
   printf("POPS LF@tempString\n");
   printf("STRLEN LF@StringLegnth LF@tempString\n");
@@ -430,24 +448,36 @@ void DivInterCode(GrammarToken *grammarToken, AddressTable *addressTable) {
 //  printf("CREATEFRAME\n");
 //  printf("PUSHFRAME\n");
 
-  int firstE = get_reg_new(addressTable);
-  int secondE = get_reg_new(addressTable);
-  printf("DEFVAR LF@temp%d\n", firstE);
-  printf("DEFVAR LF@temp%d\n", secondE);
-
-   printf("INT2FLOAT LF@temp%d %s@r%d\n",
-         firstE,
+  printf("DEFVAR LF@type\n");
+  printf("TYPE LF@type %s@r%d\n",
+         registerPrefixGen(grammarToken->tokensHolder[2]->data.grammarToken->isGlobal),
+         grammarToken->tokensHolder[0]->data.grammarToken->reg);
+  printf("JUMPIFEQ Temp1isFloat LF@type string@float\n");
+   printf("INT2FLOAT %s@r%d %s@r%d\n",
+          registerPrefixGen(grammarToken->tokensHolder[0]->data.grammarToken->isGlobal),
+          grammarToken->tokensHolder[0]->data.grammarToken->reg,
          registerPrefixGen(grammarToken->tokensHolder[0]->data.grammarToken->isGlobal),
          grammarToken->tokensHolder[0]->data.grammarToken->reg);
-
-   printf("INT2FLOAT LF@temp%d %s@r%d\n",
-          secondE,
+   printf("LABEL Temp1isFloat\n");
+   printf("TYPE LF@type %s@r%d\n",
+          registerPrefixGen(grammarToken->tokensHolder[0]->data.grammarToken->isGlobal),
+          grammarToken->tokensHolder[2]->data.grammarToken->reg);
+   printf("JUMPIFEQ Temp2isFloat LF@type string@float\n");
+   printf("INT2FLOAT %s@r%d %s@r%d\n",
+          registerPrefixGen(grammarToken->tokensHolder[2]->data.grammarToken->isGlobal),
+          grammarToken->tokensHolder[2]->data.grammarToken->reg,
           registerPrefixGen(grammarToken->tokensHolder[2]->data.grammarToken->isGlobal),
           grammarToken->tokensHolder[2]->data.grammarToken->reg);
-
-  printf("DEFVAR LF@r%d\n", res);
-  printf("DIV LF@r%d LF@r%d LF@r%d\n", res,
+   printf("LABEL Temp2isFloat\n");
+  printf("DEFVAR %s@r%d\n",
+         "LF",
+         res);
+  printf("DIV %s@r%d %s@r%d %s@r%d\n",
+         "LF",//TODO: vozmozno pizdec
+         res,
+         registerPrefixGen(grammarToken->tokensHolder[0]->data.grammarToken->isGlobal),
          grammarToken->tokensHolder[0]->data.grammarToken->reg,
+         registerPrefixGen(grammarToken->tokensHolder[2]->data.grammarToken->isGlobal),
          grammarToken->tokensHolder[2]->data.grammarToken->reg);
   //  printf("POPFRAME\n");
   grammarToken->reg = get_reg_cur(addressTable);
