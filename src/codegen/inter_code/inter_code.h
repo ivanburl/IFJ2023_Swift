@@ -61,7 +61,6 @@ void VarTypedIdInit(GrammarToken *grammarToken, AddressTable *addressTable);
 void InitProcess(GrammarToken *grammarToken, AddressTable *addressTable);
 void StoreNil(GrammarToken *grammarToken, AddressTable *addressTable);
 void IdAssignInterCode(GrammarToken *grammarToken, AddressTable *addressTable);
-void StsCreateFrame(GrammarToken *grammarToken, AddressTable *addressTable);
-void StsPopFrame(GrammarToken *grammarToken, AddressTable *addressTable);
+
 
 #endif // IFJ2023_SWIFT_INTER_CODE_H

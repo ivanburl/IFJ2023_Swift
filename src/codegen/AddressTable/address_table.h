@@ -27,6 +27,7 @@ typedef struct address_table_t {
   // functions
   int args_added;
   StringPointerVector *functionsStack;
+  bool isGlobal[1000000];
 } AddressTable;
 
 typedef struct var_address_t {

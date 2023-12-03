@@ -35,7 +35,7 @@ Error ifj_2023_parser_config(Parser *parser) {
 
   int llGrammarRulesCount = 58;
   GrammarRule llGrammarRules[] = {
-      grammar_rule_create(STS, NULL, StsPopFrame, StsCreateFrame, (TokenType[]){S, STS_TMP}, 2),
+      grammar_rule_create(STS, NULL, NULL, NULL, (TokenType[]){S, STS_TMP}, 2),
       grammar_rule_create(STS_TMP, NULL, NULL, NULL,
                           (TokenType[]){DELIMITER, S, STS_TMP}, 3),
       grammar_rule_create(STS_TMP, NULL, NULL, NULL, (TokenType[]){}, 0),
@@ -63,7 +63,7 @@ Error ifj_2023_parser_config(Parser *parser) {
       grammar_rule_create(D, NULL, NULL, NULL,
                           (TokenType[]){LET, ID_INIT}, 2),
       grammar_rule_create(ID_INIT, NULL, VarTypedIdInit, NULL,
-                          (TokenType[]){ID, TANN, ASSIGN, E}, 4),
+                          (TokenType[]){ID_AND_COLON, TYPE, ASSIGN, E}, 4),
       grammar_rule_create(ID_INIT, NULL, VarIdInit, NULL,
                           (TokenType[]){ID_AND_ASSIGN, E}, 2),
 
