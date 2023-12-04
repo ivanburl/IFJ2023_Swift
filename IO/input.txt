@@ -1,0 +1,3 @@
+let a: Int
+
+let c = 10 + 20

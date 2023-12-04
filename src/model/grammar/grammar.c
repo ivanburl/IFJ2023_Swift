@@ -124,7 +124,7 @@ void init_forward(Grammar *grammar) {
   assert(grammar);
 
   bool changed = true;
-  while (changed) {
+  for (int ii=1;ii<=100;ii++) {
     changed = false;
     for (int i = 0; i < grammar->rulesNumber; i++) {
       GrammarRule *rule = &grammar->grammarRules[i];
