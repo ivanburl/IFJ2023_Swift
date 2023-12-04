@@ -2,4 +2,6 @@ var a = readInt()
 var b = readInt()
 if a! == b! {
     write("eq")
+} else {
+    write("neq")
 }

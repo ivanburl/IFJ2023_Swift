@@ -47,11 +47,11 @@ void GetF(GrammarToken *grammarToken, AddressTable *addressTable) {
 void HardUnwrap() {
   printf("JUMP $HardUnwrapEnd\n");
   printf("LABEL $!\n");//jump by operator name
-  printf("PUSHS int@57\n");
+  printf("PUSHS nil@nil\n");
   printf("JUMPIFEQS $HardUnwrapBadExit\n");
   printf("RETURN\n");
   printf("LABEL $HardUnwrapBadExit\n");
-  printf("EXIT nil@nil\n");
+  printf("EXIT int@57\n");
   printf("LABEL $HardUnwrapEnd\n");
 }
 
