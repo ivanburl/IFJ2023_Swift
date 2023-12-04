@@ -16,6 +16,7 @@ typedef struct address_table_t {
 //  HashMap *hashMap;
   HashMapPointerVector* variables;
   int resRegisters;
+  int tempLabelRegisters;
 
   //if
   int resIf;
@@ -70,5 +71,8 @@ void end_function(AddressTable *addressTable);
 
 void add_arg(AddressTable *addressTable);
 int get_args(AddressTable *addressTable);
+
+int get_temp_label(AddressTable *addressTable);
+int get_temp_label_cur(AddressTable *addressTable);
 
 #endif // IFJ2023_SWIFT_ADDRESS_TABLE_H

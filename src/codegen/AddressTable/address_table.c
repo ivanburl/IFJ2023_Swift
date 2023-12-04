@@ -157,3 +157,5 @@ int get_args(AddressTable *addressTable) {
   addressTable->args_added = 0;
   return args;
 }
+int get_temp_label(AddressTable *addressTable) { return addressTable->tempLabelRegisters++; }
+int get_temp_label_cur(AddressTable *addressTable) { return addressTable->tempLabelRegisters-1; }

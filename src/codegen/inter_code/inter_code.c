@@ -742,7 +742,7 @@ void FuncCall(GrammarToken *grammarToken, AddressTable *addressTable) {
 
     printf("MOVE %s@r%d %s@r%d\n", registerPrefixGen(grammarToken->isGlobal),
            grammarToken->reg, registerPrefixGen(isGlobal), reg);
-  } else {
+  } else if (grammarToken->tokensHolder[1]->data.grammarToken->tokensHolderSize == 3) { //Avoid hard-unwrap
     printf("CALL %s\n", grammarToken->tokensHolder[0]->data.string.data);
     printf("MOVE %s@r%d GF@FuncReturn\n",
            registerPrefixGen(grammarToken->isGlobal), grammarToken->reg);
@@ -796,14 +796,23 @@ void HardUnwrapInterCode(GrammarToken *grammarToken,
   // printf("DEFVAR LF@tempReg\n");
   // printf("MOVE LF@tempReg TF@r%d\n",
   // grammarToken->tokensHolder[0]->data.grammarToken->reg);
-  printf("JUMPIFEQ ExitIfZero %s@r%d nil@nil\n",
-         registerPrefixGen(
-             grammarToken->tokensHolder[0]->data.grammarToken->isGlobal),
-         grammarToken->tokensHolder[0]->data.grammarToken->reg);
-  printf("JUMP EscapeHardUnwrap\n");
-  printf("LABEL ExitIfZero\n");
+  bool isGlobal = false;
+  int reg = AT_get(addressTable, &grammarToken->tokensHolder[0]->data.string,
+                   &isGlobal);
+  if (reg == -1)
+    exit(3);
+  isGlobal = addressTable->isGlobal[reg];
+
+  int exitReg = get_temp_label(addressTable);
+  int escReg = get_temp_label(addressTable);
+  printf("JUMPIFEQ ExitIfZero%d %s@r%d nil@nil\n",
+         exitReg,
+         registerPrefixGen(isGlobal),
+         reg);
+  printf("JUMP EscapeHardUnwrap%d\n", escReg);
+  printf("LABEL ExitIfZero%d\n", exitReg);
   printf("EXIT int@57\n");
-  printf("LABEL EscapeHardUnwrap\n");
+  printf("LABEL EscapeHardUnwrap%d\n", escReg);
 }
 
 void WhileInitInterCode(GrammarToken *grammarToken,
