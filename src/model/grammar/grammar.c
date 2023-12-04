@@ -5,6 +5,9 @@
 #include "grammar.h"
 #include "limits.h"
 
+#define MIN(a,b) (((a)<(b))?(a):(b))
+#define MAX(a,b) (((a)>(b))?(a):(b))
+
 void init_nullable(Grammar *grammar);
 void init_empty(Grammar *grammar);
 void init_first(Grammar *grammar);
@@ -131,7 +134,7 @@ void init_forward(Grammar *grammar) {
                                    grammar->follow[rule->productions[j]]);
       }
 
-      for (int j = grammar->empty[i]; j < rule->productionsNumber; j++) {
+      for (int j = MIN(grammar->empty[i], rule->productionsNumber-1); j < rule->productionsNumber; j++) {
         for (int k = 0; k < MAX_TOKEN_TYPES_NUMBER; k++) {
           changed |= (grammar->follow[rule->productions[j]][k] == false &&
                       grammar->follow[rule->resultTokenType][k] == true);
