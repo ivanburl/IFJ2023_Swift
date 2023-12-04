@@ -946,6 +946,71 @@ void IdAssignInterCode(GrammarToken *grammarToken, AddressTable *addressTable) {
          grammarToken->tokensHolder[1]->data.grammarToken->reg);
 }
 
+void InterpolationInterCode(GrammarToken *grammarToken, AddressTable *addressTable,int reg,
+                                                        char *leftSide,char *rightSide){
+
+  printf("CREATEFRAME\n");
+  printf("PUSHFRAME\n");
+  printf("DEFVAR LF@str\n");
+  //printf("MOVE LF@str string@s\n");
+
+  printf("DEFVAR LF@strLeft\n");
+  printf("MOVE LF@strLeft string@%s\n", leftSide);
+
+  printf("DEFVAR LF@strMid\n");
+
+  printf("DEFVAR LF@type\n");
+  printf("DEFVAR LF@int\n");
+  printf("TYPE LF@type LF@int\n");
+  printf("JUMPIFNEQ InterpolationEnd LF@type int@int\n");
+  printf("MOVE LF@int LF@%d\n", reg);
+
+  printf("DEFVAR LF@strRight\n");
+  printf("MOVE LF@strLeft string@%s\n", rightSide);
+
+  printf("DEFVAR LF@result\n");
+  printf("CONCAT LF@result LF@strLeft LF@strMid\n");
+  printf("CONCAT LF@result LF@result LF@strRight\n");
+  printf("POPFRAME\n");
+  printf("WRITE LF@result\n");
+
+  printf("LABEL InterpolationEnd\n");
+  printf("EXIT int@4\n");
+}
+
+void Interpolation(GrammarToken *grammarToken, AddressTable *addressTable){
+  char *c = grammarToken->tokensHolder[0]->data.string.data;
+  for (int i = 0; i < grammarToken->tokensHolder[0]->data.string.length; i++) {
+    if (c[i] == '\\') {
+      int FirstSymbPos = 0;
+      int LastSymbPos = 0;
+      for (int j = i; j < grammarToken->tokensHolder[0]->data.string.length; j++) {
+        if (c[j] == '(') {
+          FirstSymbPos = j+1;
+        }
+        if (c[j] == ')') {
+          LastSymbPos = j-1;
+        }
+      }
+      int ResLength = LastSymbPos - FirstSymbPos;
+      char *result = malloc(ResLength * sizeof(char));
+      strncpy(result,&c[FirstSymbPos],ResLength);
+      bool isGlobal = false;
+      String string =  string_create(result);
+      int reg = AT_get(addressTable, &string, &isGlobal);
+      char *leftSide = malloc((FirstSymbPos-2)*sizeof(char));
+      strncpy(leftSide,&c[0],(FirstSymbPos-2)/*voprosik*/);
+      char *rightSide = malloc((grammarToken->tokensHolder[0]->data.string.length - (LastSymbPos+1)) *sizeof(char));
+      strncpy(rightSide,&c[LastSymbPos+1]/*voprosik*/,(grammarToken->tokensHolder[0]->data.string.length - (LastSymbPos+1))/*voprosik*/);
+
+      InterpolationInterCode(grammarToken,addressTable,reg,leftSide,rightSide);
+      free(leftSide);
+      free(rightSide);
+      free(result);
+    } else
+      return;
+  }
+}
 void StsCreateFrame(GrammarToken *grammarToken, AddressTable *addressTable) {
 
   //  char str[100];

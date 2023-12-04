@@ -18,7 +18,6 @@ int main() {
   ifj_2023_parser_config(&parser);
 
   CharVector inputVector;
-//  char_vector_init_size(&inputVector, 10000);
   char_vector_init(&inputVector);
   int c = 0;
   while ((c = getchar()) != EOF) {
