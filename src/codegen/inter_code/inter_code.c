@@ -830,14 +830,14 @@ void HardUnwrapInterCode(GrammarToken *grammarToken,
   // printf("DEFVAR LF@tempReg\n");
   // printf("MOVE LF@tempReg TF@r%d\n",
   // grammarToken->tokensHolder[0]->data.grammarToken->reg);
-  printf("JUMPIFEQ ExitIfZero %s@r%d nil@nil\n",
-         registerPrefixGen(
-             grammarToken->tokensHolder[0]->data.grammarToken->isGlobal),
-         grammarToken->tokensHolder[0]->data.grammarToken->reg);
-  printf("JUMP EscapeHardUnwrap\n");
-  printf("LABEL ExitIfZero\n");
-  printf("EXIT int@57\n");
-  printf("LABEL EscapeHardUnwrap\n");
+//  printf("JUMPIFEQ ExitIfZero %s@r%d nil@nil\n",
+//         registerPrefixGen(
+//             grammarToken->tokensHolder[0]->data.grammarToken->isGlobal),
+//         grammarToken->tokensHolder[0]->data.grammarToken->reg);
+//  printf("JUMP EscapeHardUnwrap\n");
+//  printf("LABEL ExitIfZero\n");
+//  printf("EXIT int@57\n");
+//  printf("LABEL EscapeHardUnwrap\n");
 }
 
 void WhileInitInterCode(GrammarToken *grammarToken,

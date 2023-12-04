@@ -92,8 +92,8 @@ Error scanner_code_to_tokens(Scanner *scanner, char *code,
     }
   }
 
-  if (tokenStrLeftPointer == endTokenStrPointer)
-    return error_create(NONE, NULL);
+//  if (tokenStrLeftPointer == endTokenStrPointer)
+//    return error_create(NONE, NULL);
 
   if (lastTokenTypeRecorded == UNDEFINED) {
     return error_create(UNDEFINED_TOKEN, "undefined token...");

@@ -26,7 +26,7 @@ int main() {
   while ((c = getchar()) != EOF) {
     char_vector_push_back(&inputVector, (char)c);
   }
-  char_vector_push_back(&inputVector, '\n');//TODO without ending line it fails why????
+  //char_vector_push_back(&inputVector, '\n');//TODO without ending line it fails why????
 
 
   TokenVector tokenVector;

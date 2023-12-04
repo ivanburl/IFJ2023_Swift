@@ -1,4 +1,5 @@
-let a = 10
-let b = 20
-let c = a + b
-write(a,b,c)
+var a = readInt()
+var b = readInt()
+if a! == b! {
+    write("eq")
+}

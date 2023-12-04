@@ -106,7 +106,7 @@ Error ifj_2023_parser_config(Parser *parser) {
       grammar_rule_create(F_CALL, NULL, FuncArgAdd, NULL,
                           (TokenType[]){LEFT_BRACKET, ARGS, RIGHT_BRACKET}, 3),
       grammar_rule_create(F_CALL, NULL, NULL , NULL, (TokenType[]){}, 0),
-      grammar_rule_create(F_CALL, NULL, HardUnwrapInterCode, NULL,
+      grammar_rule_create(F_CALL, NULL, NULL, NULL,
                           (TokenType[]){HARD_UNWRAP}, 1),
       grammar_rule_create(ARGS, NULL, NULL, NULL, (TokenType[]){ARG, ARGS_TMP}, 2),
       grammar_rule_create(ARGS, NULL, NULL, NULL, (TokenType[]){}, 0),
