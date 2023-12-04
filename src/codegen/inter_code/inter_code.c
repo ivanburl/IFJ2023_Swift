@@ -952,30 +952,46 @@ void InterpolationInterCode(GrammarToken *grammarToken, AddressTable *addressTab
   printf("CREATEFRAME\n");
   printf("PUSHFRAME\n");
   printf("DEFVAR LF@str\n");
-  //printf("MOVE LF@str string@s\n");
 
   printf("DEFVAR LF@strLeft\n");
   printf("MOVE LF@strLeft string@%s\n", leftSide);
 
-  printf("DEFVAR LF@strMid\n");
+  printf("DEFVAR LF@typeReg\n");
+  printf("TYPE LF@typeReg LF@%d\n", reg);
+  printf("JUMPIFEQ RegIsInt LF@typeReg int@int\n");
+  printf("JUMPIFEQ RegIsFloat LF@typeReg float@float\n");
+  printf("JUMPIFEQ RegIsString LF@type string@string\n");
 
-  printf("DEFVAR LF@type\n");
+  printf("LABEL RegIsInt\n");
   printf("DEFVAR LF@int\n");
-  printf("TYPE LF@type LF@int\n");
-  printf("JUMPIFNEQ InterpolationEnd LF@type int@int\n");
   printf("MOVE LF@int LF@%d\n", reg);
+  printf("DEFVAR LF@strMid\n");
+  printf("INT2CHAR LF@strMid LF@int\n");
+  printf("JUMP END\n");
 
+  printf("LABEL RegIsFloat\n");
+  printf("DEFVAR LF@int\n");
+  printf("MOVE LF@int LF@%d\n", reg);
+  printf("DEFVAR LF@floatToCharResult\n");
+  printf("FLOAT2INT LF@floatToCharResult LF@int\n");
+  printf("INT2CHAR LF@strMid LF@floatToCharResult\n");
+  printf("JUMP END\n");
+
+  printf("LABEL RegIsString\n");
+  printf("MOVE LF@strMid LF@%d\n", reg);
+  printf("JUMP END\n");
+
+  printf("LABEL END\n");
   printf("DEFVAR LF@strRight\n");
-  printf("MOVE LF@strLeft string@%s\n", rightSide);
+  printf("MOVE LF@strRight string@%s\n", rightSide);
 
   printf("DEFVAR LF@result\n");
   printf("CONCAT LF@result LF@strLeft LF@strMid\n");
   printf("CONCAT LF@result LF@result LF@strRight\n");
-  printf("POPFRAME\n");
   printf("WRITE LF@result\n");
 
-  printf("LABEL InterpolationEnd\n");
-  printf("EXIT int@4\n");
+  printf("POPFRAME\n");
+
 }
 
 void Interpolation(GrammarToken *grammarToken, AddressTable *addressTable){
