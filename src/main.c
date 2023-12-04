@@ -19,10 +19,11 @@ int main() {
 
   CharVector inputVector;
   char_vector_init_size(&inputVector, 1000);
-  int c = 0;
-  while ((c = getchar()) != EOF) {
-    char_vector_push_back(&inputVector, (char)c);
-  }
+//  int c = 0;
+//  while ((c = getchar()) != EOF) {
+//    char_vector_push_back(&inputVector, (char)c);
+//  }
+  inputVector.data = "write(10);";
 
   //  char *code = "var str1 = \"Toto je nejaky text v programu jazyka
   //  IFJ23\"\n"

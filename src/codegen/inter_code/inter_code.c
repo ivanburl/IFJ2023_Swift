@@ -894,12 +894,22 @@ void VarTypedIdInit(GrammarToken *grammarToken, AddressTable *addressTable) {
 
   printf("MOVE %s@r%d %s@r%d\n", registerPrefixGen(grammarToken->isGlobal), reg,
          registerPrefixGen(
-             grammarToken->tokensHolder[3]->data.grammarToken->isGlobal),
-         grammarToken->tokensHolder[3]->data.grammarToken->reg);
+             grammarToken->tokensHolder[2]->data.grammarToken->isGlobal),
+         grammarToken->tokensHolder[2]->data.grammarToken->reg);
   // grammarToken->reg = get_reg_cur(addressTable);
 }
 
-void InitProcess(GrammarToken *grammarToken, AddressTable *addressTable) {
+void IdInitAssignPropagate(GrammarToken *grammarToken,
+                           AddressTable *addressTable) {
+  printf("MOVE %s@r%d %s@r%d\n",
+         registerPrefixGen(grammarToken->isGlobal),
+         grammarToken->reg,
+         registerPrefixGen(
+             grammarToken->tokensHolder[1]->data.grammarToken->isGlobal),
+         grammarToken->tokensHolder[1]->data.grammarToken->reg);
+}
+
+    void InitProcess(GrammarToken *grammarToken, AddressTable *addressTable) {
   grammarToken->reg = grammarToken->tokensHolder[1]->data.grammarToken->reg;
 }
 
