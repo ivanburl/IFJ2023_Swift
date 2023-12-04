@@ -92,6 +92,9 @@ Error scanner_code_to_tokens(Scanner *scanner, char *code,
     }
   }
 
+  if (tokenStrLeftPointer == endTokenStrPointer)
+    return error_create(NONE, NULL);
+
   if (lastTokenTypeRecorded == UNDEFINED) {
     return error_create(UNDEFINED_TOKEN, "undefined token...");
   }
@@ -137,7 +140,7 @@ Error scanner_code_to_tokens(Scanner *scanner, char *code,
   free(tokenStr);
   tokenStr = NULL;
 
-  return error_create(NONE, "finished successfully");
+  return error_create(NONE, NULL);
 }
 
 void scanner_move_forward(Scanner *scanner, char symbol) {

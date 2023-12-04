@@ -29,6 +29,7 @@ void InitPrebuildFunc() {
   Double2Int();
   StrLength();
   Write();
+  HardUnwrap();
 }
 
 void InterCodeEnd() {
@@ -41,6 +42,17 @@ void GetF(GrammarToken *grammarToken, AddressTable *addressTable) {
   grammarToken->reg = grammarToken->tokensHolder[0]->data.grammarToken->reg;
   grammarToken->isGlobal =
       grammarToken->tokensHolder[0]->data.grammarToken->isGlobal;
+}
+
+void HardUnwrap() {
+  printf("JUMP $HardUnwrapEnd\n");
+  printf("LABEL $!\n");//jump by operator name
+  printf("PUSHS int@57\n");
+  printf("JUMPIFEQS $HardUnwrapBadExit\n");
+  printf("RETURN\n");
+  printf("LABEL $HardUnwrapBadExit\n");
+  printf("EXIT nil@nil\n");
+  printf("LABEL $HardUnwrapEnd\n");
 }
 
 // string - arg0
@@ -729,10 +741,14 @@ void FuncInitializeEscape(GrammarToken *grammarToken,
   end_function(addressTable);
 }
 
-// POSTORDSADSD
 // grammar_rule_create(F, NULL, NULL, NULL, (TokenType[]){ID, F_CALL}, 2),
 void FuncCall(GrammarToken *grammarToken, AddressTable *addressTable) {
-  if (grammarToken->tokensHolder[1]->data.grammarToken->tokensHolderSize == 0) {
+  if (grammarToken->tokensHolder[1]->data.grammarToken->tokensHolderSize == 3) {//we found exactly function
+    printf("CALL %s\n", grammarToken->tokensHolder[0]->data.string.data);
+    printf("MOVE %s@r%d GF@FuncReturn\n",
+           registerPrefixGen(grammarToken->isGlobal),
+           grammarToken->reg);
+  } else {
     bool isGlobal = false;
     int reg = AT_get(addressTable, &grammarToken->tokensHolder[0]->data.string,
                      &isGlobal);
@@ -740,14 +756,32 @@ void FuncCall(GrammarToken *grammarToken, AddressTable *addressTable) {
       exit(3);
     isGlobal = addressTable->isGlobal[reg];
 
-    printf("MOVE %s@r%d %s@r%d\n", registerPrefixGen(grammarToken->isGlobal),
-           grammarToken->reg, registerPrefixGen(isGlobal), reg);
-  } else {
-    printf("CALL %s\n", grammarToken->tokensHolder[0]->data.string.data);
-    printf("MOVE %s@r%d GF@FuncReturn\n",
-           registerPrefixGen(grammarToken->isGlobal), grammarToken->reg);
+    if (grammarToken->tokensHolder[1]->data.grammarToken->tokensHolderSize == 0) //we found variable
+    {
+      printf("MOVE %s@r%d %s@r%d\n", registerPrefixGen(grammarToken->isGlobal),
+             grammarToken->reg, registerPrefixGen(isGlobal), reg);
+    }
+
+    if (grammarToken->tokensHolder[1]->data.grammarToken->tokensHolderSize == 1) //we found operator call
+    {
+      printf("PUSHS %s@r%d\n",
+             registerPrefixGen(isGlobal),
+             reg
+      );
+      printf("CALL $%s\n",
+             grammarToken->tokensHolder[1]
+                 ->data.grammarToken->tokensHolder[0]->data.string.data);
+      printf("MOVE %s@r%d %s@r%d\n",
+             registerPrefixGen(grammarToken->isGlobal),
+             grammarToken->reg,
+             registerPrefixGen(isGlobal),
+             reg);
+    }
+
   }
 }
+
+
 
 void FuncArgAdd(GrammarToken *grammarToken, AddressTable *addressTable) {
   int argCount = get_args(addressTable);
@@ -793,17 +827,7 @@ void PushArgLabeled(GrammarToken *grammarToken, AddressTable *addressTable) {
 
 void HardUnwrapInterCode(GrammarToken *grammarToken,
                          AddressTable *addressTable) {
-  // printf("DEFVAR LF@tempReg\n");
-  // printf("MOVE LF@tempReg TF@r%d\n",
-  // grammarToken->tokensHolder[0]->data.grammarToken->reg);
-  printf("JUMPIFEQ ExitIfZero %s@r%d nil@nil\n",
-         registerPrefixGen(
-             grammarToken->tokensHolder[0]->data.grammarToken->isGlobal),
-         grammarToken->tokensHolder[0]->data.grammarToken->reg);
-  printf("JUMP EscapeHardUnwrap\n");
-  printf("LABEL ExitIfZero\n");
-  printf("EXIT int@57\n");
-  printf("LABEL EscapeHardUnwrap\n");
+  //printf("CALL $HardUnwrap\n");
 }
 
 void WhileInitInterCode(GrammarToken *grammarToken,

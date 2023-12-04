@@ -33,6 +33,7 @@ void HardUnwrapInterCode(GrammarToken *grammarToken, AddressTable *addressTable)
 void OrInterCode(GrammarToken *grammarToken, AddressTable *addressTable);
 void AndInterCode(GrammarToken *grammarToken, AddressTable *addressTable);
 void NotInterCode(GrammarToken *grammarToken, AddressTable *addressTable);
+void HardUnwrap();
 void Int2Double();
 void Double2Int();
 void StrLength();
@@ -49,6 +50,7 @@ void PushArg(GrammarToken *grammarToken, AddressTable *addressTable);
 void FuncInitialize(GrammarToken *grammarToken, AddressTable *addressTable);
 void FuncInitializeEscape(GrammarToken *grammarToken, AddressTable *addressTable);
 void FuncCall(GrammarToken *grammarToken, AddressTable *addressTable);
+void FuncCallPreOrder(GrammarToken *grammarToken, AddressTable *addressTable);
 void FuncArgAdd(GrammarToken *grammarToken, AddressTable *addressTable);
 void PreOrderForIf (GrammarToken *grammarToken, AddressTable *addressTable);
 void PostOrderForIf (GrammarToken *grammarToken, AddressTable *addressTable);
