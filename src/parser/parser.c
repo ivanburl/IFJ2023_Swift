@@ -230,7 +230,7 @@ Error precedence_parser_parse(Parser *parser, Token **tokenPointer,
                                                     .token->type][token->type];
     if (closeType == 0) {
       *offset = backupOffset;
-      if (delimiterRemoved)
+      if (delimiterRemoved || tokens->data[*offset-1].type == DELIMITER)
         *offset = *offset - 1;
 
       free(token);
