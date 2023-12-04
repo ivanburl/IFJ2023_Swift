@@ -11,3 +11,4 @@ vector_impl(String, String, string_);
 vector_impl(char, Char, char_);
 vector_impl(StringPointer, StringPointer, string_pointer_);
 vector_impl(HashMapPointer, HashMapPointer, hashmap_);
+vector_impl(HashMapPointer2D, HashMapPointer2D, hasmap2d_);

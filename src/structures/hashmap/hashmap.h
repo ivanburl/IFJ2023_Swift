@@ -48,6 +48,8 @@ typedef struct hashmap {
 
 typedef HashMap* HashMapPointer;
 vector_def(HashMapPointer, HashMapPointer, hashmap_);
+typedef HashMapPointerVector* HashMapPointer2D;
+vector_def(HashMapPointer2D, HashMapPointer2D, hasmap2d_);
 
 void hashmap_init(HashMap *map, hashmap_cmp_fn equals_function);
 
