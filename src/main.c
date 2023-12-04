@@ -28,13 +28,12 @@ int main() {
     printf(".IFJcode23\n");
     return 0;
   }
-//   char *code = "var a = readInt()\n"
-//               "    var b = readInt()\n"
-//               "    if a! == b! {\n"
-//               "        write(\"eq\")\n"
-//               "    } else {\n"
-//               "        write(\"ne\")\n"
-//               "    }\n";
+//   char *code = "let a: Int? = 45\n"
+//               "if let a {\n"
+//               "    let kentus = a + 4"
+//               "    let b: Int = a"
+//               "    write(b)\n"
+//               "} else {}\n";
 //   inputVector.data = code;
 
   TokenVector tokenVector;

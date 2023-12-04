@@ -875,6 +875,26 @@ void PostOrderForIf(GrammarToken *grammarToken, AddressTable *addressTable) {
   end_cycle(addressTable);
 }
 
+void UnwrapCond(GrammarToken *grammarToken, AddressTable *addressTable) {
+  bool isGlobal = false;
+  int reg = AT_get(addressTable, &grammarToken->tokensHolder[0]->data.string,
+                   &isGlobal);
+  if (reg == -1)
+    exit(3);
+  isGlobal = addressTable->isGlobal[reg];
+
+  int exitReg = get_temp_label(addressTable);
+  int escReg = get_temp_label(addressTable);
+  printf("JUMPIFEQ ExitIfZero%d %s@r%d nil@nil\n",
+         exitReg,
+         registerPrefixGen(isGlobal),
+         reg);
+  printf("JUMP EscapeHardUnwrap%d\n", escReg);
+  printf("LABEL ExitIfZero%d\n", exitReg);
+  printf("JUMP EXITIF%d\n", get_cur_cycle(addressTable));
+  printf("LABEL EscapeHardUnwrap%d\n", escReg);
+}
+
 void VarIdInit(GrammarToken *grammarToken, AddressTable *addressTable) {
   bool isGlobal = false;
   int reg = AT_create_withReg(addressTable,

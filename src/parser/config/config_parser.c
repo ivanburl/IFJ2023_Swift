@@ -51,7 +51,7 @@ Error ifj_2023_parser_config(Parser *parser) {
       grammar_rule_create(S, NULL, ContinueInterCode, NULL, (TokenType[]){CONTINUE}, 1),
       grammar_rule_create(S, NULL, BreakInterCode, NULL, (TokenType[]){BREAK}, 1),
       grammar_rule_create(COND, NULL, CondInterCode, NULL, (TokenType[]){E}, 1),
-      grammar_rule_create(COND, NULL, NULL, NULL, (TokenType[]){LET, ID}, 2),   //TODO: Create definition for this
+      grammar_rule_create(COND, NULL, UnwrapCond, NULL, (TokenType[]){LET, ID}, 2),   //TODO: Create definition for this
       grammar_rule_create(IF_ELSE, NULL, NULL, PreOrderForIfEslse, (TokenType[]){}, 0),
       grammar_rule_create(IF_ELSE, NULL, NULL, PreOrderForIfEslse, (TokenType[]){ELSE, BLOCK}, 2),
       grammar_rule_create(

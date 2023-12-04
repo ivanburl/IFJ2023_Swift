@@ -53,6 +53,7 @@ void FuncArgAdd(GrammarToken *grammarToken, AddressTable *addressTable);
 void PreOrderForIf (GrammarToken *grammarToken, AddressTable *addressTable);
 void PostOrderForIf (GrammarToken *grammarToken, AddressTable *addressTable);
 void PreOrderForIfEslse (GrammarToken *grammarToken, AddressTable *addressTable);
+void UnwrapCond(GrammarToken *grammarToken, AddressTable *addressTable);
 void ReturnInterCode (GrammarToken *grammarToken, AddressTable *addressTable);
 void ContinueInterCode (GrammarToken *grammarToken, AddressTable *addressTable);
 void BreakInterCode (GrammarToken *grammarToken, AddressTable *addressTable);
