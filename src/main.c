@@ -13,40 +13,25 @@ int main() {
   scanner_init(&scanner);
   scanner_configure_swift_2023(&scanner);
 
+  freopen("../IO/input.txt", "r", stdin);
+  freopen("../IO/output.txt", "w", stdout);
+
   Parser parser;
   parser_init(&parser);
   ifj_2023_parser_config(&parser);
 
   CharVector inputVector;
-//  char_vector_init_size(&inputVector, 10000);
   char_vector_init(&inputVector);
   int c = 0;
   while ((c = getchar()) != EOF) {
     char_vector_push_back(&inputVector, (char)c);
   }
-  if (inputVector.length == 0) {
-    printf(".IFJcode23\n");
-    return 0;
-  }
-//   char *code = "let a: Int? = 45\n"
-//               "if let a {\n"
-//               "    let kentus = a + 4"
-//               "    let b: Int = a"
-//               "    write(b)\n"
-//               "} else {}\n";
-//   inputVector.data = code;
+  char_vector_push_back(&inputVector, '\n');//TODO without ending line it fails why????
 
 
   TokenVector tokenVector;
   token_vector_init(&tokenVector);
   err = scanner_code_to_tokens(&scanner, inputVector.data, &tokenVector);
-
-  //  TokenType types1[1000];
-  //
-  //  for (int i = 0; i < tokenVector.length; i++) {
-  //    types1[i] = tokenVector.data[i].type;
-  //  }
-  //  printf("%d\n", types1[0]);
 
   if (err.errorType != NONE) {
     error_report(err);

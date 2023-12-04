@@ -60,10 +60,10 @@ Error token_create(TokenType type, char *str, Token *outToken) {
     token.data.double_value = strtod(str, NULL);
     break;
   }
-  case ID:
-    token.data.string = string_create(str);
-    break;
   default:
+    if (token.type < NON_TERMINAL_UNDEFINED && str != NULL) {//if it is terminal we could write what he has caught
+      token.data.string = string_create(str); // save
+    }
     break;
   }
 

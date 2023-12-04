@@ -130,7 +130,9 @@ typedef enum token_enum {
   ARGS_TMP,
   /// function argument (calling function)
   ARG,
-  FUNC_RETURN
+  FUNC_RETURN,
+  /// needed for undefined declaration of id
+  ID_INIT_ASSIGN
 } TokenType;
 
 struct grammar_token_t;
