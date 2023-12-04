@@ -19,21 +19,29 @@ int main() {
 
   CharVector inputVector;
   char_vector_init(&inputVector);
-  int c = 0;
-  while ((c = getchar()) != EOF) {
-    char_vector_push_back(&inputVector, (char)c);
-  }
-  if (inputVector.length == 0) {
-    printf(".IFJcode23\n");
-    return 0;
-  }
-//   char *code = "let a: Int? = 45\n"
-//               "if let a {\n"
-//               "    let kentus = a + 4"
-//               "    let b: Int = a"
-//               "    write(b)\n"
-//               "} else {}\n";
-//   inputVector.data = code;
+//  int c = 0;
+//  while ((c = getchar()) != EOF) {
+//    char_vector_push_back(&inputVector, (char)c);
+//  }
+//  if (inputVector.length == 0) {
+//    printf(".IFJcode23\n");
+//    return 0;
+//  }
+//   char *code = "let a = 1\n"
+//                "if true {\n"
+//                "    write(a)\n"
+//                "    let a = \"2\"\n"
+//                "    if true {\n"
+//                "        write(a)\n"
+//                "        let a = 3\n"
+//                "        write(a)\n"
+//                "    } else {}\n"
+//                "} else {}";
+    char *code =  "let a = 1\n"
+                  "if true {\n"
+                  "    write(a)\n"
+                  "} else {}";
+   inputVector.data = code;
 
   TokenVector tokenVector;
   token_vector_init(&tokenVector);
