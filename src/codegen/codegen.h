@@ -33,6 +33,6 @@
 
 Error generate_inter_code(GrammarToken *token);
 void post_order_process(GrammarToken *token, AddressTable *addressTable);
-void enumerate_grammar_tokens(GrammarToken *grammarToken, int* stackLevel, int* gen);
+void enumerate_grammar_tokens(GrammarToken *grammarToken, char* variablePrefix,  int* gen);
 
 #endif // IFJ2023_SWIFT_CODEGEN_H

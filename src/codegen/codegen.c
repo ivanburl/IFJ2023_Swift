@@ -39,9 +39,9 @@ void post_order_process(GrammarToken *grToken, AddressTable *addressTable) {
     grToken->grammarRule->assemblerFnPostOrd(grToken, addressTable);
 }
 
-void enumerate_grammar_tokens(GrammarToken *grammarToken, int *stackLevel,
+void enumerate_grammar_tokens(GrammarToken *grammarToken, char* variablePrefix,
                               int *gen) {
-  if (grammarToken == NULL || stackLevel == NULL || gen == NULL)
+  if (grammarToken == NULL || variablePrefix == NULL|| gen == NULL)
     return;
   //TODO global context is not fully loaded...
 
@@ -51,15 +51,15 @@ void enumerate_grammar_tokens(GrammarToken *grammarToken, int *stackLevel,
     if (token->type >= NON_TERMINAL_UNDEFINED) {
 
       token->data.grammarToken->reg = *gen;
-      token->data.grammarToken->isGlobal = 1;
+      token->data.grammarToken->isGlobal = strcmp("LF", variablePrefix)==0 ? 0 : 1;
 //      printf("DEFVAR %s@r%d\n", token->data.grammarToken->isGlobal ? "GF" : "LF",
 //             token->data.grammarToken->reg);
-      printf("DEFVAR GF@r%d\n", token->data.grammarToken->reg);
+      printf("DEFVAR %s@r%d\n",variablePrefix, token->data.grammarToken->reg);
 
       *gen = *gen + 1;
 //      if (token->type == STS)
 //        *stackLevel = *stackLevel + 1;
-      enumerate_grammar_tokens(token->data.grammarToken, stackLevel, gen);
+      enumerate_grammar_tokens(token->data.grammarToken, variablePrefix, gen);
 //      if (token->type == STS)
 //        *stackLevel = *stackLevel - 1;
     }

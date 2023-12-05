@@ -1,4 +1,5 @@
 #include "inter_code.h"
+#include"../codegen.h"
 
 char *registerPrefixGen(bool isGlobal) { return isGlobal ? "GF" : "LF"; }
 
@@ -771,6 +772,11 @@ void FuncInitialize(GrammarToken *grammarToken, AddressTable *addressTable) {
   printf("JUMP Escape%s\n", grammarToken->tokensHolder[1]->data.string.data);
   printf("LABEL %s\n", grammarToken->tokensHolder[1]->data.string.data);
   printf("POPS GF@__Trash__\n");
+  printf("CREATEFRAME\n");
+  printf("PUSHFRAME\n");
+  enumerate_grammar_tokens(grammarToken->tokensHolder[6]->
+                           data.grammarToken->tokensHolder[1]->
+                           data.grammarToken, "LF", &addressTable->resRegisters);
 }
 
 void FuncInitParams(GrammarToken *grammarToken, AddressTable *addressTable) {
@@ -790,6 +796,7 @@ void FuncInitParams(GrammarToken *grammarToken, AddressTable *addressTable) {
 
 void FuncInitializeEscape(GrammarToken *grammarToken,
                           AddressTable *addressTable) {
+  printf("POPFRAME\n");
   printf("RETURN\n");
   printf("LABEL Escape%s\n", grammarToken->tokensHolder[1]->data.string.data);
   end_function(addressTable);
@@ -935,6 +942,7 @@ void ReturnInterCode(GrammarToken *grammarToken, AddressTable *addressTable) {
     printf("MOVE GF@FuncReturn %s@r%d\n",
          registerPrefixGen(grammarToken->tokensHolder[1]->data.grammarToken->isGlobal),
            grammarToken->tokensHolder[1]->data.grammarToken->tokensHolder[0]->data.grammarToken->reg);
+  printf("POPFRAME\n");
   printf("RETURN\n");
 }
 
