@@ -145,8 +145,8 @@ void Ord() {
   printf("CREATEFRAME\n");
   printf("PUSHFRAME\n");
 
-  printf("DEFVAR LF@$ARG_LEN\n");
-  printf("POPS LF@$ARG_LEN\n");
+  printf("DEFVAR LF@trash\n");
+  printf("POPS LF@trash\n");
 
   printf("DEFVAR LF@str\n");
   printf("DEFVAR LF@strlen\n");
@@ -176,8 +176,8 @@ void Chr() {
   printf("CREATEFRAME\n");
   printf("PUSHFRAME\n");
 
-  printf("DEFVAR LF@$ARG_LEN\n");
-  printf("POPS LF@$ARG_LEN\n");
+  printf("DEFVAR LF@trash\n");
+  printf("POPS LF@trash\n");
 
   printf("DEFVAR LF@number\n");
   printf("DEFVAR LF@strlen\n");
@@ -197,8 +197,8 @@ void ReadString() {
   printf("CREATEFRAME\n");
   printf("PUSHFRAME\n");
 
-  printf("DEFVAR LF@$ARG_LEN\n");
-  printf("POPS LF@$ARG_LEN\n");
+  printf("DEFVAR LF@trash\n");
+  printf("POPS LF@trash\n");
 
   printf("DEFVAR LF@ReadString\n");
   printf("READ LF@ReadString string\n");
@@ -215,8 +215,8 @@ void ReadInt() {
   printf("CREATEFRAME\n");
   printf("PUSHFRAME\n");
 
-  printf("DEFVAR LF@$ARG_LEN\n");
-  printf("POPS LF@$ARG_LEN\n");
+  printf("DEFVAR LF@trash\n");
+  printf("POPS LF@trash\n");
 
   printf("DEFVAR LF@ReadInt\n");
   printf("READ LF@ReadInt int\n");
@@ -234,8 +234,8 @@ void ReadDouble() {
   printf("CREATEFRAME\n");
   printf("PUSHFRAME\n");
 
-  printf("DEFVAR LF@$ARG_LEN\n");
-  printf("POPS LF@$ARG_LEN\n");
+  printf("DEFVAR LF@trash\n");
+  printf("POPS LF@trash\n");
 
   printf("DEFVAR LF@ReadFloat\n");
   printf("READ LF@ReadFloat float\n");
@@ -254,8 +254,10 @@ void Int2Double() {
   printf("CREATEFRAME\n");
   printf("PUSHFRAME\n");
 
-  printf("DEFVAR LF@$ARG_LEN\n");
-  printf("POPS LF@$ARG_LEN\n");
+  printf("DEFVAR LF@trash\n");
+  printf("POPS LF@trash\n");
+
+  printf("DEFVAR LF@IntToFloat\n");
 
   printf("DEFVAR LF@tempInt\n");
   printf("POPS LF@tempInt\n");
@@ -274,8 +276,12 @@ void Double2Int() {
   printf("LABEL Double2Int\n");
   printf("CREATEFRAME\n");
   printf("PUSHFRAME\n");
-  printf("DEFVAR LF@$ARG_LEN\n");
-  printf("POPS LF@$ARG_LEN\n");
+
+  printf("DEFVAR LF@trash\n");
+  printf("POPS LF@trash\n");
+
+  printf("DEFVAR LF@FloatToInt\n");
+
   printf("DEFVAR LF@tempDouble\n");
   printf("POPS LF@tempDouble\n");
   printf("FLOAT2INT LF@FloatToInt LF@tempDouble\n");
@@ -292,8 +298,10 @@ void StrLength() {
   printf("LABEL length\n");
   printf("CREATEFRAME\n");
   printf("PUSHFRAME\n");
-  printf("DEFVAR LF@$ARG_LEN\n");
-  printf("POPS LF@$ARG_LEN\n");
+
+  printf("DEFVAR LF@trash\n");
+  printf("POPS LF@trash\n");
+
   printf("DEFVAR LF@tempString\n");
   printf("DEFVAR LF@StringLegnth\n");
   printf("POPS LF@tempString\n");
@@ -559,10 +567,6 @@ void NotEqualInterCode(GrammarToken *grammarToken, AddressTable *addressTable) {
 }
 
 void GreaterInterCode(GrammarToken *grammarToken, AddressTable *addressTable) {
-  // int res = get_reg_new(addressTable);
-  //   printf("CREATEFRAME\n");
-  //   printf("PUSHFRAME\n");
-  // printf("DEFVAR LF@r%d\n", res);
   printf("GT %s@r%d %s@r%d %s@r%d\n", registerPrefixGen(grammarToken->isGlobal),
          grammarToken->reg,
          registerPrefixGen(
@@ -571,14 +575,9 @@ void GreaterInterCode(GrammarToken *grammarToken, AddressTable *addressTable) {
          registerPrefixGen(
              grammarToken->tokensHolder[2]->data.grammarToken->isGlobal),
          grammarToken->tokensHolder[2]->data.grammarToken->reg);
-  // grammarToken->reg = get_reg_cur(addressTable);
 }
 
 void LessInterCode(GrammarToken *grammarToken, AddressTable *addressTable) {
-  // int res = get_reg_new(addressTable);
-  //   printf("CREATEFRAME\n");
-  //   printf("PUSHFRAME\n");
-  // printf("DEFVAR LF@r%d\n", res);
   printf("LT %s@r%d %s@r%d %s@r%d\n", registerPrefixGen(grammarToken->isGlobal),
          grammarToken->reg,
          registerPrefixGen(
@@ -587,13 +586,9 @@ void LessInterCode(GrammarToken *grammarToken, AddressTable *addressTable) {
          registerPrefixGen(
              grammarToken->tokensHolder[2]->data.grammarToken->isGlobal),
          grammarToken->tokensHolder[2]->data.grammarToken->reg);
-  //  printf("POPFRAME\n");
-  // grammarToken->reg = get_reg_cur(addressTable);
 }
 
 void GreaterEqualInterCode(GrammarToken *grammarToken, AddressTable *addressTable) {
-  int boolReg1 = get_reg_new(addressTable);
-  int boolReg2 = get_reg_new(addressTable);
 
   printf("PUSHS %s@r%d\n",
          registerPrefixGen(
@@ -619,46 +614,53 @@ void GreaterEqualInterCode(GrammarToken *grammarToken, AddressTable *addressTabl
   printf("POPS %s@r%d\n",registerPrefixGen(grammarToken->isGlobal),grammarToken->reg);
 }
 
-void LessEqualInterCode(GrammarToken *grammarToken,
-                        AddressTable *addressTable) {
-  int boolReg1 = get_reg_new(addressTable);
-  int boolReg2 = get_reg_new(addressTable);
-  //  printf("CREATEFRAME\n");
-  //  printf("PUSHFRAME\n");
-  printf("DEFVAR LF@tempBool%d\n", boolReg1);
-  printf("LT LF@tempBool%d %s@r%d %s@r%d\n", boolReg1,
+void LessEqualInterCode(GrammarToken *grammarToken, AddressTable *addressTable) {
+  printf("PUSHS %s@r%d\n",
          registerPrefixGen(
              grammarToken->tokensHolder[0]->data.grammarToken->isGlobal),
-         grammarToken->tokensHolder[0]->data.grammarToken->reg,
+         grammarToken->tokensHolder[0]->data.grammarToken->reg);
+  printf("PUSHS %s@r%d\n",
          registerPrefixGen(
              grammarToken->tokensHolder[2]->data.grammarToken->isGlobal),
          grammarToken->tokensHolder[2]->data.grammarToken->reg);
-  printf("DEFVAR LF@tempBool%d\n", boolReg2);
-  printf("EQ LF@tempBool%d %s@r%d %s@r%d\n", boolReg2,
+  printf("LTS\n");
+  printf("PUSHS %s@r%d\n",
          registerPrefixGen(
              grammarToken->tokensHolder[0]->data.grammarToken->isGlobal),
-         grammarToken->tokensHolder[0]->data.grammarToken->reg,
+         grammarToken->tokensHolder[0]->data.grammarToken->reg);
+  printf("PUSHS %s@r%d\n",
          registerPrefixGen(
              grammarToken->tokensHolder[2]->data.grammarToken->isGlobal),
          grammarToken->tokensHolder[2]->data.grammarToken->reg);
-  printf("OR %s@r%d LF@tempBool%d LF@tempBool%d\n",
-         registerPrefixGen(grammarToken->isGlobal), grammarToken->reg, boolReg1,
-         boolReg2);
+  printf("EQS\n");
+  printf("ORS\n");
+
+  printf("POPS %s@r%d\n",registerPrefixGen(grammarToken->isGlobal),grammarToken->reg);
 }
 
-void SoftUnwrapInterCode(GrammarToken *grammarToken,
-                         AddressTable *addressTable) {
-  // int res = get_reg_new(addressTable);
-  if (grammarToken->tokensHolder[0]->data.grammarToken->reg == -1) {
-    printf("DEFVAR %s@r%d\n", registerPrefixGen(grammarToken->isGlobal),
-           grammarToken->reg);
-    printf("MOVE %s@r%d %s@r%d\n", registerPrefixGen(grammarToken->isGlobal),
-           grammarToken->reg,
-           registerPrefixGen(
-               grammarToken->tokensHolder[2]->data.grammarToken->isGlobal),
-           grammarToken->tokensHolder[2]->data.grammarToken->reg);
-  }
-  // grammarToken->reg = get_reg_cur(addressTable);
+void SoftUnwrap() {
+    printf("JUMP $SoftUnwrapEnd\n");
+    printf("LABEL $??\n");//jump by operator name
+    printf("CREATEFRAME\n");
+    printf("PUSHFRAME\n");
+    printf("DEFVAR LF@trashcan\n");
+
+
+    printf("PUSHS nil@nil\n");
+    printf("JUMPIFEQS $SoftUnwrapBadExit\n");
+    printf("POPS GF@FuncReturn\n");
+    printf("POPS LF@trashcan\n");
+    printf("POPFRAME\n");
+    printf("RETURN\n");
+    printf("LABEL $SoftUnwrapBadExit\n");
+    printf("POPS LF@trashcan\n");
+    printf("POPS GF@FuncReturn\n");
+
+
+    printf("POPFRAME\n");
+    printf("RETURN\n");
+
+    printf("LABEL $SoftUnwrapEnd\n");
 }
 void SoftUnwrapInterCode(GrammarToken *grammarToken, AddressTable *addressTable) {
     printf("PUSHS %s@r%d\n",registerPrefixGen(
