@@ -31,6 +31,7 @@ void InitPrebuildFunc() {
   Write();
   HardUnwrap();
   SoftUnwrap();
+  $Int2Double();
 }
 
 void InterCodeEnd() {
@@ -266,6 +267,36 @@ void Int2Double() {
   printf("POPFRAME\n");
   printf("RETURN\n");
   printf("LABEL Int2DoubleEnd\n");
+}
+
+void $Int2Double() {
+  printf("JUMP $Int2DoubleEnd\n");
+  printf("LABEL $Int2Double\n");
+  printf("CREATEFRAME\n");
+  printf("PUSHFRAME\n");
+
+  printf("DEFVAR LF@trash\n");
+  printf("POPS LF@trash\n");
+  printf("DEFVAR LF@IntToFloat\n");
+
+  printf("DEFVAR LF@tempInt\n");
+  printf("POPS LF@tempInt\n");
+  printf("DEFVAR LF@tempString\n");
+  printf("TYPE LF@tempString LF@tempInt\n");
+  printf("JUMPIFEQ $Double2Double LF@tempString string@float\n");
+
+
+  printf("INT2FLOAT LF@IntToFloat LF@tempInt\n");
+  printf("MOVE GF@FuncReturn LF@IntToFloat\n");
+  printf("POPFRAME\n");
+  printf("RETURN\n");
+  //if we have double already
+  printf("LABEL $Double2Double\n");
+  printf("MOVE GF@FuncReturn LF@tempInt\n");
+  printf("POPFRAME\n");
+  printf("RETURN\n");
+
+  printf("LABEL $Int2DoubleEnd\n");
 }
 
 // func Double2Int(_ term ∶ Double) -> Int – Vrátí hodnotu desetinného termu
@@ -1025,7 +1056,7 @@ void InterpolationInterCode(GrammarToken *grammarToken, AddressTable *addressTab
   printf("DEFVAR LF@result\n");
   printf("CONCAT LF@result LF@strLeft LF@strMid\n");
   printf("CONCAT LF@result LF@result LF@strRight\n");
-  printf("WRITE LF@result\n");
+  printf("MOVE GF@ReturnFunction LF@result\n");
 
   printf("POPFRAME\n");
 

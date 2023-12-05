@@ -66,5 +66,8 @@ void InitProcess(GrammarToken *grammarToken, AddressTable *addressTable);
 void StoreNil(GrammarToken *grammarToken, AddressTable *addressTable);
 void IdAssignInterCode(GrammarToken *grammarToken, AddressTable *addressTable);
 void IdInitAssignPropagate(GrammarToken *grammarToken, AddressTable *addressTable);
+void Interpolation(GrammarToken *grammarToken, AddressTable *addressTable);
+void InterpolationInterCode(GrammarToken *grammarToken, AddressTable *addressTable,int reg,char *leftSide,char *rightSide);
+void $Int2Double();
 
 #endif // IFJ2023_SWIFT_INTER_CODE_H
