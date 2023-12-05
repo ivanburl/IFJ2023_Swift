@@ -19,8 +19,8 @@ void configure_string(Scanner *scanner) {
   automata_set_edge(&(scanner->automata), 1, '\"', 2);
   automata_set_stateReturnValue(&(scanner->automata), 2, STRING);
   automata_set_edge(&(scanner->automata), 2, '\"', 75);
-  automata_set_edge_by_regex(&(scanner->automata), 1, "[^\\\"]", 3);
-  automata_set_edge_by_regex(&(scanner->automata), 3, "[^\\\"]", 3);
+  automata_set_edge_by_regex(&(scanner->automata), 1, "[^\"]", 3);
+  automata_set_edge_by_regex(&(scanner->automata), 3, "[^\"]", 3);
   automata_set_edge(&(scanner->automata), 3, '\"', 4);
   automata_set_edge(&(scanner->automata), 3, '\n', 199);
   automata_set_stateReturnValue(&(scanner->automata), 4, STRING);

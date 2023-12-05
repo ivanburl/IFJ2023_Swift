@@ -526,9 +526,9 @@ void MulInterCode(GrammarToken *grammarToken, AddressTable *addressTable) {
 }
 
 void DivInterCode(GrammarToken *grammarToken, AddressTable *addressTable) {
-  printf("JUMPIFNEQ CheckDivByZero %s@r%d int@0\n", registerPrefixGen(grammarToken->isGlobal), grammarToken->tokensHolder[2]->data.grammarToken->reg);
-  printf("EXIT int@57\n");
-  printf("LABEL CheckDivByZero\n");
+//  printf("JUMPIFNEQ CheckDivByZero %s@r%d int@0\n", registerPrefixGen(grammarToken->isGlobal), grammarToken->tokensHolder[2]->data.grammarToken->reg);
+//  printf("EXIT int@57\n");
+//  printf("LABEL CheckDivByZero\n");
 
   printf("DEFVAR LF@tempString1\n");
   printf("TYPE LF@tempString1 %s@r%d\n", registerPrefixGen(grammarToken->isGlobal), grammarToken->tokensHolder[0]->data.grammarToken->reg);
@@ -931,10 +931,11 @@ void ContinueInterCode(GrammarToken *grammarToken, AddressTable *addressTable) {
 }
 
 void ReturnInterCode(GrammarToken *grammarToken, AddressTable *addressTable) {
-  printf("MOVE GF@FuncReturn %s@r%d\n",
-         registerPrefixGen(
-             grammarToken->tokensHolder[1]->data.grammarToken->isGlobal),
-         grammarToken->tokensHolder[1]->data.grammarToken->reg);
+  if (grammarToken->tokensHolder[1]->data.grammarToken->tokensHolderSize != 0)
+    printf("MOVE GF@FuncReturn %s@r%d\n",
+         registerPrefixGen(grammarToken->tokensHolder[1]->data.grammarToken->isGlobal),
+           grammarToken->tokensHolder[1]->data.grammarToken->tokensHolder[0]->data.grammarToken->reg);
+  printf("RETURN\n");
 }
 
 void PreOrderForIf(GrammarToken *grammarToken, AddressTable *addressTable) {

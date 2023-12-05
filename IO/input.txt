@@ -1,6 +1,13 @@
-func a(_ a: Int, _ b: Int) {
-    write(a, "+", b, "=", a+b)
+func factorial(_ a: Int) -> Int {
+    if a <= 1 {
+        return 1
+    }
+    return a*factorial(a-1)
 }
-let value = 4
-let val2 = 5
-a(value, val2)
+
+let a = readInt();
+write(factorial(a))
+while true {
+    a = readInt();
+    write(factorial(a))
+}

@@ -33,7 +33,7 @@ Error ifj_2023_parser_config(Parser *parser) {
   assert(parser->expressionParser && parser->llParser &&
          "Set the ll parser and precedence parser");
 
-  int llGrammarRulesCount = 60;
+  int llGrammarRulesCount = 62;
   GrammarRule llGrammarRules[] = {
       grammar_rule_create(STS, NULL, NULL, NULL, (TokenType[]){S, STS_TMP}, 2),
       grammar_rule_create(STS_TMP, NULL, NULL, NULL,
@@ -47,7 +47,7 @@ Error ifj_2023_parser_config(Parser *parser) {
       grammar_rule_create(S, NULL, NULL, NULL, (TokenType[]){E}, 1),
       grammar_rule_create(S, NULL, IdAssignInterCode, NULL, (TokenType[]){ID_AND_ASSIGN, E}, 2),
       grammar_rule_create(S, NULL, NULL, NULL, (TokenType[]){D}, 1),
-      grammar_rule_create(S, NULL, ReturnInterCode, NULL, (TokenType[]){RETURN, E}, 2),
+      grammar_rule_create(S, NULL, ReturnInterCode, NULL, (TokenType[]){RETURN, E_NULLABLE}, 2),
       grammar_rule_create(S, NULL, ContinueInterCode, NULL, (TokenType[]){CONTINUE}, 1),
       grammar_rule_create(S, NULL, BreakInterCode, NULL, (TokenType[]){BREAK}, 1),
       grammar_rule_create(COND, NULL, CondInterCode, NULL, (TokenType[]){E}, 1),
@@ -116,6 +116,8 @@ Error ifj_2023_parser_config(Parser *parser) {
 
       grammar_rule_create(ARG, NULL, PushArgLabeled, NULL, (TokenType[]){ID_AND_COLON, E}, 2),
       grammar_rule_create(ARG, NULL, PushArg, NULL, (TokenType[]){E}, 1),
+      grammar_rule_create(E_NULLABLE, NULL, NULL, NULL, (TokenType[]){E}, 1),
+      grammar_rule_create(E_NULLABLE, NULL, NULL, NULL, (TokenType[]){}, 0),
 
       grammar_rule_create(TYPE, NULL, NULL, NULL, (TokenType[]){INT_TYPE}, 1),
       grammar_rule_create(TYPE, NULL, NULL, NULL, (TokenType[]){INT_NULLABLE_TYPE},
