@@ -606,33 +606,61 @@ void LessInterCode(GrammarToken *grammarToken, AddressTable *addressTable) {
   // grammarToken->reg = get_reg_cur(addressTable);
 }
 
-void GreaterEqualInterCode(GrammarToken *grammarToken,
-                           AddressTable *addressTable) {
+//void GreaterEqualInterCode(GrammarToken *grammarToken,
+//                           AddressTable *addressTable) {
+//  int boolReg1 = get_reg_new(addressTable);
+//  int boolReg2 = get_reg_new(addressTable);
+//  printf("DEFVAR LF@tempBool%d\n", boolReg1);
+//  printf("GT LF@tempBool%d %s@r%d %s@r%d\n", boolReg1,
+//         registerPrefixGen(
+//             grammarToken->tokensHolder[0]->data.grammarToken->isGlobal),
+//         grammarToken->tokensHolder[0]->data.grammarToken->reg,
+//         registerPrefixGen(
+//             grammarToken->tokensHolder[2]->data.grammarToken->isGlobal),
+//         grammarToken->tokensHolder[2]->data.grammarToken->reg);
+//  printf("DEFVAR LF@tempBool%d\n", boolReg2);
+//  printf("EQ LF@tempBool%d %s@r%d %s@r%d\n", boolReg2,
+//         registerPrefixGen(
+//             grammarToken->tokensHolder[0]->data.grammarToken->isGlobal),
+//         grammarToken->tokensHolder[0]->data.grammarToken->reg,
+//         registerPrefixGen(
+//             grammarToken->tokensHolder[2]->data.grammarToken->isGlobal),
+//         grammarToken->tokensHolder[2]->data.grammarToken->reg);
+//  printf("OR %s@r%d LF@tempBool%d LF@tempBool%d\n",
+//         registerPrefixGen(grammarToken->isGlobal), grammarToken->reg, boolReg1,
+//         boolReg2);
+//}
+
+void GreaterEqualInterCode(GrammarToken *grammarToken, AddressTable *addressTable) {
   int boolReg1 = get_reg_new(addressTable);
   int boolReg2 = get_reg_new(addressTable);
-  //  printf("CREATEFRAME\n");
-  //  printf("PUSHFRAME\n");
-  printf("DEFVAR LF@tempBool%d\n", boolReg1);
-  printf("GT LF@tempBool%d %s@r%d %s@r%d\n", boolReg1,
+
+  printf("PUSHS %s@r%d\n",
          registerPrefixGen(
              grammarToken->tokensHolder[0]->data.grammarToken->isGlobal),
-         grammarToken->tokensHolder[0]->data.grammarToken->reg,
+         grammarToken->tokensHolder[0]->data.grammarToken->reg);
+
+  printf("PUSHS %s@r%d\n",
          registerPrefixGen(
              grammarToken->tokensHolder[2]->data.grammarToken->isGlobal),
          grammarToken->tokensHolder[2]->data.grammarToken->reg);
-  printf("DEFVAR LF@tempBool%d\n", boolReg2);
-  printf("EQ LF@tempBool%d %s@r%d %s@r%d\n", boolReg2,
-         registerPrefixGen(
-             grammarToken->tokensHolder[0]->data.grammarToken->isGlobal),
-         grammarToken->tokensHolder[0]->data.grammarToken->reg,
+  printf("GTS\n");
+  printf("PUSHS LF@tempBool%d\n", boolReg1);
+  printf("PUSHS %s@r%d\n",
          registerPrefixGen(
              grammarToken->tokensHolder[2]->data.grammarToken->isGlobal),
          grammarToken->tokensHolder[2]->data.grammarToken->reg);
-  printf("OR %s@r%d LF@tempBool%d LF@tempBool%d\n",
-         registerPrefixGen(grammarToken->isGlobal), grammarToken->reg, boolReg1,
-         boolReg2);
-  //  printf("POPFRAME\n");
+  printf("PUSHS %s@r%d\n",
+         registerPrefixGen(
+             grammarToken->tokensHolder[0]->data.grammarToken->isGlobal),
+         grammarToken->tokensHolder[0]->data.grammarToken->reg);
+  printf("EQS\n");
+  printf("PUSHS LF@tempBool%d\n", boolReg2);
+  printf("ORS\n");
+  printf("PUSHS LF@tempBool%d\n", boolReg2);
+  printf("JUMPIFEQS ESCAPE\n");
 }
+
 
 void LessEqualInterCode(GrammarToken *grammarToken,
                         AddressTable *addressTable) {
