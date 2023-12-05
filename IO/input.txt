@@ -1,7 +1,3 @@
-var a = readInt()
-var b = readInt()
-if a! == b! {
-    write("eq")
-} else {
-    write("neq")
-}
+let a: Int? = nil
+let b = a ?? 4
+write(b)

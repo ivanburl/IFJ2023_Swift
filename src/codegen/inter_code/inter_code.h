@@ -41,6 +41,7 @@ void SubStringIntercode();
 void Ord();
 void Chr();
 void Write();
+void SoftUnwrap();
 void WhileInitInterCode(GrammarToken *grammarToken, AddressTable *addressTable);
 void CondInterCode (GrammarToken *grammarToken, AddressTable *addressTable);
 void BlockWhileInterCode (GrammarToken *grammarToken, AddressTable *addressTable);

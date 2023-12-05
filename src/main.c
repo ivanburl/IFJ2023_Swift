@@ -13,8 +13,8 @@ int main() {
   scanner_init(&scanner);
   scanner_configure_swift_2023(&scanner);
 
-//  freopen("../IO/input.txt", "r", stdin);
-//  freopen("../IO/output.txt", "w", stdout);
+freopen("../IO/input.txt", "r", stdin);
+freopen("../IO/output.txt", "w", stdout);
 
   Parser parser;
   parser_init(&parser);
@@ -34,7 +34,6 @@ int main() {
     printf(".IFJcode23\n");
     return 0;
   }
-
   TokenVector tokenVector;
   token_vector_init(&tokenVector);
   err = scanner_code_to_tokens(&scanner, inputVector.data, &tokenVector);
