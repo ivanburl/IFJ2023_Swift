@@ -931,7 +931,7 @@ void ContinueInterCode(GrammarToken *grammarToken, AddressTable *addressTable) {
 }
 
 void ReturnInterCode(GrammarToken *grammarToken, AddressTable *addressTable) {
-  printf("MOVE GF@ReturnFunc %s@r%d\n",
+  printf("MOVE GF@FuncReturn %s@r%d\n",
          registerPrefixGen(
              grammarToken->tokensHolder[1]->data.grammarToken->isGlobal),
          grammarToken->tokensHolder[1]->data.grammarToken->reg);
