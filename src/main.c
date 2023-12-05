@@ -13,8 +13,8 @@ int main() {
   scanner_init(&scanner);
   scanner_configure_swift_2023(&scanner);
 
-  freopen("../IO/input.txt", "r", stdin);
-  freopen("../IO/output.txt", "w", stdout);
+//  freopen("../IO/input.txt", "r", stdin);
+//  freopen("../IO/output.txt", "w", stdout);
 
   Parser parser;
   parser_init(&parser);
@@ -30,10 +30,10 @@ int main() {
   //char_vector_push_back(&inputVector, '\n');//TODO without ending line it fails why????
 
 
-//  if (inputVector.length == 0) {
-//    printf(".IFJcode23\n");
-//    return 0;
-//  }
+  if (inputVector.length == 0) {
+    printf(".IFJcode23\n");
+    return 0;
+  }
 
   TokenVector tokenVector;
   token_vector_init(&tokenVector);
