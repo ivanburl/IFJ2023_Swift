@@ -82,7 +82,7 @@ Error ifj_2023_parser_config(Parser *parser) {
       grammar_rule_create(FUNC_RETURN, NULL, NULL, NULL,
                           (TokenType[]){},0),
 
-      grammar_rule_create(PARAM, NULL, NULL, NULL, (TokenType[]){FUNC_ID, ID_AND_COLON, TYPE},
+      grammar_rule_create(PARAM, NULL, FuncInitParams, NULL, (TokenType[]){FUNC_ID, ID_AND_COLON, TYPE},
                           3),
       grammar_rule_create(FUNC_ID, NULL, NULL, NULL, (TokenType[]){ID}, 1),
       grammar_rule_create(FUNC_ID, NULL, NULL, NULL, (TokenType[]){UNDERSCORE}, 1),

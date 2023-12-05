@@ -48,6 +48,7 @@ void GetF(GrammarToken *grammarToken, AddressTable *addressTable);
 void PushArgLabeled(GrammarToken *grammarToken, AddressTable *addressTable);
 void PushArg(GrammarToken *grammarToken, AddressTable *addressTable);
 void FuncInitialize(GrammarToken *grammarToken, AddressTable *addressTable);
+void FuncInitParams(GrammarToken *grammarToken, AddressTable *addressTable);
 void FuncInitializeEscape(GrammarToken *grammarToken, AddressTable *addressTable);
 void FuncCall(GrammarToken *grammarToken, AddressTable *addressTable);
 void FuncCallPreOrder(GrammarToken *grammarToken, AddressTable *addressTable);
