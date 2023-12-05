@@ -422,7 +422,7 @@ void StoreString(GrammarToken *grammarToken, AddressTable *addressTable) {
   //       }
   //     }
   //   } GUYS WTF what this all means????
-  printf("MOVE %s@r%d string@\n", registerPrefixGen(grammarToken->isGlobal),
+  printf("MOVE %s@r%d string@", registerPrefixGen(grammarToken->isGlobal),
          grammarToken->reg);
   char *str = grammarToken->tokensHolder[0]->data.string.data;
   int sz = strlen(str);
