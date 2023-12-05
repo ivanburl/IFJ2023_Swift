@@ -1,2 +1,6 @@
-let result = 25 / 6
-write(result)
+func a(_ a: Int, _ b: Int) {
+    write(a, "+", b, "=", a+b)
+}
+let value = 4
+let val2 = 5
+a(value, val2)

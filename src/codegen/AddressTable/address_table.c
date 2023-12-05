@@ -76,7 +76,7 @@ int AT_create(AddressTable *addressTable, String *var, bool *isGlobal) {
 
 int AT_create_withReg(AddressTable *addressTable, String *var, int reg, bool *isGlobal) {
 //  (*isGlobal) = addressTable->variables->length == 1 ? true : false;
-  (*isGlobal) = false;  //TODO: bruh
+  (*isGlobal) = true;  //TODO: bruh
 
   VarAddress *newEntry = malloc(sizeof(VarAddress));
   hashmap_entry_init(newEntry, strhash(var->data));
@@ -92,6 +92,7 @@ int AT_create_withReg(AddressTable *addressTable, String *var, int reg, bool *is
 }
 
 int AT_get(AddressTable *addressTable, String *var, bool* isGlobal) {
+  *isGlobal = true;
   //search for current function
   int curFuncInd = (int)addressTable->variablesContainer->length-1;
   HashMapPointerVector *curFunc = addressTable->variablesContainer->data[curFuncInd];
@@ -105,7 +106,7 @@ int AT_get(AddressTable *addressTable, String *var, bool* isGlobal) {
     VarAddress *varAddress = hashmap_get(cur, &entryToFind);
 
     if (varAddress != NULL) {
-      *isGlobal = (curFuncInd == 0);
+//      *isGlobal = (curFuncInd == 0);
       return varAddress->value;
     }
   }
@@ -125,7 +126,7 @@ int AT_get(AddressTable *addressTable, String *var, bool* isGlobal) {
     VarAddress *varAddress = hashmap_get(cur, &entryToFind);
 
     if (varAddress != NULL) {
-      *isGlobal = true;
+//      *isGlobal = true;
       return varAddress->value;
     }
   }
