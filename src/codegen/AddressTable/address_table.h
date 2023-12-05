@@ -14,12 +14,9 @@
 typedef struct address_table_t {
   // vars
 //  HashMap *hashMap;
-  HashMapPointerVector* variables;
+  HashMapPointer2DVector *variablesContainer;
   int resRegisters;
   int tempLabelRegisters;
-
-  //if
-  int resIf;
 
   // cycles
   int resCycles;

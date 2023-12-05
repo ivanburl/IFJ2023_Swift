@@ -26,8 +26,14 @@ int main() {
   while ((c = getchar()) != EOF) {
     char_vector_push_back(&inputVector, (char)c);
   }
+
   //char_vector_push_back(&inputVector, '\n');//TODO without ending line it fails why????
 
+
+//  if (inputVector.length == 0) {
+//    printf(".IFJcode23\n");
+//    return 0;
+//  }
 
   TokenVector tokenVector;
   token_vector_init(&tokenVector);
