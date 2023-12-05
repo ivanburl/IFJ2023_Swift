@@ -420,7 +420,7 @@ void StoreString(GrammarToken *grammarToken, AddressTable *addressTable) {
   //       }
   //     }
   //   } GUYS WTF what this all means????
-  printf("MOVE %s@r%d string@", registerPrefixGen(grammarToken->isGlobal),
+  printf("MOVE %s@r%d string@\n", registerPrefixGen(grammarToken->isGlobal),
          grammarToken->reg);
   char *str = grammarToken->tokensHolder[0]->data.string.data;
   int sz = strlen(str);
@@ -524,38 +524,31 @@ void MulInterCode(GrammarToken *grammarToken, AddressTable *addressTable) {
 }
 
 void DivInterCode(GrammarToken *grammarToken, AddressTable *addressTable) {
-  // int res = get_reg_new(addressTable);
-  //   printf("CREATEFRAME\n");
-  //   printf("PUSHFRAME\n");
+  printf("JUMPIFNEQ CheckDivByZero %s@r%d int@0\n", registerPrefixGen(grammarToken->isGlobal), grammarToken->tokensHolder[2]->data.grammarToken->reg);
+  printf("EXIT int@57\n");
+  printf("LABEL CheckDivByZero\n");
 
-  //  printf("DEFVAR LF@type\n");
-  //  printf("TYPE LF@type %s@r%d\n",
-  //         registerPrefixGen(
-  //             grammarToken->tokensHolder[2]->data.grammarToken->isGlobal),
-  //         grammarToken->tokensHolder[0]->data.grammarToken->reg);
-  //  printf("JUMPIFEQ Temp1isFloat LF@type string@float\n");
-  //  printf("INT2FLOAT %s@r%d %s@r%d\n",
-  //         registerPrefixGen(
-  //             grammarToken->tokensHolder[0]->data.grammarToken->isGlobal),
-  //         grammarToken->tokensHolder[0]->data.grammarToken->reg,
-  //         registerPrefixGen(
-  //             grammarToken->tokensHolder[0]->data.grammarToken->isGlobal),
-  //         grammarToken->tokensHolder[0]->data.grammarToken->reg);
-  //  printf("LABEL Temp1isFloat\n");
-  //  printf("TYPE LF@type %s@r%d\n",
-  //         registerPrefixGen(
-  //             grammarToken->tokensHolder[0]->data.grammarToken->isGlobal),
-  //         grammarToken->tokensHolder[2]->data.grammarToken->reg);
-  //  printf("JUMPIFEQ Temp2isFloat LF@type string@float\n");
-  //  printf("INT2FLOAT %s@r%d %s@r%d\n",
-  //         registerPrefixGen(
-  //             grammarToken->tokensHolder[2]->data.grammarToken->isGlobal),
-  //         grammarToken->tokensHolder[2]->data.grammarToken->reg,
-  //         registerPrefixGen(
-  //             grammarToken->tokensHolder[2]->data.grammarToken->isGlobal),
-  //         grammarToken->tokensHolder[2]->data.grammarToken->reg);
-  //  printf("LABEL Temp2isFloat\n");
-  //  printf("DEFVAR %s@r%d\n", "LF", res);
+  printf("DEFVAR LF@tempString1\n");
+  printf("TYPE LF@tempString1 %s@r%d\n", registerPrefixGen(grammarToken->isGlobal), grammarToken->tokensHolder[0]->data.grammarToken->reg);
+  printf("DEFVAR LF@tempString2\n");
+  printf("TYPE LF@tempString2 %s@r%d\n", registerPrefixGen(grammarToken->isGlobal), grammarToken->tokensHolder[2]->data.grammarToken->reg);
+
+  printf("JUMPIFEQ Div1IsInt LF@tempString1 string@int\n");
+  printf("JUMPIFEQ IDiv1IsFloat LF@tempString1 string@float\n");
+
+  printf("JUMPIFEQ ENDDIV LF@tempString1 string@string\n");
+
+
+  printf("LABEL Div1IsInt\n");
+  printf("JUMPIFEQ DivIsInt LF@tempString2 string@int\n");
+  printf("EXIT int@4\n");
+
+  printf("LABEL IDiv1IsFloat\n");
+  printf("JUMPIFEQ IDivIsFloat LF@tempString2 string@float\n");
+  printf("EXIT int@4\n");
+
+
+  printf("LABEL IDivIsFloat\n");
   printf("DIV %s@r%d %s@r%d %s@r%d\n",
          registerPrefixGen(grammarToken->isGlobal), grammarToken->reg,
          registerPrefixGen(
@@ -564,6 +557,20 @@ void DivInterCode(GrammarToken *grammarToken, AddressTable *addressTable) {
          registerPrefixGen(
              grammarToken->tokensHolder[2]->data.grammarToken->isGlobal),
          grammarToken->tokensHolder[2]->data.grammarToken->reg);
+  printf("JUMP ENDDIV\n");
+
+  printf("LABEL DivIsInt\n");
+  printf("IDIV %s@r%d %s@r%d %s@r%d\n",
+         registerPrefixGen(grammarToken->isGlobal), grammarToken->reg,
+         registerPrefixGen(
+             grammarToken->tokensHolder[0]->data.grammarToken->isGlobal),
+         grammarToken->tokensHolder[0]->data.grammarToken->reg,
+         registerPrefixGen(
+             grammarToken->tokensHolder[2]->data.grammarToken->isGlobal),
+         grammarToken->tokensHolder[2]->data.grammarToken->reg);
+  printf("JUMP ENDDIV\n");
+
+  printf("LABEL ENDDIV\n");
 }
 
 void EqualInterCode(GrammarToken *grammarToken, AddressTable *addressTable) {
