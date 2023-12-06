@@ -23,7 +23,7 @@ Error parser_eat(GrammarToken *grammarToken, TokenType tokenType,
     return error_create(NONE, NULL);
 
   if (*curOffset >= tokenVector->length) {
-    return error_create(PARSER_ERROR, "Missing token!");
+    return error_create(SYNTACTIC_ERROR, "Missing token!");
   }
 
   if (tokenVector->data[*curOffset].type == tokenType) {
@@ -48,7 +48,7 @@ Error parser_eat(GrammarToken *grammarToken, TokenType tokenType,
     return error_create(NONE, NULL);
   }
   return error_create(
-      PARSER_ERROR,
+      SYNTACTIC_ERROR,
       "Missing token!"); // TODO fix error message plus other fixes
 }
 
@@ -85,7 +85,7 @@ Error parser_parse(Parser *parser, GrammarToken *grammarToken,
 
   if (ruleId == -1) {
     return error_create(
-        PARSER_ERROR,
+        SYNTACTIC_ERROR,
         "Could not continue parsing, no rule to continue..."); // TODO
   }
 
@@ -195,7 +195,7 @@ Error precedence_parser_parse(Parser *parser, Token **tokenPointer,
     grammar_token_init(token->data.grammarToken);
 
     int backupOffset = *offset;
-    Error errLLParser = error_create(PARSER_ERROR, NULL);
+    Error errLLParser = error_create(SYNTACTIC_ERROR, NULL);
     if (!lastWasF) {
       errLLParser = parser_parse(parser, token->data.grammarToken, tokens, offset,
                                token->type, P_PARSER);
@@ -251,7 +251,7 @@ Error precedence_parser_parse(Parser *parser, Token **tokenPointer,
       }
       if (stack.length != 2 || stack.data[1].token->type != E) {
         // TODO clean the memory + unite errors
-        return error_create(PARSER_ERROR, "Parsing of expression failed");
+        return error_create(SYNTACTIC_ERROR, "Parsing of expression failed");
       }
       *tokenPointer = stack.data[1].token;
       free(stack.data);
@@ -268,7 +268,7 @@ Error precedence_parser_parse(Parser *parser, Token **tokenPointer,
       if (balance < 0) {
         // TODO clean memory?
         free(stack.data);
-        return error_create(PARSER_ERROR, "Could not parse expression!");
+        return error_create(SYNTACTIC_ERROR, "Could not parse expression!");
       }
 
       Error err = precedence_parser_reduce(parser->expressionParser, &stack);
@@ -298,7 +298,7 @@ Error precedence_parser_reduce(PParser *pParser,
 
   if (leftPointer < 0 ||
       rightPointer - leftPointer + 1 > MAX_GRAMMAR_RULE_PRODUCTIONS_SIZE)
-    return error_create(PARSER_ERROR, "Broken expression...");
+    return error_create(SYNTACTIC_ERROR, "Broken expression...");
 
   GrammarRule testRule;
   grammar_rule_init(&testRule);
@@ -310,7 +310,7 @@ Error precedence_parser_reduce(PParser *pParser,
 
   int ruleId = findGrammarRule(pParser->pGrammar, &testRule);
   if (ruleId < 0)
-    return error_create(PARSER_ERROR, "Could not find rule for parsing...");
+    return error_create(SYNTACTIC_ERROR, "Could not find rule for parsing...");
 
   Token *reducedToken = malloc(sizeof(Token));
   if (reducedToken == NULL)
