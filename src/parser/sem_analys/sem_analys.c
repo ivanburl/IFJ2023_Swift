@@ -252,6 +252,7 @@ void sem_analyse_factor_store_value(GrammarToken *grammarToken,
   case NIL:
     grammarToken->isCastableType = false;
     grammarToken->returnType = NIL_TYPE;
+    break;
   default:
     exit(9);//strange situation... should not happen
     break;
