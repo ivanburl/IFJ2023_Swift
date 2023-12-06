@@ -738,33 +738,6 @@ void Write() {
   printf("LABEL EscapeWrite\n");
 }
 
-
-//some old code
-//  GrammarToken *PARAMS = grammarToken->tokensHolder[3]->data.grammarToken;
-//  if (PARAMS->tokensHolderSize == 0)    //if function without params
-//    return;
-//  //create first
-//  bool isGlobal = false;
-//  AT_create_withReg(addressTable,
-//                    &PARAMS->tokensHolder[0]->data.grammarToken->tokensHolder[1]->data.string,
-//                    PARAMS->tokensHolder[0]->data.grammarToken->reg,
-//                    &isGlobal);
-//  printf("POPS %s@r%d",
-//         registerPrefixGen(grammarToken->tokensHolder[0]->data.grammarToken->isGlobal),
-//         PARAMS->tokensHolder[0]->data.grammarToken->reg);
-//
-//  PARAMS = PARAMS->tokensHolder[1]->data.grammarToken;//PARAMS_TMP
-//  while (PARAMS->tokensHolderSize != 0) {
-//    AT_create_withReg(addressTable,
-//                      &PARAMS->tokensHolder[1]->data.grammarToken->tokensHolder[1]->data.string,
-//                      PARAMS->tokensHolder[1]->data.grammarToken->reg,
-//                      &isGlobal);
-//    printf("POPS %s@r%d",
-//           registerPrefixGen(grammarToken->tokensHolder[1]->data.grammarToken->isGlobal),
-//           PARAMS->tokensHolder[1]->data.grammarToken->reg);
-//
-//    PARAMS = PARAMS->tokensHolder[2]->data.grammarToken;
-//  }
 void FuncInitialize(GrammarToken *grammarToken, AddressTable *addressTable) {
   init_function(addressTable, &grammarToken->tokensHolder[1]->data.string);
   printf("JUMP Escape%s\n", grammarToken->tokensHolder[1]->data.string.data);
@@ -791,15 +764,16 @@ void FuncInitParams(GrammarToken *grammarToken, AddressTable *addressTable) {
          grammarToken->reg);
 }
 
-//PARAMS_TMP -> {}, 0),
-//PARAMS_TMP -> {COMMA, PARAM, PARAMS_TMP}, 3)
-
 void FuncInitializeEscape(GrammarToken *grammarToken,
                           AddressTable *addressTable) {
   printf("POPFRAME\n");
   printf("RETURN\n");
   printf("LABEL Escape%s\n", grammarToken->tokensHolder[1]->data.string.data);
   end_function(addressTable);
+}
+
+void FuncDivideScope(GrammarToken *grammarToken, AddressTable *addressTable) {
+  create_hashmap_inVector(addressTable);
 }
 
 // grammar_rule_create(F, NULL, NULL, NULL, (TokenType[]){ID, F_CALL}, 2),

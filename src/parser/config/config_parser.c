@@ -86,7 +86,7 @@ Error ifj_2023_parser_config(Parser *parser) {
                           3),
       grammar_rule_create(FUNC_ID, NULL, NULL, NULL, (TokenType[]){ID}, 1),
       grammar_rule_create(FUNC_ID, NULL, NULL, NULL, (TokenType[]){UNDERSCORE}, 1),
-      grammar_rule_create(PARAMS, NULL, NULL, NULL, (TokenType[]){PARAM, PARAMS_TMP},
+      grammar_rule_create(PARAMS, NULL, FuncDivideScope, NULL, (TokenType[]){PARAM, PARAMS_TMP},
                           2),
       grammar_rule_create(PARAMS_TMP, NULL, NULL, NULL, (TokenType[]){}, 0),
       grammar_rule_create(PARAMS_TMP, NULL, NULL, NULL,

@@ -13,8 +13,8 @@ int main() {
   scanner_init(&scanner);
   scanner_configure_swift_2023(&scanner);
 
-freopen("../IO/input.txt", "r", stdin);
-freopen("../IO/output.txt", "w", stdout);
+//freopen("../IO/input.txt", "r", stdin);
+//freopen("../IO/output.txt", "w", stdout);
 
   Parser parser;
   parser_init(&parser);

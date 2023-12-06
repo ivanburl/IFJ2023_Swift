@@ -52,6 +52,7 @@ void ADDArg(GrammarToken *grammarToken, AddressTable *addressTable);
 void ADDArgLabeled(GrammarToken *grammarToken, AddressTable *addressTable);
 void FuncInitialize(GrammarToken *grammarToken, AddressTable *addressTable);
 void FuncInitParams(GrammarToken *grammarToken, AddressTable *addressTable);
+void FuncDivideScope(GrammarToken *grammarToken, AddressTable *addressTable);
 void FuncInitializeEscape(GrammarToken *grammarToken, AddressTable *addressTable);
 void FuncCall(GrammarToken *grammarToken, AddressTable *addressTable);
 void FuncCallPreOrder(GrammarToken *grammarToken, AddressTable *addressTable);
