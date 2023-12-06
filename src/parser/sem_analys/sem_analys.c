@@ -606,6 +606,6 @@ void sem_analyse_factor_move(GrammarToken* grammarToken, SemAnalyser* semAnalyse
 }
 
 void sem_analyse_factor_brackets_move(GrammarToken* grammarToken, SemAnalyser* semAnalyser){
-  grammarToken->returnType = grammarToken->tokensHolder[0]->data.grammarToken->returnType;
-  grammarToken->isCastableType = grammarToken->tokensHolder[0]->data.grammarToken->isCastableType;
+  grammarToken->returnType = grammarToken->tokensHolder[1]->data.grammarToken->returnType;
+  grammarToken->isCastableType = grammarToken->tokensHolder[1]->data.grammarToken->isCastableType;
 }

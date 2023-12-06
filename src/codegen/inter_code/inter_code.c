@@ -1013,7 +1013,7 @@ void UnwrapCond(GrammarToken *grammarToken, AddressTable *addressTable) {
          reg);
   printf("JUMP EscapeHardUnwrap%d\n", escReg);
   printf("LABEL ExitIfZero%d\n", exitReg);
-  printf("JUMP EXITIF%d\n", get_cur_cycle(addressTable));
+  printf("JUMP ESCAPE%d\n", get_cur_cycle(addressTable));
   printf("LABEL EscapeHardUnwrap%d\n", escReg);
 }
 
@@ -1044,12 +1044,17 @@ void VarTypedIdInit(GrammarToken *grammarToken, AddressTable *addressTable) {
 //  addressTable->isGlobal[reg] = grammarToken->isGlobal;
 
   //for case var a: Int
-  if (grammarToken->tokensHolder[2]->data.grammarToken->tokensHolderSize == 0)
+  if (grammarToken->tokensHolder[2]->data.grammarToken->tokensHolderSize == 0) {
+    printf("MOVE %s@r%d nil@nil\n",
+           registerPrefixGen(grammarToken->isGlobal),
+           reg);
     return;
+  }
 
-  printf("MOVE %s@r%d %s@r%d\n", registerPrefixGen(grammarToken->isGlobal), reg,
-         registerPrefixGen(
-             grammarToken->tokensHolder[2]->data.grammarToken->isGlobal),
+  printf("MOVE %s@r%d %s@r%d\n",
+         registerPrefixGen(grammarToken->isGlobal),
+         reg,
+         registerPrefixGen(grammarToken->tokensHolder[2]->data.grammarToken->isGlobal),
          grammarToken->tokensHolder[2]->data.grammarToken->reg);
   // grammarToken->reg = get_reg_cur(addressTable);
 }
