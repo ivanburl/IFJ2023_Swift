@@ -1051,11 +1051,31 @@ void VarTypedIdInit(GrammarToken *grammarToken, AddressTable *addressTable) {
     return;
   }
 
+//  fitTheType();
+  if (grammarToken->tokensHolder[1]->data.grammarToken->tokensHolderSize != 0 &&
+      grammarToken->tokensHolder[1]->data.grammarToken->tokensHolder[0]->type == DOUBLE_TYPE ||
+      grammarToken->tokensHolder[1]->data.grammarToken->tokensHolder[0]->type == DOUBLE_NULLABLE_TYPE) {
+      printf("TYPE GF@__Trash__ %s@r%d\n",
+             registerPrefixGen(grammarToken->tokensHolder[2]->data.grammarToken->isGlobal),
+             grammarToken->tokensHolder[2]->data.grammarToken->reg);
+      printf("JUMPIFEQ $ESCAPETYPE%d GF@__Trash__ string@float\n", get_temp_label(addressTable));
+      printf("JUMPIFEQ $ESCAPETYPE%d GF@__Trash__ string@nil\n", get_temp_label_cur(addressTable));
+      printf("INT2FLOAT %s@r%d %s@r%d\n",
+           registerPrefixGen(grammarToken->tokensHolder[2]->data.grammarToken->isGlobal),
+           grammarToken->tokensHolder[2]->data.grammarToken->reg,
+               registerPrefixGen(grammarToken->tokensHolder[2]->data.grammarToken->isGlobal),
+           grammarToken->tokensHolder[2]->data.grammarToken->reg);
+      printf("LABEL $ESCAPETYPE%d\n", get_temp_label_cur(addressTable));
+  }
   printf("MOVE %s@r%d %s@r%d\n",
          registerPrefixGen(grammarToken->isGlobal),
          reg,
          registerPrefixGen(grammarToken->tokensHolder[2]->data.grammarToken->isGlobal),
          grammarToken->tokensHolder[2]->data.grammarToken->reg);
+
+//  if (grammarToken->tokensHolder[2]->data.grammarToken->grammarRule->resultTokenType) {
+//    printf("INT2FLOAT %s@%d %s@%d")
+//  }
   // grammarToken->reg = get_reg_cur(addressTable);
 }
 
