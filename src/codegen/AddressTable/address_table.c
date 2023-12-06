@@ -106,7 +106,7 @@ int AT_get(AddressTable *addressTable, String *var, bool* isGlobal) {
     VarAddress *varAddress = hashmap_get(cur, &entryToFind);
 
     if (varAddress != NULL) {
-//      *isGlobal = (curFuncInd == 0);
+      *isGlobal = (curFuncInd == 0);
       return varAddress->value;
     }
   }

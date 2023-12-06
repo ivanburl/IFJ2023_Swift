@@ -44,6 +44,9 @@ void enumerate_grammar_tokens(GrammarToken *grammarToken, char* variablePrefix,
   if (grammarToken == NULL || variablePrefix == NULL|| gen == NULL)
     return;
   //TODO global context is not fully loaded...
+  //some func detecting
+  if (grammarToken->grammarRule->resultTokenType == D && grammarToken->grammarRule->productions[0] == FUNC)
+    return;
 
   int n = grammarToken->tokensHolderSize;
   for (int i = 0; i < n; i++) {

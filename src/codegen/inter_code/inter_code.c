@@ -360,8 +360,6 @@ void StoreDouble(GrammarToken *grammarToken, AddressTable *addressTable) {
   // printf("DEFVAR LF@r%d\n", get_reg_new(addressTable));
   printf("MOVE %s@r%d float@%a\n", registerPrefixGen(grammarToken->isGlobal),
          grammarToken->reg, grammarToken->tokensHolder[0]->data.double_value);
-  //  grammarToken->reg = get_reg_cur(addressTable);
-  //  grammarToken->isGlobal = false;
 }
 
 void StoreBrackets(GrammarToken *grammarToken, AddressTable *addressTable) {
@@ -774,6 +772,8 @@ void FuncInitialize(GrammarToken *grammarToken, AddressTable *addressTable) {
   printf("POPS GF@__Trash__\n");
   printf("CREATEFRAME\n");
   printf("PUSHFRAME\n");
+  enumerate_grammar_tokens(grammarToken->tokensHolder[3]->
+                           data.grammarToken, "LF", &addressTable->resRegisters);
   enumerate_grammar_tokens(grammarToken->tokensHolder[6]->
                            data.grammarToken->tokensHolder[1]->
                            data.grammarToken, "LF", &addressTable->resRegisters);
