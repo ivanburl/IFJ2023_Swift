@@ -51,7 +51,7 @@ void GetF(GrammarToken *grammarToken, AddressTable *addressTable) {
 
 void HardUnwrap() {
   printf("JUMP $HardUnwrapEnd\n");
-  printf("LABEL $!\n");//jump by operator name
+  printf("LABEL $HardUnwrap\n");//jump by operator name
   printf("PUSHS nil@nil\n");
   printf("JUMPIFEQS $HardUnwrapBadExit\n");
   printf("RETURN\n");
@@ -823,21 +823,21 @@ void FuncCall(GrammarToken *grammarToken, AddressTable *addressTable) {
              grammarToken->reg, registerPrefixGen(isGlobal), reg);
     }
 
-    if (grammarToken->tokensHolder[1]->data.grammarToken->tokensHolderSize == 1) //we found operator call
-    {
-      printf("PUSHS %s@r%d\n",
-             registerPrefixGen(isGlobal),
-             reg
-      );
-      printf("CALL $%s\n",
-             grammarToken->tokensHolder[1]
-                 ->data.grammarToken->tokensHolder[0]->data.string.data);
-      printf("MOVE %s@r%d %s@r%d\n",
-             registerPrefixGen(grammarToken->isGlobal),
-             grammarToken->reg,
-             registerPrefixGen(isGlobal),
-             reg);
-    }
+//    if (grammarToken->tokensHolder[1]->data.grammarToken->tokensHolderSize == 1) //we found operator call
+//    {
+//      printf("PUSHS %s@r%d\n",
+//             registerPrefixGen(isGlobal),
+//             reg
+//      );
+//      printf("CALL $%s\n",
+//             grammarToken->tokensHolder[1]
+//                 ->data.grammarToken->tokensHolder[0]->data.string.data);
+//      printf("MOVE %s@r%d %s@r%d\n",
+//             registerPrefixGen(grammarToken->isGlobal),
+//             grammarToken->reg,
+//             registerPrefixGen(isGlobal),
+//             reg);
+//    }
 
   }
 }
@@ -886,6 +886,17 @@ void FuncArgAdd(GrammarToken *grammarToken, AddressTable *addressTable) {
 
 void HardUnwrapInterCode(GrammarToken *grammarToken,
                          AddressTable *addressTable) {
+  printf("PUSHS %s@r%d\n",
+         registerPrefixGen(grammarToken->tokensHolder[0]->data.grammarToken->isGlobal),
+         grammarToken->tokensHolder[0]->data.grammarToken->reg
+  );
+  printf("CALL $HardUnwrap\n");
+  printf("MOVE %s@r%d %s@r%d\n",
+         registerPrefixGen(grammarToken->isGlobal),
+         grammarToken->reg,
+         registerPrefixGen(grammarToken->tokensHolder[0]->data.grammarToken->isGlobal),
+         grammarToken->tokensHolder[0]->data.grammarToken->reg);
+
   // printf("DEFVAR LF@tempReg\n");
   // printf("MOVE LF@tempReg TF@r%d\n",
   // grammarToken->tokensHolder[0]->data.grammarToken->reg);

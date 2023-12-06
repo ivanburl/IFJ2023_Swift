@@ -33,7 +33,7 @@ Error ifj_2023_parser_config(Parser *parser) {
   assert(parser->expressionParser && parser->llParser &&
          "Set the ll parser and precedence parser");
 
-  int llGrammarRulesCount = 62;
+  int llGrammarRulesCount = 61;
   GrammarRule llGrammarRules[] = {
       grammar_rule_create(STS, NULL, NULL, NULL, (TokenType[]){S, STS_TMP}, 2),
       grammar_rule_create(STS_TMP, NULL, NULL, NULL,
@@ -106,8 +106,6 @@ Error ifj_2023_parser_config(Parser *parser) {
       grammar_rule_create(F_CALL, NULL, FuncArgAdd, NULL,
                           (TokenType[]){LEFT_BRACKET, ARGS, RIGHT_BRACKET}, 3),
       grammar_rule_create(F_CALL, NULL, NULL , NULL, (TokenType[]){}, 0),
-      grammar_rule_create(F_CALL, NULL, NULL, NULL,
-                          (TokenType[]){HARD_UNWRAP}, 1),
       grammar_rule_create(ARGS, NULL, NULL, NULL, (TokenType[]){ARG, ARGS_TMP}, 2),
       grammar_rule_create(ARGS, NULL, NULL, NULL, (TokenType[]){}, 0),
       grammar_rule_create(ARGS_TMP, NULL, NULL, NULL, (TokenType[]){}, 0),
@@ -139,7 +137,7 @@ Error ifj_2023_parser_config(Parser *parser) {
 
   ll_parser_configure(parser->llParser);
   // TODO add boolean operations
-  int pGrammarRulesCount = 14;
+  int pGrammarRulesCount = 15;
   GrammarRule pGrammarRules[] = {
       grammar_rule_create(E, NULL, SumInterCode, NULL, (TokenType[]){E, PLUS, E}, 3),
       grammar_rule_create(E, NULL, SubInterCode, NULL, (TokenType[]){E, MINUS, E}, 3),
@@ -154,18 +152,21 @@ Error ifj_2023_parser_config(Parser *parser) {
       grammar_rule_create(E, NULL, SoftUnwrapInterCode, NULL, (TokenType[]){E, SOFT_UNWRAP, E}, 3),
       grammar_rule_create(E, NULL, OrInterCode, NULL, (TokenType[]){E, LOGICAL_OR, E}, 3),
       grammar_rule_create(E, NULL, AndInterCode, NULL, (TokenType[]){E, LOGICAL_AND, E}, 3),
+      grammar_rule_create(E, NULL, HardUnwrapInterCode, NULL, (TokenType[]){E, HARD_UNWRAP}, 2),
       grammar_rule_create(E, NULL, GetF, NULL, (TokenType[]){F}, 1),
   };
 
   grammar_configure(parser->expressionParser->pGrammar, pGrammarRules,
                     pGrammarRulesCount);
   int operatorPriority[MAX_TOKEN_TYPES_NUMBER] = {
-      [MULTIPLY] = 1,   [DIVIDE] = 1,      [MINUS] = 2,
-      [PLUS] = 2,       [EQUAL] = 3,       [NOT_EQUAL] = 3,
-      [GREATER] = 3,    [LESS] = 3,        [GREATER_EQUAL] = 3,
-      [LESS_EQUAL] = 3, [SOFT_UNWRAP] = 4, [LOGICAL_OR] = 5,
-      [LOGICAL_AND] = 5};
+      [HARD_UNWRAP] = 1,
+      [MULTIPLY] = 2,   [DIVIDE] = 2,      [MINUS] = 3,
+      [PLUS] = 3,       [EQUAL] = 4,       [NOT_EQUAL] = 4,
+      [GREATER] = 4,    [LESS] = 4,        [GREATER_EQUAL] = 4,
+      [LESS_EQUAL] = 4, [SOFT_UNWRAP] = 5, [LOGICAL_OR] = 6,
+      [LOGICAL_AND] = 6};
   int operatorAssociation[MAX_TOKEN_TYPES_NUMBER] = {
+      [HARD_UNWRAP] = -1,
       [MULTIPLY] = -1,   [DIVIDE] = -1,     [MINUS] = -1,
       [PLUS] = -1,       [EQUAL] = 0,       [NOT_EQUAL] = 0,
       [GREATER] = 0,     [LESS] = 0,        [GREATER_EQUAL] = 0,
@@ -174,4 +175,5 @@ Error ifj_2023_parser_config(Parser *parser) {
   precedence_parser_configure(parser->expressionParser,
                               parser->expressionParser->pGrammar,
                               operatorPriority, operatorAssociation);
+  return error_create(NONE, NULL);
 }

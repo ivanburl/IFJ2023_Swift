@@ -12,7 +12,7 @@ Error generate_inter_code(GrammarToken *grToken) {
   grToken->reg = get_reg_new(addressTable);
   grToken->isGlobal = true;
   int stackLevel = 0;
-  enumerate_grammar_tokens(grToken, &stackLevel, &addressTable->resRegisters);
+  enumerate_grammar_tokens(grToken, "GF", &addressTable->resRegisters);
 
   post_order_process(grToken, addressTable);
   InterCodeEnd();

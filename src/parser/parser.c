@@ -166,6 +166,7 @@ Error precedence_parser_parse(Parser *parser, Token **tokenPointer,
 
   pparser_item_vector_push_back(&stack, initItem);
 
+  bool lastWasF = false;
   while (true) {
     bool delimiterRemoved = false;
     while (*offset < tokens->length &&
@@ -194,10 +195,13 @@ Error precedence_parser_parse(Parser *parser, Token **tokenPointer,
     grammar_token_init(token->data.grammarToken);
 
     int backupOffset = *offset;
-    Error err = parser_parse(parser, token->data.grammarToken, tokens, offset,
-                             token->type, P_PARSER);
+    Error errLLParser = error_create(PARSER_ERROR, NULL);
+    if (!lastWasF) {
+      errLLParser = parser_parse(parser, token->data.grammarToken, tokens, offset,
+                               token->type, P_PARSER);
+    }
 
-    if (err.errorType != NONE) {
+    if (errLLParser.errorType != NONE) {
       grammar_token_free(token->data.grammarToken);
       *offset = backupOffset;
       if (*offset < tokens->length) {
@@ -236,7 +240,7 @@ Error precedence_parser_parse(Parser *parser, Token **tokenPointer,
       free(token);
       while (stack.length >= 2 && balance > 0) {
         stack.data[stack.length - 1].closed = 1;
-        err = precedence_parser_reduce(parser->expressionParser, &stack);
+        Error err = precedence_parser_reduce(parser->expressionParser, &stack);
         balance -= 1;
         if (err.errorType != NONE) {
           // TODO clean the memory used + unite errors
@@ -267,7 +271,7 @@ Error precedence_parser_parse(Parser *parser, Token **tokenPointer,
         return error_create(PARSER_ERROR, "Could not parse expression!");
       }
 
-      err = precedence_parser_reduce(parser->expressionParser, &stack);
+      Error err = precedence_parser_reduce(parser->expressionParser, &stack);
       if (err.errorType != NONE) {
         // TODO free memory
         return err;
@@ -275,6 +279,8 @@ Error precedence_parser_parse(Parser *parser, Token **tokenPointer,
       *offset = backupOffset;
       continue;
     }
+
+    lastWasF = (errLLParser.errorType == NONE);
   }
 
   free(stack.data);

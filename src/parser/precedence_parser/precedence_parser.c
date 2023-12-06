@@ -76,10 +76,10 @@ void precedence_parser_configure(
       "Priority of operator is not set...");
 
       parser->priorityTable[operator][idRepresentative] =
-        (j > 0) ? 1 :
+        (j < grammarRule->productionsNumber -1 && grammarRule->productions[j+1] > NON_TERMINAL_UNDEFINED) ? 1 :
           parser->priorityTable[operator][idRepresentative];
       parser->priorityTable[idRepresentative][operator] =
-        (j < grammarRule->productionsNumber - 1) ? -1 :
+        (j > 0 && grammarRule->productions[j-1] > NON_TERMINAL_UNDEFINED) ? -1 :
           parser->priorityTable[idRepresentative][operator];
 
       assert(parser->priorityTable[operator][DOLLAR] == 0);
