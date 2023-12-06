@@ -69,7 +69,10 @@ void sem_analyse_expression_binary_operators(GrammarToken *grammarToken,
   TokenType typeA = grammarToken->tokensHolder[0]->data.grammarToken->returnType;
   bool isCastableA = grammarToken->tokensHolder[0]->data.grammarToken->isCastableType;
   TokenType typeB = grammarToken->tokensHolder[2]->data.grammarToken->returnType;
-  bool isCastableB = grammarToken->tokensHolder[2]->data.grammarToken->returnType;
+  bool isCastableB = grammarToken->tokensHolder[2]->data.grammarToken->isCastableType;
+
+  if (typeA == UNDEFINED || typeB == UNDEFINED)
+    return;
 
   if (typeA != typeB) { //type not equal?? try to cast them
     if (typeA == INT_TYPE && isCastableA) typeA = DOUBLE_TYPE;//cast is possible only to the double
@@ -81,7 +84,8 @@ void sem_analyse_expression_binary_operators(GrammarToken *grammarToken,
       typeA == INT_NULLABLE_TYPE ||
       typeA == DOUBLE_NULLABLE_TYPE ||
       typeA == VOID_TYPE ||
-      typeA == NIL_TYPE) exit(7);//to the these types binary operators could not be applied at all
+      typeA == NIL_TYPE ||
+      typeA == UNDEFINED) exit(7);//to the these types binary operators could not be applied at all
 
   bool undefinedOperator = false;
   TokenType resultType = typeA;
@@ -116,21 +120,28 @@ void sem_analyse_expression_binary_operators(GrammarToken *grammarToken,
     break;
   }
 
-  if (undefinedOperator)
+  if (undefinedOperator) {
+    fprintf(stderr, "Basic operator failed, wrong types!\n");
     exit(7); // does not have operator for current types
-
+  }
   grammarToken->returnType = resultType;
-  grammarToken->returnType = isCastableB && isCastableA;
+  grammarToken->tokensHolder[0]->data.grammarToken->returnType = typeA;
+  grammarToken->tokensHolder[2]->data.grammarToken->returnType = typeB;
+  grammarToken->isCastableType = isCastableB && isCastableA;
 }
 
 //TODO swift has such behaviour but we need to check
 void sem_analyse_expression_hard_unwrap(GrammarToken *grammarToken,
                                         SemAnalyser *semAnalyser) {
   TokenType type = grammarToken->tokensHolder[0]->data.grammarToken->returnType;
-  if (!isNullableType(type) && type != NIL_TYPE) {
+  if (type == UNDEFINED) return;
+
+  if (!isNullableType(type)) {
     fprintf(stderr, "Could not unwrap non nullable or nil using hard unwrap operation!");
     exit(7);
   }
+  grammarToken->returnType = getReversedType(type);
+  grammarToken->isCastableType = grammarToken->tokensHolder[0]->data.grammarToken->isCastableType;
 }
 
 
@@ -141,7 +152,12 @@ void sem_analyse_expression_soft_unwrap(GrammarToken *grammarToken,
   TokenType typeA = grammarToken->tokensHolder[0]->data.grammarToken->returnType;
   bool isCastableA = grammarToken->tokensHolder[0]->data.grammarToken->isCastableType;
   TokenType typeB = grammarToken->tokensHolder[2]->data.grammarToken->returnType;
-  bool isCastableB = grammarToken->tokensHolder[2]->data.grammarToken->returnType;
+  bool isCastableB = grammarToken->tokensHolder[2]->data.grammarToken->isCastableType;
+
+  if (typeB == UNDEFINED || typeA == UNDEFINED) return;//TODO
+
+  if (typeA == UNDEFINED || typeB == UNDEFINED || typeA == VOID_TYPE || typeB == VOID_TYPE)
+    exit(7);
 
   if (isNullableType(typeB)) {
     exit(7);
@@ -149,13 +165,19 @@ void sem_analyse_expression_soft_unwrap(GrammarToken *grammarToken,
 
   if (typeA == NIL_TYPE) {
     grammarToken->returnType = typeB;
+    grammarToken->isCastableType = isCastableB;
     return;
   }
 
   if (isNullableType(typeA)) {
-    if (getReversedType(typeA) != typeB)
-      exit(7);
+    if (getReversedType(typeA) != typeB) {
+      if (typeB == INT_TYPE && isCastableB) typeB = DOUBLE_TYPE;
+      if (getReversedType(typeA) != typeB) exit(7);
+      grammarToken->tokensHolder[2]->data.grammarToken->returnType = typeB;
+    }
+
     grammarToken->returnType = typeB;
+    grammarToken->isCastableType = isCastableB;
     return;
   }
 
@@ -163,7 +185,10 @@ void sem_analyse_expression_soft_unwrap(GrammarToken *grammarToken,
     if (typeA == INT_TYPE && isCastableA) typeA = DOUBLE_TYPE;//cast is possible only to the double
     if (typeB == INT_TYPE && isCastableB) typeB = DOUBLE_TYPE;
     if (typeA != typeB) exit(7); //two types
+    grammarToken->tokensHolder[0]->data.grammarToken->returnType = typeA;
+    grammarToken->tokensHolder[2]->data.grammarToken->returnType = typeB;
   }
+
   grammarToken->returnType = typeB;
   grammarToken->isCastableType = isCastableB;
 }
@@ -171,9 +196,13 @@ void sem_analyse_expression_soft_unwrap(GrammarToken *grammarToken,
 void sem_analyse_expression_negation(GrammarToken *grammarToken,
                                      SemAnalyser *semAnalyser) {
   TokenType type = grammarToken->tokensHolder[0]->data.grammarToken->returnType;
+  if (type == UNDEFINED) return;
+
   if (type != BOOLEAN_TYPE)
     exit(7);
   grammarToken->returnType = BOOLEAN_TYPE;
+  grammarToken->isCastableType = grammarToken->tokensHolder[0]->
+                                 data.grammarToken->isCastableType;
 }
 
 void sem_analyse_expression_equal_operators(GrammarToken *grammarToken,
@@ -185,10 +214,14 @@ void sem_analyse_expression_equal_operators(GrammarToken *grammarToken,
   TokenType typeB = grammarToken->tokensHolder[2]->data.grammarToken->returnType;
   bool isCastableB = grammarToken->tokensHolder[2]->data.grammarToken->returnType;
 
+  if (typeB == UNDEFINED || typeB == UNDEFINED) return;
+
   if (typeA != typeB) { //type not equal?? try to cast them
     if (typeA == INT_TYPE && isCastableA) typeA = DOUBLE_TYPE;//cast is possible only to the double
     if (typeB == INT_TYPE && isCastableB) typeB = DOUBLE_TYPE;
     if (typeA != typeB) exit(7); //could not make an operation between them
+    grammarToken->tokensHolder[0]->data.grammarToken->returnType = typeA;
+    grammarToken->tokensHolder[2]->data.grammarToken->returnType = typeB;
   }
 
   grammarToken->returnType = BOOLEAN;
@@ -564,4 +597,15 @@ void sem_analyse_gen_function_suffix_from_params(GrammarToken *grammarToken,
       move = 1;
     } while(params_tmp->tokensHolderSize > 0);
   }
+}
+
+
+void sem_analyse_factor_move(GrammarToken* grammarToken, SemAnalyser* semAnalyser){
+  grammarToken->returnType = grammarToken->tokensHolder[0]->data.grammarToken->returnType;
+  grammarToken->isCastableType = grammarToken->tokensHolder[0]->data.grammarToken->isCastableType;
+}
+
+void sem_analyse_factor_brackets_move(GrammarToken* grammarToken, SemAnalyser* semAnalyser){
+  grammarToken->returnType = grammarToken->tokensHolder[0]->data.grammarToken->returnType;
+  grammarToken->isCastableType = grammarToken->tokensHolder[0]->data.grammarToken->isCastableType;
 }

@@ -136,6 +136,9 @@ void sem_analyse_gen_function_suffix_from_params(struct grammar_token_t *grammar
 /// \param symtableEntry
 void sem_analyse_let_condition(struct grammar_token_t* grammarToken, SemAnalyser* semAnalyser);
 
+void sem_analyse_factor_move(struct grammar_token_t* grammarToken, SemAnalyser* semAnalyser);
+void sem_analyse_factor_brackets_move(struct grammar_token_t* grammarToken, SemAnalyser* semAnalyser);
+
 // END OF CONDITION SECTION
 
 

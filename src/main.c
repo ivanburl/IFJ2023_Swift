@@ -5,6 +5,9 @@
 
 #include <stdio.h>
 
+void exportLLTable(Parser* parser);
+void exportLRTable(Parser* parser);
+
 int main() {
   Error err;
   err.errorType = NONE;
@@ -52,7 +55,9 @@ freopen("../IO/output.txt", "w", stdout);
     error_report(err);
     return err.errorCode;
   }
-
+  sem_analyse_start(&sts);
   generate_inter_code(&sts);
   return 0;
 }
+
+

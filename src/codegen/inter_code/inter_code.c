@@ -1,7 +1,28 @@
 #include "inter_code.h"
 #include"../codegen.h"
 
+
+
 char *registerPrefixGen(bool isGlobal) { return isGlobal ? "GF" : "LF"; }
+
+void convertRegisterIntToDouble(int reg, bool isGlobal) {
+  printf("PUSHS %s@r%d\n",
+         registerPrefixGen(isGlobal),
+         reg);
+  printf("CALL $Int2Double\n");
+  printf("MOVE %s@r%d GF@FuncReturn\n",
+         registerPrefixGen(isGlobal),
+         reg);
+}
+
+void convertTokenIntToDouble(Token* a) {
+  convertRegisterIntToDouble(a->data.grammarToken->reg, a->data.grammarToken->isGlobal);
+}
+
+void fitTheType(Token *a) {
+  if (a->data.grammarToken->returnType == DOUBLE_TYPE)
+    convertTokenIntToDouble(a);
+}
 
 void InterCodeInit() {
   printf(".IFJcode23\n");
@@ -44,6 +65,7 @@ void InterCodeEnd() {
 // ARG, NULL, (TokenType[]){E, ARG_TMP
 
 void GetF(GrammarToken *grammarToken, AddressTable *addressTable) {
+  fitTheType(grammarToken->tokensHolder[0]);
   grammarToken->reg = grammarToken->tokensHolder[0]->data.grammarToken->reg;
   grammarToken->isGlobal =
       grammarToken->tokensHolder[0]->data.grammarToken->isGlobal;
@@ -278,8 +300,6 @@ void $Int2Double() {
   printf("CREATEFRAME\n");
   printf("PUSHFRAME\n");
 
-  printf("DEFVAR LF@trash\n");
-  printf("POPS LF@trash\n");
   printf("DEFVAR LF@IntToFloat\n");
 
   printf("DEFVAR LF@tempInt\n");
@@ -368,6 +388,7 @@ void StoreBrackets(GrammarToken *grammarToken, AddressTable *addressTable) {
   //  grammarToken->reg = grammarToken->tokensHolder[1]->data.grammarToken->reg;
   //  grammarToken->isGlobal =
   //      grammarToken->tokensHolder[1]->data.grammarToken->isGlobal;
+  fitTheType(grammarToken->tokensHolder[1]);
   printf("MOVE %s@r%d %s@r%d\n", registerPrefixGen(grammarToken->isGlobal),
          grammarToken->reg,
          registerPrefixGen(
@@ -489,6 +510,8 @@ void SumInterCode(GrammarToken *grammarToken, AddressTable *addressTable) {
                grammarToken->tokensHolder[2]->data.grammarToken->isGlobal),
            grammarToken->tokensHolder[2]->data.grammarToken->reg);
   } else {
+    fitTheType(grammarToken->tokensHolder[0]);
+    fitTheType(grammarToken->tokensHolder[2]);
     printf("ADD %s@r%d %s@r%d %s@r%d\n",
            registerPrefixGen(grammarToken->isGlobal), grammarToken->reg,
            registerPrefixGen(
@@ -503,6 +526,8 @@ void SumInterCode(GrammarToken *grammarToken, AddressTable *addressTable) {
 }
 
 void SubInterCode(GrammarToken *grammarToken, AddressTable *addressTable) {
+  fitTheType(grammarToken->tokensHolder[0]);
+  fitTheType(grammarToken->tokensHolder[2]);
   printf("SUB %s@r%d %s@r%d %s@r%d\n",
          registerPrefixGen(grammarToken->isGlobal), grammarToken->reg,
          registerPrefixGen(
@@ -515,6 +540,8 @@ void SubInterCode(GrammarToken *grammarToken, AddressTable *addressTable) {
 }
 
 void MulInterCode(GrammarToken *grammarToken, AddressTable *addressTable) {
+  fitTheType(grammarToken->tokensHolder[0]);
+  fitTheType(grammarToken->tokensHolder[2]);
   printf("MUL %s@r%d %s@r%d %s@r%d\n",
          registerPrefixGen(grammarToken->isGlobal), grammarToken->reg,
          registerPrefixGen(
@@ -530,7 +557,8 @@ void DivInterCode(GrammarToken *grammarToken, AddressTable *addressTable) {
 //  printf("JUMPIFNEQ CheckDivByZero %s@r%d int@0\n", registerPrefixGen(grammarToken->isGlobal), grammarToken->tokensHolder[2]->data.grammarToken->reg);
 //  printf("EXIT int@57\n");
 //  printf("LABEL CheckDivByZero\n");
-
+  fitTheType(grammarToken->tokensHolder[0]);
+  fitTheType(grammarToken->tokensHolder[2]);
   printf("DEFVAR LF@tempString1\n");
   printf("TYPE LF@tempString1 %s@r%d\n", registerPrefixGen(grammarToken->isGlobal), grammarToken->tokensHolder[0]->data.grammarToken->reg);
   printf("DEFVAR LF@tempString2\n");
@@ -577,6 +605,8 @@ void DivInterCode(GrammarToken *grammarToken, AddressTable *addressTable) {
 }
 
 void EqualInterCode(GrammarToken *grammarToken, AddressTable *addressTable) {
+  fitTheType(grammarToken->tokensHolder[0]);
+  fitTheType(grammarToken->tokensHolder[2]);
   printf("EQ %s@r%d %s@r%d %s@r%d\n", registerPrefixGen(grammarToken->isGlobal),
          grammarToken->reg,
          registerPrefixGen(
@@ -588,6 +618,8 @@ void EqualInterCode(GrammarToken *grammarToken, AddressTable *addressTable) {
 }
 
 void NotEqualInterCode(GrammarToken *grammarToken, AddressTable *addressTable) {
+  fitTheType(grammarToken->tokensHolder[0]);
+  fitTheType(grammarToken->tokensHolder[2]);
   printf("JUMPIFNEQ NotEqual %s@r%d %s@r%d\n",
          registerPrefixGen(
              grammarToken->tokensHolder[0]->data.grammarToken->isGlobal),
@@ -608,6 +640,8 @@ void NotEqualInterCode(GrammarToken *grammarToken, AddressTable *addressTable) {
 }
 
 void GreaterInterCode(GrammarToken *grammarToken, AddressTable *addressTable) {
+  fitTheType(grammarToken->tokensHolder[0]);
+  fitTheType(grammarToken->tokensHolder[2]);
   printf("GT %s@r%d %s@r%d %s@r%d\n", registerPrefixGen(grammarToken->isGlobal),
          grammarToken->reg,
          registerPrefixGen(
@@ -619,6 +653,8 @@ void GreaterInterCode(GrammarToken *grammarToken, AddressTable *addressTable) {
 }
 
 void LessInterCode(GrammarToken *grammarToken, AddressTable *addressTable) {
+  fitTheType(grammarToken->tokensHolder[0]);
+  fitTheType(grammarToken->tokensHolder[2]);
   printf("LT %s@r%d %s@r%d %s@r%d\n", registerPrefixGen(grammarToken->isGlobal),
          grammarToken->reg,
          registerPrefixGen(
@@ -630,7 +666,8 @@ void LessInterCode(GrammarToken *grammarToken, AddressTable *addressTable) {
 }
 
 void GreaterEqualInterCode(GrammarToken *grammarToken, AddressTable *addressTable) {
-
+  fitTheType(grammarToken->tokensHolder[0]);
+  fitTheType(grammarToken->tokensHolder[2]);
   printf("PUSHS %s@r%d\n",
          registerPrefixGen(
              grammarToken->tokensHolder[0]->data.grammarToken->isGlobal),
@@ -656,6 +693,8 @@ void GreaterEqualInterCode(GrammarToken *grammarToken, AddressTable *addressTabl
 }
 
 void LessEqualInterCode(GrammarToken *grammarToken, AddressTable *addressTable) {
+  fitTheType(grammarToken->tokensHolder[0]);
+  fitTheType(grammarToken->tokensHolder[2]);
   printf("PUSHS %s@r%d\n",
          registerPrefixGen(
              grammarToken->tokensHolder[0]->data.grammarToken->isGlobal),
@@ -704,6 +743,8 @@ void SoftUnwrap() {
     printf("LABEL $SoftUnwrapEnd\n");
 }
 void SoftUnwrapInterCode(GrammarToken *grammarToken, AddressTable *addressTable) {
+    fitTheType(grammarToken->tokensHolder[0]);
+    fitTheType(grammarToken->tokensHolder[2]);
     printf("PUSHS %s@r%d\n",registerPrefixGen(
                                grammarToken->tokensHolder[2]->data.grammarToken->isGlobal),
                                grammarToken->tokensHolder[2]->data.grammarToken->reg);
