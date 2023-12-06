@@ -106,14 +106,14 @@ Error ifj_2023_parser_config(Parser *parser) {
       grammar_rule_create(F_CALL, NULL, FuncArgAdd, NULL,
                           (TokenType[]){LEFT_BRACKET, ARGS, RIGHT_BRACKET}, 3),
       grammar_rule_create(F_CALL, NULL, NULL , NULL, (TokenType[]){}, 0),
-      grammar_rule_create(ARGS, NULL, NULL, NULL, (TokenType[]){ARG, ARGS_TMP}, 2),
+      grammar_rule_create(ARGS, NULL, PushArg_ARGS, NULL, (TokenType[]){ARG, ARGS_TMP}, 2),
       grammar_rule_create(ARGS, NULL, NULL, NULL, (TokenType[]){}, 0),
       grammar_rule_create(ARGS_TMP, NULL, NULL, NULL, (TokenType[]){}, 0),
-      grammar_rule_create(ARGS_TMP, NULL, NULL, NULL,
+      grammar_rule_create(ARGS_TMP, NULL, PushArg_TMP, NULL,
                           (TokenType[]){COMMA, ARG, ARGS_TMP}, 3),
 
-      grammar_rule_create(ARG, NULL, PushArgLabeled, NULL, (TokenType[]){ID_AND_COLON, E}, 2),
-      grammar_rule_create(ARG, NULL, PushArg, NULL, (TokenType[]){E}, 1),
+      grammar_rule_create(ARG, NULL, ADDArgLabeled, NULL, (TokenType[]){ID_AND_COLON, E}, 2),
+      grammar_rule_create(ARG, NULL, ADDArg, NULL, (TokenType[]){E}, 1),
       grammar_rule_create(E_NULLABLE, NULL, NULL, NULL, (TokenType[]){E}, 1),
       grammar_rule_create(E_NULLABLE, NULL, NULL, NULL, (TokenType[]){}, 0),
 

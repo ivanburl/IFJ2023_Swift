@@ -842,7 +842,7 @@ void FuncCall(GrammarToken *grammarToken, AddressTable *addressTable) {
   }
 }
 
-void PushArg(GrammarToken *grammarToken, AddressTable *addressTable) {
+void PushArg_ARGS(GrammarToken *grammarToken, AddressTable *addressTable) {
   add_arg(addressTable);
   printf("PUSHS %s@r%d\n",
          registerPrefixGen(
@@ -850,7 +850,7 @@ void PushArg(GrammarToken *grammarToken, AddressTable *addressTable) {
          grammarToken->tokensHolder[0]->data.grammarToken->reg);
 }
 
-void PushArgLabeled(GrammarToken *grammarToken, AddressTable *addressTable) {
+void PushArg_TMP(GrammarToken *grammarToken, AddressTable *addressTable) {
   add_arg(addressTable);
   printf("PUSHS %s@r%d\n",
          registerPrefixGen(
@@ -858,22 +858,32 @@ void PushArgLabeled(GrammarToken *grammarToken, AddressTable *addressTable) {
          grammarToken->tokensHolder[1]->data.grammarToken->reg);
 }
 
+void ADDArg(GrammarToken *grammarToken, AddressTable *addressTable) {
+  grammarToken->reg = grammarToken->tokensHolder[0]->data.grammarToken->reg;
+  grammarToken->isGlobal = grammarToken->tokensHolder[0]->data.grammarToken->isGlobal;
+}
+
+void ADDArgLabeled(GrammarToken *grammarToken, AddressTable *addressTable) {
+  grammarToken->reg = grammarToken->tokensHolder[1]->data.grammarToken->reg;
+  grammarToken->isGlobal = grammarToken->tokensHolder[1]->data.grammarToken->isGlobal;
+}
+
 void FuncArgAdd(GrammarToken *grammarToken, AddressTable *addressTable) {
   int argCount = get_args(addressTable);
-  printf("CREATEFRAME\n");
-  printf("PUSHFRAME\n");
-  for (int i = 0; i < argCount; i++) {
-    printf("DEFVAR LF@tempArg%d\n", i); // 5, 6
-    printf("POPS LF@tempArg%d\n", i);
-  }
-
-  for (int i = 0; i < argCount; i++) {
-    printf("PUSHS LF@tempArg%d\n", i);
-  }
+//  printf("CREATEFRAME\n");
+//  printf("PUSHFRAME\n");
+//  for (int i = 0; i < argCount; i++) {
+//    printf("DEFVAR LF@tempArg%d\n", i); // 5, 6
+//    printf("POPS LF@tempArg%d\n", i);
+//  }
+//
+//  for (int i = 0; i < argCount; i++) {
+//    printf("PUSHS LF@tempArg%d\n", i);
+//  }
 
   printf("MOVE GF@__ArgCount__ int@%d\n", argCount);
   printf("PUSHS GF@__ArgCount__\n");
-  printf("POPFRAME\n");
+//  printf("POPFRAME\n");
 }
 
 // void HardUnwrapInterCode(GrammarToken *grammarToken, AddressTable
@@ -974,7 +984,7 @@ void PostOrderForIf(GrammarToken *grammarToken, AddressTable *addressTable) {
 
 void UnwrapCond(GrammarToken *grammarToken, AddressTable *addressTable) {
   bool isGlobal = false;
-  int reg = AT_get(addressTable, &grammarToken->tokensHolder[0]->data.string,
+  int reg = AT_get(addressTable, &grammarToken->tokensHolder[1]->data.string,
                    &isGlobal);
   if (reg == -1)
     exit(3);
