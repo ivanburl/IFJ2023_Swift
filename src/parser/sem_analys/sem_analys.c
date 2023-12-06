@@ -214,6 +214,12 @@ void sem_analyse_expression_equal_operators(GrammarToken *grammarToken,
   TokenType typeB = grammarToken->tokensHolder[2]->data.grammarToken->returnType;
   bool isCastableB = grammarToken->tokensHolder[2]->data.grammarToken->returnType;
 
+  if (typeA == NIL_TYPE || typeB == NIL_TYPE) {
+    grammarToken->returnType = BOOLEAN;
+    grammarToken->isCastableType = isCastableB && isCastableA;
+    return;
+  }
+
   if (typeB == UNDEFINED || typeB == UNDEFINED) return;
 
   if (typeA != typeB) { //type not equal?? try to cast them
