@@ -296,3 +296,35 @@ int token_cmp(Token *a, Token *b) {
     return cmp_tmp;
   }
 }
+
+
+TokenType getReversedType(TokenType type) {
+  switch (type) {
+  case INT_TYPE:
+    return INT_NULLABLE_TYPE;
+  case STRING_TYPE:
+    return STRING_NULLABLE_TYPE;
+  case DOUBLE_TYPE:
+    return DOUBLE_NULLABLE_TYPE;
+  case BOOLEAN_TYPE:
+    return BOOLEAN_NULLABLE_TYPE;
+  case BOOLEAN_NULLABLE_TYPE:
+    return BOOLEAN_TYPE;
+  case DOUBLE_NULLABLE_TYPE:
+    return DOUBLE_TYPE;
+  case STRING_NULLABLE_TYPE:
+    return STRING_TYPE;
+  case INT_NULLABLE_TYPE:
+    return INT_TYPE;
+  default://for other types like void and nil does not exist reversed
+    return UNDEFINED;
+  }
+}
+
+bool isNullableType(TokenType tokenType) {
+  return (tokenType == INT_NULLABLE_TYPE ||
+          tokenType == DOUBLE_NULLABLE_TYPE ||
+          tokenType == STRING_NULLABLE_TYPE ||
+          tokenType == BOOLEAN_NULLABLE_TYPE ||
+          tokenType == NIL_TYPE);
+}

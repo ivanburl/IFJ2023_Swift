@@ -63,6 +63,12 @@ void hashmap_entry_init(void *entry, unsigned int hash);
 /// \return found ? found : NULL
 void *hashmap_get(const HashMap *map, const void *key);
 
+/// Find bucket by key (key = must be your hashmap entry) looks bucket by hash of key
+/// \param map
+/// \param key
+/// \return
+void *hashmap_get_bucket(const HashMap *map, const void *key);
+
 /// Replace or Add value into hashmap
 /// \param map - hashmap
 /// \param entry - entry

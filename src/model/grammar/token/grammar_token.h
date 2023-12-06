@@ -11,7 +11,6 @@
 #define MAX_GRAMMAR_TOKEN_TOKENS_HOLDER_SIZE 128
 
 struct grammar_token_t;
-
 typedef struct grammar_token_t {
   int grammarRuleId;
   GrammarRule* grammarRule;
@@ -20,7 +19,6 @@ typedef struct grammar_token_t {
   Token *tokensHolder[MAX_GRAMMAR_TOKEN_TOKENS_HOLDER_SIZE];
   int reg;
 
-  TokenType returnType;
   bool isCastableType;
   bool isGlobal;
 } GrammarToken;
