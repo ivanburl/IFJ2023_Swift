@@ -84,8 +84,10 @@ typedef enum token_enum {
 
   ID_AND_ASSIGN=53, // exactly id=
   ID_AND_COLON=54,// exactly id:
+  VOID_TYPE=55,
+  NIL_TYPE=56,
   /// used only for PSA algo
-  DOLLAR=55,
+  DOLLAR=57,
 
   /// NON_TERMINALS (should be constructed by parser)
   /// tokeType < NON_TERMINAL -> terminal, tokeType > NON_TERMINAL -
@@ -161,6 +163,12 @@ void token_init(Token *token);
 /// \attention return token is not parsed one
 Error token_create(TokenType type, char *str, Token *outToken);
 
+/// Compares two token (is not expected to be used for order purposes)
+/// \param a - first token
+/// \param b - second token
+/// \return 0 - tokens are equal, otherwise not equal
+int token_cmp(Token* a, Token* b);
+
 /// Creates non terminal token from other tokensHolder
 /// \param type - type of token
 /// \param grammarToken - caught tokensHolder
@@ -170,10 +178,15 @@ Token token_grammar_token_create(TokenType type,
 
 void token_free(Token *token);
 
+
+
 void delete_quotes(char **str);
 Error preprocess_literal_multiString(char *literal);
 int get_multiLine_indent(char *literal);
 Error preprocess_literal_string(char *literal);
 Error process_unicode(char **sequence, char *output);
+
+TokenType getReversedType(TokenType type);
+bool isNullableType(TokenType tokenType);
 
 #endif // IFJ2023_SWIFT_TOKEN_H

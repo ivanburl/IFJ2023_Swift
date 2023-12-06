@@ -259,3 +259,72 @@ Error process_unicode(char **sequence, char *output) {
 
   return error_create(NONE, "none");
 }
+/// Compare two tokens, could accept nulls as arguments
+/// \param a - first token
+/// \param b - second token
+/// \return =0 - token equals, !=0 - token are not equal
+int token_cmp(Token *a, Token *b) {
+  if (a == b) return 0;
+  if (a == NULL) return -1;
+  if (b == NULL) return 1;
+  int cmp_type = (int)(a->type) - (int)(b->type);
+  if (cmp_type != 0) return cmp_type;
+  if (a->type >= NON_TERMINAL_UNDEFINED) {
+    return grammar_token_cmp(a->data.grammarToken, b->data.grammarToken);
+  } else {
+    int cmp_tmp;
+
+    switch (a->type) {
+    case BOOLEAN:
+    case INTEGER:
+      cmp_tmp = a->data.integer_value > b->data.integer_value ? 1 :
+          a->data.integer_value < b->data.integer_value ? -1 : 0;
+      break;
+    case DOUBLE:
+      cmp_tmp = a->data.double_value > b->data.double_value ? 1 :
+                a->data.double_value < b->data.double_value ? -1 : 0;
+      break;
+    case ID:
+    case STRING:
+    case MULTI_STRING:
+      cmp_tmp = string_cmp(&a->data.string, &b->data.string);
+      break;
+    default:
+      cmp_tmp = 0;
+      break;
+    }
+    return cmp_tmp;
+  }
+}
+
+
+TokenType getReversedType(TokenType type) {
+  switch (type) {
+  case INT_TYPE:
+    return INT_NULLABLE_TYPE;
+  case STRING_TYPE:
+    return STRING_NULLABLE_TYPE;
+  case DOUBLE_TYPE:
+    return DOUBLE_NULLABLE_TYPE;
+  case BOOLEAN_TYPE:
+    return BOOLEAN_NULLABLE_TYPE;
+  case BOOLEAN_NULLABLE_TYPE:
+    return BOOLEAN_TYPE;
+  case DOUBLE_NULLABLE_TYPE:
+    return DOUBLE_TYPE;
+  case STRING_NULLABLE_TYPE:
+    return STRING_TYPE;
+  case INT_NULLABLE_TYPE:
+    return INT_TYPE;
+  default://for other types like void and nil does not exist reversed
+    return UNDEFINED;
+  }
+}
+
+bool isNullableType(TokenType tokenType) {
+  return (tokenType == INT_NULLABLE_TYPE ||
+          tokenType == DOUBLE_NULLABLE_TYPE ||
+          tokenType == STRING_NULLABLE_TYPE ||
+          tokenType == BOOLEAN_NULLABLE_TYPE ||
+          tokenType == NIL_TYPE);
+}

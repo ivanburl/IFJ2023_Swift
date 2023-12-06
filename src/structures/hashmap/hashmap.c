@@ -95,6 +95,11 @@ void *hashmap_get(const HashMap *map, const void *key) {
   return *find_entry_ptr(map, key);
 }
 
+void *hashmap_get_bucket(const HashMap *map, const void *key) {
+  struct hashmap_entry **e = &map->table[get_bucket_id(map, key)];
+  return *e;
+}
+
 void hashmap_add(HashMap *map, void *entry) {
   unsigned int b = get_bucket_id(map, entry);
 

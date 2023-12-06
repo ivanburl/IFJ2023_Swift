@@ -16,6 +16,8 @@ void grammar_token_init(GrammarToken *grammarToken) {
   for (int i = 0; i < MAX_GRAMMAR_TOKEN_TOKENS_HOLDER_SIZE; i++) {
     grammarToken->tokensHolder[i] = NULL;
   }
+  grammarToken->returnType = UNDEFINED;
+  grammarToken->isCastableType = false;
 }
 
 void grammar_token_add(GrammarToken *grammarToken, Token *token) {
@@ -35,4 +37,18 @@ void grammar_token_free(GrammarToken *grammarToken) {
   grammarToken->tokensHolderSize = 0;
   grammarToken->grammarRuleId = -1;
   grammarToken->grammarRule = NULL;
+}
+
+int grammar_token_cmp(GrammarToken *a, GrammarToken *b) {
+  int tk_size_cmp = a->tokensHolderSize - b->tokensHolderSize;
+  if (tk_size_cmp != 0)
+    return tk_size_cmp;
+
+  for (int i = 0; i < a->tokensHolderSize; i++) {
+    Token *tokenA = a->tokensHolder[i];
+    Token *tokenB = b->tokensHolder[i];
+    int cmp = token_cmp(tokenA, tokenB);
+    if (cmp !=0) return cmp;
+  }
+  return 0;
 }

@@ -100,4 +100,8 @@ add_executable(IFJ2023_Swift src/main.c
         src/test/codegen_test/codegen_test.c
         src/test/codegen_test/codegen_test.h
         src/structures/vector/vector.c
+        src/model/symtable/symtable.c
+        src/model/symtable/symtable.h
+        src/parser/sem_analys/sem_analys.c
+        src/parser/sem_analys/sem_analys.h
 )
