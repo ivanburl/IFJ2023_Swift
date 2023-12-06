@@ -1002,6 +1002,10 @@ void VarTypedIdInit(GrammarToken *grammarToken, AddressTable *addressTable) {
     exit(3);
 //  addressTable->isGlobal[reg] = grammarToken->isGlobal;
 
+  //for case var a: Int
+  if (grammarToken->tokensHolder[2]->data.grammarToken->tokensHolderSize == 0)
+    return;
+
   printf("MOVE %s@r%d %s@r%d\n", registerPrefixGen(grammarToken->isGlobal), reg,
          registerPrefixGen(
              grammarToken->tokensHolder[2]->data.grammarToken->isGlobal),
